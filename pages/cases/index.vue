@@ -70,11 +70,10 @@ const filteredBlocks = computed(() => {
 
   if (!filters.value.length) return cases.value;
 
-  return cases.value.filter((caseItem) =>
-    caseItem.building_blocks_used.some(({ category }) =>
-      filters.value.includes(category.slug),
-    ),
-  );
+const c = cases.value.filter(item => filters.value.includes(item.building_blocks_used?.category.slug))
+
+  return c
+
 });
 
 function toggleFilterItem(category: string) {
@@ -83,7 +82,7 @@ function toggleFilterItem(category: string) {
   if (index > -1) filters.value.splice(index, 1);
   else filters.value.push(category);
 }
-const filters = ref([]);
+const filters = ref<string[]>([]);
 
 const categories = [
   { label: "Governance & values", value: "governance_values" },
