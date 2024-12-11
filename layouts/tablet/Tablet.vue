@@ -27,8 +27,8 @@
 </script>
 
 <style scoped lang="scss">
-@use "/assets/colors" as *;
-@use "/assets/spacing" as *;
+// @use "/assets/colors" as *;
+// @use "/assets/spacing" as *;
 
 .layout {
   display: flex;
