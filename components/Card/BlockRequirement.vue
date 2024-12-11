@@ -2,19 +2,19 @@
   <div class="card">
     <h2 class="title">{{ title }}</h2>
     <div class="item">
-      <img src="~/assets/icons/clock-icon.svg" />
+      <img src="~/assets/icons/clock-icon-black.svg" />
       {{ time }}
     </div>
     <div class="item">
-      <img src="~/assets/icons/money-icon.svg" />
+      <img src="~/assets/icons/money-icon-black.svg" />
       {{ cost }}
     </div>
     <div class="item">
-      <img src="~/assets/icons/thunder-icon.svg" />
+      <img src="~/assets/icons/thunder-icon-black.svg" />
       {{ effort }}
     </div>
     <div class="item">
-      <img src="~/assets/icons/thunder-icon.svg" />
+      <img src="~/assets/icons/thunder-icon-black.svg" />
       {{ involvement }}
     </div>
   </div>
@@ -107,18 +107,20 @@ const involvement = computed(() => props.involvement);
   height: 20rem;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 0.5rem;
   color: $text-color;
-  background-color: white;
-  border-radius: 0.315rem;
+  background-color: rgba($light-blue, 0.6);
+  border-radius: 1rem;
   padding: 1.25rem;
   cursor: default;
-  border: 1px solid $light-blue;
+  border: 2px solid $light-blue;
 }
 
 .title {
   font-size: 1.5rem;
   font-weight: bold;
+  margin-bottom: 1rem;
 }
 
 .item {

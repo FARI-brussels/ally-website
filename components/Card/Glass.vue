@@ -19,17 +19,23 @@ defineProps<GlassCardProps>();
 </script>
 
 <style scoped lang="scss">
+@use "/assets/scss/colors" as *;
 .glass-card {
+  
+  color: black;
   color: white;
-  background: rgba(255, 255, 255, 0.35);
-  border-radius: 1.25rem;
-  backdrop-filter: blur(10px);
+  // background: rgba(255, 255, 255, 0.4);
+  background: rgba($deep-purple, 0.8);
+  border-bottom-left-radius: 1.25rem;
+  border-bottom-right-radius: 1.25rem;
+  backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(10px);
   padding: 1.25rem;
   margin-left: auto;
   margin-right: auto;
   width: 950px;
   max-width: 100%;
+  padding: 2rem;
 }
 
 .title {
@@ -37,6 +43,7 @@ defineProps<GlassCardProps>();
   padding: 0 4rem;
   text-align: center;
   font-size: 2rem;
+  margin-bottom: 2rem;
 }
 
 .description {
