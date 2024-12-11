@@ -1,12 +1,22 @@
 <template>
   <main class="main">
     <Suspense>
-      <HeroDesktop
-        dense
+      <!-- <HeroDesktop
         :title="selectedBlock?.title[locale]"
         :description="selectedBlock?.description[locale]"
         :categories="[selectedBlock?.category.title[locale]]"
-      />
+      /> -->
+
+      <div class="hero-container">
+
+      <PageSection
+          html
+          on-dark
+        :title="selectedBlock?.title[locale]"
+                :description="selectedBlock?.description[locale]"
+        :categories="[selectedBlock?.category.title[locale]]"
+        />
+      </div>
     </Suspense>
 
     <Suspense>
@@ -170,7 +180,7 @@ const externalLinksParagraph = {
 
 .alternatives-title {
   // align-self: center;
-  margin-right: 10rem;
+  margin-right: 8rem;
   font-weight: bold;
 }
 
@@ -186,4 +196,15 @@ const externalLinksParagraph = {
 .link {
   width: 40rem;
 }
+
+.hero-container {
+  background-color: $deep-purple;
+  border-radius: 0.8rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  height: 20rem;
+}
+
 </style>

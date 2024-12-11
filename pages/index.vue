@@ -30,6 +30,31 @@
         </div>
       </div>
     </div>
+
+    <div class="cases-wrapper">
+      <PageSection
+          v-if="pageData.content?.length"
+          title="Learn from other organisations"
+          description="Get inspired by case studies of other organisations. Learn about their governance strategy, the actions they took, and the challenges they encountered and overcame in working on trustworthy AI. "
+        />
+      <div class="case-preview">
+      <CardDesktop
+        v-for="{id, title, description} in cases.slice(0, 3)"
+        :key="id"
+        :title="title[locale]"
+        :description="description[locale]"
+        :url="id"
+        @click="navigateTo(`/cases/${id}`)"
+      />
+    </div>
+      <ButtonPrimary
+          label="discover all cases"
+          icon="arrow-right"
+          class="action"
+          type="primary"
+          @click="navigateTo('/cases')"
+        />
+    </div>
     <!-- <BannerDesktop v-if="banner" v-bind="pageData.banner" /> -->
   </main>
 </template>
@@ -45,7 +70,18 @@ const { locale, buildingBlockCategories, banner } =
   storeToRefs(useGlobalStore());
 const { pages } = storeToRefs(useStaticPageStore());
 
-onMounted(getBuildingBlockCategories);
+const { cases } = storeToRefs(useCasesStore());
+const { getCases } = useCasesStore();
+
+// onMounted(getBuildingBlockCategories);
+
+onMounted(
+  async () =>
+    await Promise.all([
+      getBuildingBlockCategories(),
+      getCases(),
+    ]),
+);
 onMounted(async () => getStaticPage("home"));
 
 const pageData = computed(() => {
@@ -89,6 +125,8 @@ const blockData = computed(() => {
     description: description[locale.value],
   }));
 });
+
+
 
 const CTALabel = {
   fr: "découvrir tous les blocs de construction",
@@ -151,4 +189,17 @@ const CTALabel = {
     font-size: 1.4rem;
   }
 }
+
+.case-preview {
+  display: flex;
+  gap: 2rem
+}
+
+.cases-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
 </style>

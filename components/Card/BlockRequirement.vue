@@ -114,7 +114,7 @@ const involvement = computed(() => props.involvement);
   border-radius: 1rem;
   padding: 1.25rem;
   cursor: default;
-  border: 2px solid $light-blue;
+  // border: 2px solid $light-blue;
 }
 
 .title {

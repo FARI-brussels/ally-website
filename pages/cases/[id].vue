@@ -1,38 +1,41 @@
 <template>
   <main class="main">
     <Suspense>
-      <HeroDesktop
+      <div class="hero-container">
+        
+        <PageSection
+            html
+            on-dark
+            :title="selectedCase?.title[locale]"
+        :description="selectedCase?.description[locale]"
+          />
+        </div>
+      <!-- <HeroDesktop
         dense
         :title="selectedCase?.title[locale]"
         :description="selectedCase?.description[locale]"
-      />
+      /> -->
     </Suspense>
     <Suspense>
       <div class="page-items">
         <div class="sections">
           <PageSection
-            :title="selectedCase?.title[locale]"
+            title=" "
+            html
             :description="selectedCase?.content[locale]"
           />
         </div>
-        <div
-          v-if="
-            selectedCase?.building_blocks_used &&
-            selectedCase?.building_blocks_used?.length
-          "
-          class="sidebar"
-        >
+        <div v-if="selectedCase?.building_blocks_used" class="sidebar">
           <h2 class="alternatives-title">{{ alterativesTitle[locale] }}</h2>
 
           <Suspense>
             <CardDesktop
-              v-for="block in selectedCase?.building_blocks_used"
-              :key="block.id"
-              :title="block.title[locale]"
-              :description="block.description[locale]"
-              :categories="[block.category?.title[locale]]"
-              :url="block.id"
-              @click="navigateTo(`/building-blocks/${block.id}`)"
+              :key="selectedCase?.building_blocks_used.id"
+              :title="selectedCase?.building_blocks_used.title[locale]"
+              :description="selectedCase?.building_blocks_used.description[locale]"
+              :categories="[selectedCase?.building_blocks_used.category?.title[locale]]"
+              :url="selectedCase?.building_blocks_used.id"
+              @click="navigateTo(`/building-blocks/${selectedCase?.building_blocks_used.id}`)"
             />
           </Suspense>
         </div>
@@ -115,4 +118,15 @@ const alterativesTitle = {
   align-self: center;
   font-weight: bold;
 }
+
+.hero-container {
+  background-color: $deep-purple;
+  border-radius: 0.8rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  height: 20rem;
+}
+
 </style>

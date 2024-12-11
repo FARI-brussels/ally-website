@@ -38,6 +38,7 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
   }
 
   async function findBlock(id: number) {
+    console.log({id})
     if (selectedBlock.value && selectedBlock.value?.id === id)
       return selectedBlock.value;
 
@@ -51,74 +52,156 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
     }
   }
 
-  async function getBlock(id: number) {
-    let external_links: DirectusExternalLink[] = [];
-    const alternative_building_blocks: DirectusBuildingBlock[] = [];
-
+  async function getBlock(id) {
+    let external_links = [];
+    const alternative_building_blocks = [];
     let alternatives;
 
-    const data = (await client.request(
-      readItem("ally_building_block", id, {
-        fields: ["*.*"],
-        filter: {
-          status: {
-            _eq: 'published'
-          }
+    try {
+        const data = await client.request(
+            readItem("ally_building_block", id, {
+                fields: ["*.*"],
+                filter: {
+                    status: {
+                        _eq: 'published',
+                    },
+                },
+            })
+        );
+
+        console.log({ data });
+
+        if (data.external_links && data.external_links.length) {
+            const slugs = data.external_links.map(
+                ({ ally_external_link_slug }) => ally_external_link_slug
+            );
+
+            external_links = await client.request(
+                readItems("ally_external_link", {
+                    fields: ["*.*"],
+                    filter: {
+                        slug: {
+                            _in: slugs,
+                        },
+                    },
+                })
+            );
         }
-      }),
-    )) as DirectusBuildingBlock;
 
-    if (data.external_links && data.external_links.length) {
-      const slugs = data.external_links.map(
-        ({ ally_external_link_slug }) => ally_external_link_slug,
-      );
+        if (
+            data.alternative_building_blocks &&
+            data.alternative_building_blocks.length
+        ) {
+            const ids = data.alternative_building_blocks.map(
+                ({ related_ally_building_block_id }) =>
+                    related_ally_building_block_id
+            );
 
-      external_links = await client.request(
-        readItems("ally_external_link", {
-          fields: ["*.*"],
-          filter: {
-            slug: {
-              _in: slugs,
-            },
-          },
-        }),
-      );
+            alternatives = await client.request(
+                readItems("ally_building_block", {
+                    fields: ["*.*"],
+                    filter: {
+                        id: {
+                            _in: ids,
+                        },
+                        status: {
+                            _eq: 'published',
+                        },
+                    },
+                })
+            );
+
+            delete alternative_building_blocks?.alternative_building_blocks;
+        }
+
+        selectedBlock.value = await parseBlock({
+            ...data,
+            alternative_building_blocks,
+            alternatives,
+            external_links,
+        });
+
+        console.log(selectedBlock.value);
+    } catch (error) {
+        console.error(
+            `Failed to fetch block with id ${id}:`,
+            error.message || error
+        );
+        // Return null or any falsy value to indicate a graceful fallback.
+        return null;
     }
+}
 
-    if (
-      data.alternative_building_blocks &&
-      data.alternative_building_blocks.length
-    ) {
-      const ids = data.alternative_building_blocks.map(
-        ({ related_ally_building_block_id }) => related_ally_building_block_id,
-      );
+  // async function getBlock(id: number) {
+  //   let external_links: DirectusExternalLink[] = [];
+  //   const alternative_building_blocks: DirectusBuildingBlock[] = [];
 
-      alternatives = (await client.request(
-        readItems("ally_building_block", {
-          fields: ["*.*"],
-          filter: {
-            id: {
-              _in: ids,
-            },
-            status: {
-              _eq: 'published'
-            }
-          },
-        }),
-      )) as DirectusBuildingBlock[];
+  //   let alternatives;
 
-      delete alternative_building_blocks?.alternative_building_blocks;
-    }
+  //   const data = (await client.request(
+  //     readItem("ally_building_block", id, {
+  //       fields: ["*.*"],
+  //       filter: {
+  //         status: {
+  //           _eq: 'published'
+  //         }
+  //       }
+  //     }),
+  //   )) as DirectusBuildingBlock;
 
-    selectedBlock.value = await parseBlock({
-      ...data,
-      alternative_building_blocks,
-      alternatives,
-      external_links,
-    });
+  //   console.log({data})
 
-    console.log(selectedBlock.value);
-  }
+  //   if (data.external_links && data.external_links.length) {
+  //     const slugs = data.external_links.map(
+  //       ({ ally_external_link_slug }) => ally_external_link_slug,
+  //     );
+
+  //     external_links = await client.request(
+  //       readItems("ally_external_link", {
+  //         fields: ["*.*"],
+  //         filter: {
+  //           slug: {
+  //             _in: slugs,
+  //           },
+  //         },
+  //       }),
+  //     );
+  //   }
+
+  //   if (
+  //     data.alternative_building_blocks &&
+  //     data.alternative_building_blocks.length
+  //   ) {
+  //     const ids = data.alternative_building_blocks.map(
+  //       ({ related_ally_building_block_id }) => related_ally_building_block_id,
+  //     );
+
+  //     alternatives = (await client.request(
+  //       readItems("ally_building_block", {
+  //         fields: ["*.*"],
+  //         filter: {
+  //           id: {
+  //             _in: ids,
+  //           },
+  //           status: {
+  //             _eq: 'published'
+  //           }
+  //         },
+  //       }),
+  //     )) as DirectusBuildingBlock[];
+
+  //     delete alternative_building_blocks?.alternative_building_blocks;
+  //   }
+
+  //   selectedBlock.value = await parseBlock({
+  //     ...data,
+  //     alternative_building_blocks,
+  //     alternatives,
+  //     external_links,
+  //   });
+
+  //   console.log(selectedBlock.value);
+  // }
 
   return {
     blocks,

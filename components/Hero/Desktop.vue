@@ -1,12 +1,10 @@
 <template>
   <div class="wrapper" :class="{ 'wrapper-dense': $props.dense }">
-
-
     <div class="content">
       <div v-if="$props.media" class="media-container">
         <img :src="$props.media" alt="hero image" class="hero-image" />
       </div>
-      <CardGlass v-bind="$props" class="textcontent"/>
+      <CardGlass  v-bind="$props" class="textcontent"/>
     </div>
   </div>
 </template>
@@ -23,10 +21,10 @@ defineProps<HeroProps>();
 .wrapper {
   position: relative;
   display: flex;
-
+  
   height: 40rem;
   &-dense {
-    height: unset;
+    height: 20rem;
   }
 }
 
@@ -35,17 +33,11 @@ defineProps<HeroProps>();
   position: absolute;
   top: 0;
   left: 0;
-  // width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   background-color: $deep-purple;
   border-radius: 1.25rem;
-  // img {
-  //   width: 100%;
-  //   height: 100%;
-  //   border-radius: 1.25rem;
-  // }
 }
 
 
@@ -64,15 +56,9 @@ defineProps<HeroProps>();
 }
 
 .hero-image {
-  // object-fit: none;
   object-fit: cover;
   width: 100%;
   border-radius: 1.25rem;
 }
 
-// .media-container {
-//   margin: auto;
-//   width: 100%;
-//   height: 100%;
-// }
 </style>
