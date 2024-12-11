@@ -26,7 +26,7 @@
 // }
 </script>
 
-<style scoped lang="scss">
+<!-- <style scoped lang="scss">
 // @use "/assets/colors" as *;
 // @use "/assets/spacing" as *;
 
@@ -53,4 +53,4 @@
   background-color: $deep-purple;
   padding: 1rem;
 }
-</style>
+</style> -->
