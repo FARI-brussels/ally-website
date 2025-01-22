@@ -37,6 +37,24 @@
             :title="kpisTitle[locale]"
             :description="selectedBlock?.kpis[locale]"
           />
+
+
+          <PageSection
+        class="links-intro"
+       :title="externalLinksTitle[locale]"
+       :description="externalLinksParagraph[locale]"
+    />
+
+    <div class="links">
+        <CardLink
+          v-for="link in selectedBlock?.external_links"
+          :key="link.id"
+          :title="link.title[locale]"
+          :description="link.description?.[locale]"
+          :url="link.url"
+          class="link"
+        />
+      </div>
         </div>
 
         <div class="sidebar">
@@ -68,24 +86,7 @@
             @click="navigateTo(`/building-blocks/${block.id}`)"
           />
         </div>
-      </div>
-    </Suspense>
 
-    <PageSection
-        class="links-intro"
-       :title="externalLinksTitle[locale]"
-       :description="externalLinksParagraph[locale]"
-    />
-    <Suspense>
-      <div class="links">
-        <CardLink
-          v-for="link in selectedBlock?.external_links"
-          :key="link.id"
-          :title="link.title[locale]"
-          :description="link.description?.[locale]"
-          :url="link.url"
-          class="link"
-        />
       </div>
     </Suspense>
 
@@ -158,7 +159,7 @@ const externalLinksParagraph = {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  max-width: 50%;
+  max-width: 75%;
 }
 
 .requirements {
@@ -171,16 +172,26 @@ const externalLinksParagraph = {
 }
 
 .sidebar {
-  width: 40%;
+  width: 23%;
   display: flex;
-  flex-direction: column;
   align-items: flex-end;
+    flex-direction: column;
+    justify-content: start;
+    margin-left:auto;
+    max-width: 100%;
+    display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 2rem;
+
+  &-inner {
+
+  }
 }
 
 .alternatives-title {
   // align-self: center;
-  margin-right: 8rem;
+  // margin-right: 8rem;
   font-weight: bold;
 }
 

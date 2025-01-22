@@ -39,7 +39,7 @@
         />
       <div class="case-preview">
       <CardDesktop
-        v-for="{id, title, description} in cases.slice(0, 3)"
+        v-for="{id, title, description} in cases.slice(0, 6)"
         :key="id"
         :title="title[locale]"
         :description="description[locale]"
@@ -90,7 +90,7 @@ const pageData = computed(() => {
       title: null,
       content: null,
     };
-
+    
   const title = pages.value.home?.title[locale.value];
   const content = pages.value.home?.content?.map(c => c[locale.value])
 
@@ -108,7 +108,7 @@ const pageData = computed(() => {
       url: banner.value?.action.url,
     },
   };
-
+  console.log({title, hero})
   return {
     title,
     content,
@@ -192,7 +192,8 @@ const CTALabel = {
 
 .case-preview {
   display: flex;
-  gap: 2rem
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
 .cases-wrapper {
