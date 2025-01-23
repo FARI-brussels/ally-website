@@ -21,9 +21,9 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
         fields: ["*.*"],
         filter: {
           status: {
-            _eq: 'published'
-          }
-        }
+            _eq: "published",
+          },
+        },
       }),
     )) as DirectusBuildingBlock[];
 
@@ -38,7 +38,6 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
   }
 
   async function findBlock(id: number) {
-    console.log({id})
     if (selectedBlock.value && selectedBlock.value?.id === id)
       return selectedBlock.value;
 
@@ -58,79 +57,75 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
     let alternatives;
 
     try {
-        const data = await client.request(
-            readItem("ally_building_block", id, {
-                fields: ["*.*"],
-                filter: {
-                    status: {
-                        _eq: 'published',
-                    },
-                },
-            })
+      const data = await client.request(
+        readItem("ally_building_block", id, {
+          fields: ["*.*"],
+          filter: {
+            status: {
+              _eq: "published",
+            },
+          },
+        }),
+      );
+
+      if (data.external_links && data.external_links.length) {
+        const slugs = data.external_links.map(
+          ({ ally_external_link_slug }) => ally_external_link_slug,
         );
 
-        console.log({ data });
+        external_links = await client.request(
+          readItems("ally_external_link", {
+            fields: ["*.*"],
+            filter: {
+              slug: {
+                _in: slugs,
+              },
+            },
+          }),
+        );
+      }
 
-        if (data.external_links && data.external_links.length) {
-            const slugs = data.external_links.map(
-                ({ ally_external_link_slug }) => ally_external_link_slug
-            );
+      if (
+        data.alternative_building_blocks &&
+        data.alternative_building_blocks.length
+      ) {
+        const ids = data.alternative_building_blocks.map(
+          ({ related_ally_building_block_id }) =>
+            related_ally_building_block_id,
+        );
 
-            external_links = await client.request(
-                readItems("ally_external_link", {
-                    fields: ["*.*"],
-                    filter: {
-                        slug: {
-                            _in: slugs,
-                        },
-                    },
-                })
-            );
-        }
+        alternatives = await client.request(
+          readItems("ally_building_block", {
+            fields: ["*.*"],
+            filter: {
+              id: {
+                _in: ids,
+              },
+              status: {
+                _eq: "published",
+              },
+            },
+          }),
+        );
 
-        if (
-            data.alternative_building_blocks &&
-            data.alternative_building_blocks.length
-        ) {
-            const ids = data.alternative_building_blocks.map(
-                ({ related_ally_building_block_id }) =>
-                    related_ally_building_block_id
-            );
+        delete alternative_building_blocks?.alternative_building_blocks;
+      }
 
-            alternatives = await client.request(
-                readItems("ally_building_block", {
-                    fields: ["*.*"],
-                    filter: {
-                        id: {
-                            _in: ids,
-                        },
-                        status: {
-                            _eq: 'published',
-                        },
-                    },
-                })
-            );
-
-            delete alternative_building_blocks?.alternative_building_blocks;
-        }
-
-        selectedBlock.value = await parseBlock({
-            ...data,
-            alternative_building_blocks,
-            alternatives,
-            external_links,
-        });
-
-        console.log(selectedBlock.value);
+      selectedBlock.value = await parseBlock({
+        ...data,
+        alternative_building_blocks,
+        alternatives,
+        external_links,
+      });
     } catch (error) {
-        console.error(
-            `Failed to fetch block with id ${id}:`,
-            error.message || error
-        );
-        // Return null or any falsy value to indicate a graceful fallback.
-        return null;
+      console.error(
+        `Failed to fetch block with id ${id}:`,
+        error.message || error,
+      );
+      // Return null or any falsy value to indicate a graceful fallback.
+      return null;
     }
-}
+  }
 
   // async function getBlock(id: number) {
   //   let external_links: DirectusExternalLink[] = [];
@@ -148,8 +143,6 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
   //       }
   //     }),
   //   )) as DirectusBuildingBlock;
-
-  //   console.log({data})
 
   //   if (data.external_links && data.external_links.length) {
   //     const slugs = data.external_links.map(
@@ -200,7 +193,6 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
   //     external_links,
   //   });
 
-  //   console.log(selectedBlock.value);
   // }
 
   return {
@@ -215,7 +207,6 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
 });
 
 async function parseBlock(buildingBlock: DirectusBuildingBlock) {
-  console.log({ buildingBlock });
   const {
     id,
     cost,
@@ -225,7 +216,7 @@ async function parseBlock(buildingBlock: DirectusBuildingBlock) {
     maintenance,
     category,
     translations,
-    alternative_building_blocks = [],
+
     alternatives = [],
     external_links,
   } = buildingBlock;
@@ -259,8 +250,6 @@ async function parseBlock(buildingBlock: DirectusBuildingBlock) {
     },
   );
 
-  console.log({ alternative_building_blocks });
-
   return {
     id,
     cost,
@@ -290,7 +279,6 @@ function parseExternalLink(link: DirectusExternalLink): ExternalLink {
   translations?.forEach(
     ({ languages_code, title, description, long_description }) => {
       item.title[languages_code] = title;
-      console.log(long_description);
       item.description[languages_code] = description || long_description;
     },
   );

@@ -1,8 +1,13 @@
 <template>
   <main class="main">
     <div class="search-container">
-      <div  v-if="pageData" class="search-container__text-content">
-        <PageSection html onDark :title="pageData.title" :description="pageData.content[0]"/>
+      <div v-if="pageData" class="search-container__text-content">
+        <PageSection
+          html
+          on-dark
+          :title="pageData.title || ''"
+          :description="pageData.content[0] || ''"
+        />
       </div>
 
       <div class="search-filter">
@@ -37,25 +42,29 @@
           selectedCategory.value === 'governance_values'
         "
       >
-      <PageSection v-bind="governanceSection" />
-      <div class="card-container">
-
-        <CardDesktop
-          v-for="block in governanceBlocks"
-          :key="block.id"
-          :title="block.title[locale]"
-          :description="block.description[locale]"
-          :categories="[block.category.title[locale]]"
-          :url="block.id"
-          @click="navigateTo(`/building-blocks/${block.id}`)"
-        />
-        <CardDesktop
-          v-if="!governanceBlocks.length"
-          title="Not found"
-          color="secondary"
-          description="Try another search filter"
-        />
-      </div>
+        <PageSection v-bind="governanceSection" />
+        <div class="card-container">
+          <CardDesktop
+            v-for="block in governanceBlocks"
+            :key="block.id"
+            :title="block.title[locale]"
+            :description="block.description[locale]"
+            :categories="[
+              {
+                label: block.category?.title[locale],
+                value: block.category?.slug,
+              },
+            ]"
+            :url="block.id"
+            @click="navigateTo(`/building-blocks/${block.id}`)"
+          />
+          <CardDesktop
+            v-if="!governanceBlocks.length"
+            title="Not found"
+            color="secondary"
+            description="Try another search filter"
+          />
+        </div>
       </template>
 
       <template
@@ -65,23 +74,28 @@
       >
         <PageSection v-if="cultureSection" v-bind="cultureSection" />
         <div class="card-container">
-        <CardDesktop
-          v-for="block in cultureBlocks"
-          :key="block.id"
-          :title="block.title[locale]"
-          :description="block.description[locale]"
-          :categories="[block.category.title[locale]]"
-          :url="block.id"
-          color="primary"
-          @click="navigateTo(`/building-blocks/${block.id}`)"
-        />
-        <CardDesktop
-          v-if="!cultureBlocks.length"
-          title="Not found"
-          color="secondary"
-          description="Try another search filter"
-        />
-      </div>
+          <CardDesktop
+            v-for="block in cultureBlocks"
+            :key="block.id"
+            :title="block.title[locale]"
+            :description="block.description[locale]"
+            :categories="[
+              {
+                label: block.category?.title[locale],
+                value: block.category?.slug,
+              },
+            ]"
+            :url="block.id"
+            color="primary"
+            @click="navigateTo(`/building-blocks/${block.id}`)"
+          />
+          <CardDesktop
+            v-if="!cultureBlocks.length"
+            title="Not found"
+            color="secondary"
+            description="Try another search filter"
+          />
+        </div>
       </template>
 
       <template
@@ -95,49 +109,55 @@
           v-bind="communicationSection"
         />
         <div class="card-container">
-
           <CardDesktop
-          v-for="block in communicationBlocks"
-          :key="block.id"
-          :title="block.title[locale]"
-          :description="block.description[locale]"
-          :categories="[block.category.title[locale]]"
-          :url="block.id"
-          color="primary"
-          @click="navigateTo(`/building-blocks/${block.id}`)"
+            v-for="block in communicationBlocks"
+            :key="block.id"
+            :title="block.title[locale]"
+            :description="block.description[locale]"
+            :categories="[
+              {
+                label: block.category?.title[locale],
+                value: block.category?.slug,
+              },
+            ]"
+            :url="block.id"
+            color="primary"
+            @click="navigateTo(`/building-blocks/${block.id}`)"
           />
           <CardDesktop
-          v-if="!communicationBlocks.length"
-          title="Not found"
-          color="secondary"
-          description="Try another search filter"
+            v-if="!communicationBlocks.length"
+            title="Not found"
+            color="secondary"
+            description="Try another search filter"
           />
         </div>
       </template>
 
- 
-        <PageSection v-if="methodsSection" v-bind="methodsSection" />
-        <div class="card-container">
-
-          <CardDesktop
+      <PageSection v-if="methodsSection" v-bind="methodsSection" />
+      <div class="card-container">
+        <CardDesktop
           v-for="block in methodsBlocks"
           :key="block.id"
           :title="block.title[locale]"
           :description="block.description[locale]"
-          :categories="[block.category.title[locale]]"
+          :categories="[
+            {
+              label: block.category?.title[locale],
+              value: block.category?.slug,
+            },
+          ]"
           :url="block.id"
           color="primary"
           @click="navigateTo(`/building-blocks/${block.id}`)"
-          />
-          
-          <CardDesktop
+        />
+
+        <CardDesktop
           v-if="!methodsBlocks.length"
           title="Not found"
           color="secondary"
           description="Try another search filter"
-          />
-        </div>
-      
+        />
+      </div>
     </div>
   </main>
 </template>
@@ -160,17 +180,16 @@ onMounted(
 );
 
 const pageData = computed(() => {
-  if (!pages.value.blocks)return null
+  if (!pages.value.blocks) return null;
 
   const title = pages.value.blocks?.title[locale.value];
-  const content = pages.value.blocks?.content?.map(c => c[locale.value])
+  const content = pages.value.blocks?.content?.map((c) => c[locale.value]);
 
   return {
     title,
     content,
   };
 });
-
 
 const filteredBlocks = computed(() => {
   const blocksCopy = [...blocks.value];
@@ -293,7 +312,7 @@ const categories = [
   { label: "Governance & values", value: "governance_values" },
   { label: "Culture & skills", value: "culture_skills" },
   { label: "Communication & involvement", value: "communication_involvement" },
-  { label: "Methods & processes", value: "methods_processes " }
+  { label: "Methods & processes", value: "methods_processes " },
 ];
 
 const cost = [

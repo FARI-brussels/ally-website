@@ -30,7 +30,7 @@ export const useCasesStore = defineStore("cases", () => {
   async function findCase(id: number) {
     if (selectedCase.value && selectedCase.value?.id === id)
       return selectedCase.value;
-    
+
     if (!cases.value) return await getCase(id);
 
     if (cases.value) {
@@ -66,7 +66,6 @@ export const useCasesStore = defineStore("cases", () => {
         }),
       );
     }
-
 
     // if (data.external_links && data.external_links.length)
     //   external_links = (await client.request(
@@ -108,8 +107,6 @@ export const useCasesStore = defineStore("cases", () => {
 });
 
 async function parseCase(caseItem) {
-  console.log({ caseItem });
-
   const {
     id,
     translations,
@@ -123,25 +120,23 @@ async function parseCase(caseItem) {
     content: {},
   };
 
-  const sectionMap = {};
+  // const sectionMap = {};
 
   const { findBlock } = useBuildingBlockStore();
 
   translations.forEach(({ title, description, content, languages_code }) => {
     block.title[languages_code] = title;
     block.description[languages_code] = description;
-    block.content[languages_code] = content
-
+    block.content[languages_code] = content;
   });
-
-
-  console.log({building_blocks_used})
 
   return {
     id,
     alternative_cases: await Promise.all(alternative_cases.map(parseCase)),
     ...block,
-    building_blocks_used: building_blocks_used ? await findBlock(building_blocks_used.id) : null
+    building_blocks_used: building_blocks_used
+      ? await findBlock(building_blocks_used.id)
+      : null,
     // building_blocks_used: building_blocks_used ?  await Promise.all(
     //   building_blocks_used.map(({ id }: { id: number }) => findBlock(id)),
     // ) : [],

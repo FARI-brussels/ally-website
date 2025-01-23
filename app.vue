@@ -13,6 +13,4 @@
   opacity: 0;
   filter: blur(1rem);
 }
-
-
 </style>

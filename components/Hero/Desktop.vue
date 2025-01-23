@@ -4,7 +4,7 @@
       <div v-if="$props.media" class="media-container">
         <img :src="$props.media" alt="hero image" class="hero-image" />
       </div>
-      <CardGlass  v-bind="$props" class="textcontent"/>
+      <CardGlass v-bind="$props" class="textcontent" />
     </div>
   </div>
 </template>
@@ -21,13 +21,12 @@ defineProps<HeroProps>();
 .wrapper {
   position: relative;
   display: flex;
-  
+
   height: 40rem;
   &-dense {
     height: 20rem;
   }
 }
-
 
 .hero-image {
   position: absolute;
@@ -39,7 +38,6 @@ defineProps<HeroProps>();
   background-color: $deep-purple;
   border-radius: 1.25rem;
 }
-
 
 .content {
   display: flex;
@@ -60,5 +58,4 @@ defineProps<HeroProps>();
   width: 100%;
   border-radius: 1.25rem;
 }
-
 </style>

@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="header">
       <NuxtLink :to="'/'">
-        <img class="logo" src="~/assets/logos/logo_ALLY_new.svg">
+        <img class="logo" src="~/assets/logos/logo_ALLY_new.svg" />
         <!-- <span class="title"> Ally - Ethical policy toolbox </span> -->
       </NuxtLink>
       <!-- <div class="logos">

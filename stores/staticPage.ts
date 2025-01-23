@@ -48,7 +48,7 @@ function parsePageData({
     hero: null,
     title: {} as { [locale in Locale]: string },
     sections: [] as Section[],
-    content: []
+    content: [],
   } as Page;
 
   const pageHero = {
@@ -68,12 +68,15 @@ function parsePageData({
     page.hero = pageHero;
   }
 
-  translations.forEach( ({ languages_code, title, section_1, section_2, section_3 })  => {
-    [section_1, section_2, section_3].forEach(section => 
-      section && page.content.push({[languages_code]: section }))
-    page.title[languages_code] = title
-  })
+  translations.forEach(
+    ({ languages_code, title, section_1, section_2, section_3 }) => {
+      [section_1, section_2, section_3].forEach(
+        (section) =>
+          section && page.content.push({ [languages_code]: section }),
+      );
+      page.title[languages_code] = title;
+    },
+  );
 
-  console.log({page})
   return page;
 }

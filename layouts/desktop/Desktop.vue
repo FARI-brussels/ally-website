@@ -23,13 +23,15 @@
 const { setLocale } = useGlobalStore();
 const { locale } = storeToRefs(useGlobalStore());
 
-const desiredOrder = ['/', '/building-blocks', '/cases', '/about'];
+const desiredOrder = ["/", "/building-blocks", "/cases", "/about"];
 
 const routes = useRouter()
   .getRoutes()
   .filter(({ path }) => !path.includes(":"));
 
-const orderedRoutes = desiredOrder.map(path => routes.find(route => route.path === path));
+const orderedRoutes = desiredOrder.map((path) =>
+  routes.find((route) => route.path === path),
+);
 </script>
 <style scoped lang="scss">
 @use "/assets/scss/colors" as *;

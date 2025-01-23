@@ -12,8 +12,6 @@ export async function parseBlock(buildingBlock: DirectusBuildingBlock) {
     external_links,
   } = buildingBlock;
 
-  console.log({ buildingBlock });
-
   const { findBuildingBlockCategory } = useGlobalStore();
 
   const block = {
@@ -23,8 +21,6 @@ export async function parseBlock(buildingBlock: DirectusBuildingBlock) {
   };
 
   const sectionMap = {};
-
-  console.log({ translations });
 
   const blockCategory = await findBuildingBlockCategory(category?.slug);
   translations.forEach(({ title, description, content, languages_code }) => {
@@ -55,8 +51,6 @@ export async function parseBlock(buildingBlock: DirectusBuildingBlock) {
   Object.keys(sectionMap).forEach((index) => {
     block.sections.push(sectionMap[index]);
   });
-
-  console.log({ alternative_building_blocks });
 
   return {
     id,

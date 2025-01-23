@@ -19,10 +19,10 @@ defineProps<ChipProps>();
   background-color: color.adjust($medium-purple, $alpha: -0.75);
   color: $text-color;
   font-size: 0.875rem;
+  font-weight: 600;
 }
 
 .onDark {
-  font-weight: 600;
   background-color: color.adjust(white, $alpha: -0.6);
 }
 </style>

@@ -1,11 +1,10 @@
 <template>
-  <section :class="{section: true, ['section--white']: onDark}">
-    <h2 >{{ props.title }}</h2>
+  <section :class="{ section: true, ['section--white']: onDark }">
+    <h2>{{ props.title }}</h2>
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div v-if="props.description && props.html" v-html="safeHtml" />
     <div v-if="props.description && !props.html">
-
-      <p>{{props.description}}</p>
+      <p>{{ props.description }}</p>
     </div>
   </section>
 </template>
@@ -28,7 +27,6 @@ renderer.link = ({ href, title, text }) => {
 };
 
 const safeHtml = computed(() => {
-  console.log(props)
   const rawHtml = marked(props.description, { renderer });
   return sanitizeHtml(rawHtml);
 });
@@ -59,7 +57,6 @@ function sanitizeHtml(unsafeHtml: string) {
 }
 
 h2 {
-
   font-size: 2rem;
   font-weight: $text-bold;
 }

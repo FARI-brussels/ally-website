@@ -21,7 +21,6 @@ defineProps<GlassCardProps>();
 <style scoped lang="scss">
 @use "/assets/scss/colors" as *;
 .glass-card {
-  
   color: black;
   color: white;
   // background: rgba(255, 255, 255, 0.4);

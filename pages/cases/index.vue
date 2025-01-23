@@ -2,7 +2,12 @@
   <main class="main">
     <div class="search-container">
       <div v-if="pageData" class="search-container__text-content">
-        <PageSection html onDark :title="pageData.title" :description="pageData.content[0]"/>
+        <PageSection
+          html
+          on-dark
+          :title="pageData.title"
+          :description="pageData.content[0]"
+        />
       </div>
     </div>
 
@@ -11,7 +16,7 @@
         v-for="{ label, value } in categories"
         :key="value"
         :label="label"
-        :class="filters.includes(value) ? 'selected' : ''"
+        :class="[filters.includes(value) ? 'selected' : '', value]"
         @click="() => toggleFilterItem(value)"
       />
     </div>
@@ -53,10 +58,10 @@ onMounted(
 );
 
 const pageData = computed(() => {
-  if (!pages.value.cases)return null
+  if (!pages.value.cases) return null;
 
   const title = pages.value.cases?.title[locale.value];
-  const content = pages.value.cases?.content?.map(c => c[locale.value])
+  const content = pages.value.cases?.content?.map((c) => c[locale.value]);
 
   return {
     title,
@@ -64,16 +69,16 @@ const pageData = computed(() => {
   };
 });
 
-
 const filteredBlocks = computed(() => {
   if (!cases.value) return [];
 
   if (!filters.value.length) return cases.value;
 
-const c = cases.value.filter(item => filters.value.includes(item.building_blocks_used?.category.slug))
+  const c = cases.value.filter((item) =>
+    filters.value.includes(item.building_blocks_used?.category.slug),
+  );
 
-  return c
-
+  return c;
 });
 
 function toggleFilterItem(category: string) {
@@ -139,9 +144,22 @@ const categories = [
   transition: all 200ms ease;
 }
 
-.selected {
-  color: white;
-  background-color: color.adjust($medium-purple, $alpha: -0.15);
+$chip-colors: (
+  "culture_skills": #e7ffe8,
+  "governance_values": #aac2fa60,
+  "methods_processes": #ffe6ab60,
+  "communication_involvement": #fa89b880,
+);
+
+@each $name, $color in $chip-colors {
+  .#{#{$name}} {
+    background-color: $color;
+
+    &.selected {
+      box-shadow: inset 0 0 2px color.scale($color, $lightness: -60%);
+      background-color: color.scale($color, $lightness: -40%);
+    }
+  }
 }
 
 .content-wrapper {

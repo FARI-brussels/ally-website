@@ -7,8 +7,9 @@
       <ChipItem
         v-for="category in props.categories"
         :key="category"
-        :label="category"
+        :label="category.label"
         class="chip"
+        :class="category.value"
       />
     </template>
     <h2 class="title">{{ props.title }}</h2>
@@ -81,5 +82,21 @@ const truncatedDescription = computed(() => {
 
 .description {
   font-size: 1.2rem;
+}
+
+.culture_skills {
+  background-color: #e7ffe8;
+}
+
+.governance_values {
+  background-color: #aac2fa60;
+}
+
+.methods_processes {
+  background-color: #ffe6ab60;
+}
+
+.communication_involvement {
+  background-color: #fa89b880;
 }
 </style>

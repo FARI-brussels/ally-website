@@ -26,34 +26,34 @@
         />
         <div v-for="card in blockData" :key="card.title" class="card">
           <h2 class="title">{{ card.title }}</h2>
-          <p class="description"> {{ card.description }}</p>
+          <p class="description">{{ card.description }}</p>
         </div>
       </div>
     </div>
 
     <div class="cases-wrapper">
       <PageSection
-          v-if="pageData.content?.length"
-          title="Learn from other organisations"
-          description="Get inspired by case studies of other organisations. Learn about their governance strategy, the actions they took, and the challenges they encountered and overcame in working on trustworthy AI. "
-        />
-      <div class="case-preview">
-      <CardDesktop
-        v-for="{id, title, description} in cases.slice(0, 6)"
-        :key="id"
-        :title="title[locale]"
-        :description="description[locale]"
-        :url="id"
-        @click="navigateTo(`/cases/${id}`)"
+        v-if="pageData.content?.length"
+        title="Learn from other organisations"
+        description="Get inspired by case studies of other organisations. Learn about their governance strategy, the actions they took, and the challenges they encountered and overcame in working on trustworthy AI. "
       />
-    </div>
-      <ButtonPrimary
-          label="discover all cases"
-          icon="arrow-right"
-          class="action"
-          type="primary"
-          @click="navigateTo('/cases')"
+      <div class="case-preview">
+        <CardDesktop
+          v-for="{ id, title, description } in cases.slice(0, 6)"
+          :key="id"
+          :title="title[locale]"
+          :description="description[locale]"
+          :url="id"
+          @click="navigateTo(`/cases/${id}`)"
         />
+      </div>
+      <ButtonPrimary
+        label="discover all cases"
+        icon="arrow-right"
+        class="action"
+        type="primary"
+        @click="navigateTo('/cases')"
+      />
     </div>
     <!-- <BannerDesktop v-if="banner" v-bind="pageData.banner" /> -->
   </main>
@@ -76,11 +76,7 @@ const { getCases } = useCasesStore();
 // onMounted(getBuildingBlockCategories);
 
 onMounted(
-  async () =>
-    await Promise.all([
-      getBuildingBlockCategories(),
-      getCases(),
-    ]),
+  async () => await Promise.all([getBuildingBlockCategories(), getCases()]),
 );
 onMounted(async () => getStaticPage("home"));
 
@@ -90,9 +86,9 @@ const pageData = computed(() => {
       title: null,
       content: null,
     };
-    
+
   const title = pages.value.home?.title[locale.value];
-  const content = pages.value.home?.content?.map(c => c[locale.value])
+  const content = pages.value.home?.content?.map((c) => c[locale.value]);
 
   const hero = {
     media: pages.value.home.hero?.media,
@@ -108,7 +104,7 @@ const pageData = computed(() => {
       url: banner.value?.action.url,
     },
   };
-  console.log({title, hero})
+
   return {
     title,
     content,
@@ -126,15 +122,11 @@ const blockData = computed(() => {
   }));
 });
 
-
-
 const CTALabel = {
   fr: "découvrir tous les blocs de construction",
   en: "discover all building blocks",
   nl: ";ontdek alle bouwstenen",
 };
-
-
 </script>
 
 <style scoped lang="scss">
@@ -157,7 +149,7 @@ const CTALabel = {
 .info-section {
   margin-top: 2rem;
   padding: 2rem;
-  background: #8327CB20;
+  background: #8327cb20;
   border-radius: 1rem;
   display: flex;
   flex-direction: column;
@@ -170,7 +162,6 @@ const CTALabel = {
   flex-wrap: wrap;
   gap: 2rem;
   max-width: 50%;
-
 }
 
 .card {
@@ -202,5 +193,4 @@ const CTALabel = {
   margin-bottom: 2rem;
   gap: 1rem;
 }
-
 </style>
