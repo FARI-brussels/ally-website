@@ -290,7 +290,8 @@ function parseInvolvementContent(data) {
   if (!data) return null;
   let involvement = "";
   //replace this later
-  data?.items.forEach(({ content }) => {
+  console.log({data});
+  data?.items?.forEach(({ content }) => {
     involvement = `${involvement} \n ${content}`;
   });
   return involvement;
