@@ -90,10 +90,13 @@ function toggleFilterItem(category: string) {
 const filters = ref<string[]>([]);
 
 const categories = [
-{ label: "Values & structures", value: "governance_values" },
-{ label: "Culture & skills", value: "culture_skills" },
-{ label: "Communication & participation", value: "communication_involvement" },
-{ label: "Methods & processes", value: "methods_processes " },
+  { label: "Values & structures", value: "governance_values" },
+  { label: "Culture & skills", value: "culture_skills" },
+  {
+    label: "Communication & participation",
+    value: "communication_involvement",
+  },
+  { label: "Methods & processes", value: "methods_processes " },
 ];
 </script>
 

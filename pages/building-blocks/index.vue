@@ -133,31 +133,38 @@
         </div>
       </template>
 
-      <PageSection v-if="methodsSection" v-bind="methodsSection" />
-      <div class="card-container">
-        <CardDesktop
-          v-for="block in methodsBlocks"
-          :key="block.id"
-          :title="block.title[locale]"
-          :description="block.description[locale]"
-          :categories="[
-            {
-              label: block.category?.title[locale],
-              value: block.category?.slug,
-            },
-          ]"
-          :url="block.id"
-          color="primary"
-          @click="navigateTo(`/building-blocks/${block.id}`)"
-        />
+      <template
+        v-if="
+          !selectedCategory.value ||
+          selectedCategory.value === 'methods_processes'
+        "
+      >
+        <PageSection v-if="methodsSection" v-bind="methodsSection" />
+        <div class="card-container">
+          <CardDesktop
+            v-for="block in methodsBlocks"
+            :key="block.id"
+            :title="block.title[locale]"
+            :description="block.description[locale]"
+            :categories="[
+              {
+                label: block.category?.title[locale],
+                value: block.category?.slug,
+              },
+            ]"
+            :url="block.id"
+            color="primary"
+            @click="navigateTo(`/building-blocks/${block.id}`)"
+          />
 
-        <CardDesktop
-          v-if="!methodsBlocks.length"
-          title="Not found"
-          color="secondary"
-          description="Try another search filter"
-        />
-      </div>
+          <CardDesktop
+            v-if="!methodsBlocks.length"
+            title="Not found"
+            color="secondary"
+            description="Try another search filter"
+          />
+        </div>
+      </template>
     </div>
   </main>
 </template>
@@ -311,8 +318,11 @@ const categories = [
   { label: "Category", value: null },
   { label: "Values & structures", value: "governance_values" },
   { label: "Culture & skills", value: "culture_skills" },
-  { label: "Communication & participation", value: "communication_involvement" },
-  { label: "Methods & processes", value: "methods_processes " },
+  {
+    label: "Communication & participation",
+    value: "communication_involvement",
+  },
+  { label: "Methods & processes", value: "methods_processes" },
 ];
 
 const cost = [
@@ -330,6 +340,10 @@ const difficulty = [
 ];
 
 const selectedCategory = ref(categories[0]);
+
+watch(selectedCategory, () => {
+  console.log(selectedCategory.value);
+});
 const selectedCost = ref(cost[0]);
 const selectedDifficulty = ref(difficulty[0]);
 
