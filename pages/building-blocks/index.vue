@@ -309,9 +309,9 @@ const searchTerm = ref<string>("");
 
 const categories = [
   { label: "Category", value: null },
-  { label: "Governance & values", value: "governance_values" },
+  { label: "Values & structures", value: "governance_values" },
   { label: "Culture & skills", value: "culture_skills" },
-  { label: "Communication & involvement", value: "communication_involvement" },
+  { label: "Communication & participation", value: "communication_involvement" },
   { label: "Methods & processes", value: "methods_processes " },
 ];
 

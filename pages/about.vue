@@ -9,23 +9,27 @@
         :description="pageData.content[0]"
       />
     </div>
-    <div class="logos">
+    <!-- <div class="logos">
       <img class="logo" src="~/assets/logos/AIFlanders.svg" />
       <img class="logo" src="~/assets/logos/ULBVUBcolored.svg" />
       <img class="logo" src="~/assets/logos/EU.svg" />
-    </div>
-    <PageSection
-      v-if="pageData.content?.length"
-      html
-      title=" "
-      :description="pageData.content[1]"
-    />
-    <PageSection
-      v-if="pageData.content?.length"
-      html
-      title=" "
-      :description="pageData.content[2]"
-    />
+    </div> -->
+
+    <div class="sections">
+      <PageSection
+        v-if="pageData.content?.length"
+        html
+        title=" "
+        class="section-top"
+        :description="pageData.content[1]"
+      />
+      <PageSection
+        v-if="pageData.content?.length"
+        html
+        title=" "
+        :description="pageData.content[2]"
+      />
+  </div>
   </main>
 </template>
 
@@ -82,5 +86,12 @@ const pageData = computed(() => {
 .logo {
   width: 20rem;
   height: auto;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 2rem 0;
 }
 </style>
