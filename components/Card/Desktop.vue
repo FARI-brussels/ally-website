@@ -1,6 +1,6 @@
 <template>
   <div
-    class="card"
+    class="card p-card-padding radius-radius-card"
     :class="[props.url && 'hoverable', props.color || 'primary']"
   >
     <template v-if="props.categories?.length">
@@ -43,8 +43,6 @@ const truncatedDescription = computed(() => {
   height: 20rem;
   color: $text-color;
   background-color: white;
-  border-radius: 1rem;
-  padding: 1.5rem;
   cursor: pointer;
 }
 

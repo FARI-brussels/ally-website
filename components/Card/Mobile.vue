@@ -1,5 +1,5 @@
 <template>
-  <div class="card" :class="[url && 'hoverable', color || 'primary']">
+  <div class="card p-card-padding-sm radius-radius-xs" :class="[url && 'hoverable', color || 'primary']">
     <template v-if="categories?.length">
       <ChipItem
         v-for="category in categories"
@@ -27,8 +27,6 @@ defineProps<CardProps>();
   height: 16rem;
   color: $text-color;
   background-color: white;
-  border-radius: 0.315rem;
-  padding: 1.25rem;
 }
 
 .primary {

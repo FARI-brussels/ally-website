@@ -1,13 +1,15 @@
 <template>
   <nav>
-    <NuxtLink v-for="{ name, path } in items" :key="path" :to="path"
-      >{{ name }}
+    <NuxtLink v-for="{ name, path, label } in items" :key="path" :to="path">
+      {{ label || name }}
     </NuxtLink>
   </nav>
 </template>
 
 <script setup lang="ts">
-defineProps<{ items?: unknown[] }>();
+const props = defineProps<{ items?: { name?: string; path?: string; label?: string }[] }>();
+
+console.log(props.items);
 </script>
 
 <style scoped lang="scss">
