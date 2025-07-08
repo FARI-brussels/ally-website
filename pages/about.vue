@@ -1,75 +1,306 @@
 <template>
   <main class="main">
-    <div class="about-container">
-      <PageSection
-        v-if="pageData.content?.length"
-        html
-        on-dark
-        title=" "
-        :description="pageData.content[0]"
-      />
-    </div>
-    <!-- <div class="logos">
-      <img class="logo" src="~/assets/logos/AIFlanders.svg" />
-      <img class="logo" src="~/assets/logos/ULBVUBcolored.svg" />
-      <img class="logo" src="~/assets/logos/EU.svg" />
-    </div> -->
+    <div class="introduction full-width-section bg-color-brand-25">
+      <strong class="color-brand-700">About</strong>
+      <h1>{{ pageData.title }}</h1>
+      <p>{{ pageData.description }}</p>
 
-    <div class="sections">
-      <PageSection
-        v-if="pageData.content?.length"
-        html
-        title=" "
-        class="section-top"
-        :description="pageData.content[1]"
-      />
-      <PageSection
-        v-if="pageData.content?.length"
-        html
-        title=" "
-        :description="pageData.content[2]"
-      />
+      <section class="intro-sections">
+        <div
+          v-for="(section, idx) in introSections"
+          :key="idx"
+          class="intro-section"
+        >
+          <div class="icon-container bg-color-brand-200">
+            <img :src="section.icon" :alt="section.alt" class="icon-image" >
+          </div>
+          <h2>{{ section.title }}</h2>
+          <p>{{ section.text }}</p>
+        </div>
+      </section>
+
+      <section class="intro-sections">
+        <div
+          v-for="(section, idx) in extraSections"
+          :key="idx"
+          class="intro-section"
+        >
+          <div class="icon-container bg-color-brand-200">
+            <img :src="section.icon" :alt="section.alt" >
+          </div>
+          <div v-if="section.contentClass" :class="section.contentClass">
+            <h2>{{ section.title }}</h2>
+            <p>{{ section.text }}</p>
+          </div>
+          <template v-else>
+            <h2>{{ section.title }}</h2>
+            <p>{{ section.text }}</p>
+          </template>
+        </div>
+      </section>
+
+      <div class="logos bg-color-base-white">
+        <h3>Developed by Experts</h3>
+        <p>Ally has been jointly developed by:</p>
+        <div class="logos-container">
+          <div
+            v-for="(logo, idx) in logos"
+            :key="idx"
+            class="logo-container"
+          >
+            <img class="logo" :src="logo.src" :alt="logo.alt" >
+            <!-- eslint-disable-next-line vue/no-v-html -->
+            <p class="logo-description" v-html="logo.description"></p>
+          </div>
+        </div>
+      </div>
+      
     </div>
-  </main>
+    <div class="why-ally-container">
+      <h2 class="why-ally-title">Why should you use Ally?</h2>
+      <p class="why-ally-description">Choose your path to action: run a quick scan to identify your next steps or join a workshop to co-create your responsible AI strategy.</p>
+   
+    <section class="why-ally-sections">
+      <div v-for="(section, idx) in whyAllySections" :key="idx" class="why-ally-section">
+        <div class="icon-container bg-color-brand-200">
+          <img :src="section.icon" :alt="section.alt" >
+        </div>
+        <h2>{{ section.title }}</h2>
+        <p>{{ section.text }}</p>
+      </div>
+    </section>
+  </div>
+  <AllyDivider />
+  <div class="ally-process-container">
+    <h2 class="ally-process-title">The ALLY Process</h2>
+    <p class="ally-process-description">ALLY supports organisations step by step: from exploring challenges and identifying priorities, to planning with tailored building blocks, building your governance approach, and sharing your progress. Whether you're just starting or ready to scale, this process helps you turn ethical intentions into tangible actions.</p>
+   
+  <section 
+    class="ally-process-sections"
+    :class="{ 'mobile': isMobile }"
+  >
+    <div v-for="(section, idx) in allyProcessSections" :key="idx" class="ally-process-section bg-color-gray-light-mode-100">
+      <img :src="section.icon" :alt="section.alt" >
+      <h2>{{ section.title }}</h2>
+      <p>{{ section.text }}</p>
+    </div>
+  </section>
+</div>
+
+<section class="legislation-section"> 
+  <h2 class="legislation-title">{{ legislationSection.title }}</h2>
+  <p class="legislation-description">{{ legislationSection.description }}</p>
+</section>
+
+
+</main>
 </template>
 
 <script setup lang="ts">
-const { getStaticPage } = useStaticPageStore();
-const { locale } = storeToRefs(useGlobalStore());
-const { pages } = storeToRefs(useStaticPageStore());
+import { computed, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useStaticPageStore } from '@/stores/staticPage';
+import { useIsMobile } from '@/composables/useIsMobile';
+import AllyDivider from '@/components/Divider.vue';
 
-onMounted(async () => getStaticPage("about"));
+// Import SVGs for correct asset resolution
+import challengesIcon from '@/assets/icons/about/challenges.svg';
+import zapIcon from '@/assets/icons/about/zap.svg';
+import organizationIcon from '@/assets/icons/about/organization.svg';
+import pillarsIcon from '@/assets/icons/about/pillars.svg';
+import bookmarkIcon from '@/assets/icons/about/bookmark.svg';
+import kdmIcon from '@/assets/icons/about/kdm.svg';
+import fariIcon from '@/assets/icons/about/FARI.svg';
+import successIcon from '@/assets/icons/about/success.svg';
+import trustIcon from '@/assets/icons/about/trust.svg';
+import solutionsIcon from '@/assets/icons/about/solutions.svg';
+
+import exploreIcon from '@/assets/icons/process/explore.svg';
+import planIcon from '@/assets/icons/process/plan.svg';
+import buildIcon from '@/assets/icons/process/build.svg';
+import shareIcon from '@/assets/icons/process/share.svg';
+
+
+const { getStaticPage } = useStaticPageStore();
+const { pages } = storeToRefs(useStaticPageStore());
+const { isMobile } = useIsMobile();
+
+onMounted(async () => getStaticPage('about'));
 
 const pageData = computed(() => {
-  if (!pages.value.about)
+  const about = pages.value?.about;
+  if (!about)
     return {
-      title: null,
-      content: null,
+      title: 'ALLY: Your strategy for responsible AI',
+      description:
+        'ALLY is a comprehensive guide designed to help businesses create an actionable, organisation-wide governance strategy for responsible AI.',
     };
-
-  const title = pages.value.about?.title[locale.value];
-  const content = pages.value.about?.content?.map((c) => c[locale.value]);
-
-  const hero = {
-    media: pages.value.about.hero?.media,
-    title: pages.value.about.hero?.title[locale.value],
-    description: pages.value.about.hero?.description[locale.value],
-  };
-
   return {
-    title,
-    content,
-    hero,
+    title: 'ALLY: Your strategy for responsible AI',
+    description:
+      'ALLY is a comprehensive guide designed to help businesses create an actionable, organisation-wide governance strategy for responsible AI.',
   };
 });
+
+const introSections = [
+  {
+    icon: challengesIcon,
+    alt: 'Pillars',
+    title: 'Tackling Ethical AI Challenges',
+    text:
+      'Every organisation using or planning to use AI faces critical concerns such as bias, privacy, sustainability, and quality of work.',
+  },
+  {
+    icon: zapIcon,
+    alt: 'Pillars',
+    title: 'Actionable Building Blocks',
+    text:
+      'ALLY offers practical building blocks to help organisations build a tailored governance strategy for responsible AI.',
+  },
+  {
+    icon: organizationIcon,
+    alt: 'Pillars',
+    title: 'For All Organisation Types',
+    text:
+      "Whether you're a small startup or a large public institution, ALLY is designed to support both private and public sectors.",
+  },
+];
+
+const extraSections = [
+  {
+    icon: pillarsIcon,
+    alt: 'Pillars',
+    title: 'Four Pillars of Responsible AI',
+    text:
+      'The building blocks are structured around four key pillars: Values & Structures, Processes & Methods, Culture & Skills, Communication & Participation',
+  },
+  {
+    icon: bookmarkIcon,
+    alt: 'Pillars',
+    title: 'Real-World Inspiration',
+    text: 'Browse cases that show how other organisations are implementing responsible AI.',
+    contentClass: 'intro-section-2-content',
+  },
+];
+
+
+const whyAllySections = [
+  {
+    icon: successIcon,
+    alt: 'Pillars',
+    title: 'Responsible AI Success?',
+    text: 'ALLY boosts your chances of designing, developing, implementing, and using responsible AI innovations.',
+  },
+  {
+    icon: trustIcon,
+    alt: 'Pillars',
+    title: 'Earn Trust and Reputation',
+    text: 'Responsible AI benefits society and your business alike by building trust and credibility with every stakeholder.',
+  },
+  {
+    icon: solutionsIcon,
+    alt: 'Pillars',
+    title: 'Pragmatic Ethical Solutions',
+    text: 'ALLY lays out clear, actionable steps to embed ethics in organisation-wide AI governance, drawing on others\' successes and lessons to strengthen your own strategy.',
+  },
+]
+
+const logos = [
+  {
+    src: kdmIcon,
+    alt: 'KDM',
+    description:
+      'The Knowledge Centre Data & Society is the central hub for the <strong>legal, social and ethical aspects </strong> of data-driven and AI applications. It brings together knowledge and experience on the interface of AI, data and societal issues tailored to industry, policy, civil society and the general public. The Knowledge Centre Data & Society has a broad mission and spectrum of activities: advice, training, process guidance, lectures and workshops.',
+  },
+  {
+    src: fariIcon,
+    alt: 'FARI',
+    description:
+      'FARI is an independent, not-for-profit artificial intelligence initiative led by the Vrije Universiteit Brussel (VUB) and the Université Libre de Bruxelles (ULB). The research institute aims to enable, promote and perform excellent cross-disciplinary research on artificial intelligence in Brussels, inspired by the humanistic values of freedom, equality and solidarity that lay at the foundations of both the VUB and the ULB, internationally acclaimed and with a local impact.',
+  },
+];
+
+
+const allyProcessSections = [
+  {
+    icon: exploreIcon,
+    alt: 'explore',
+    title: '1. Explore',
+    text: 'Understand what responsible AI could mean for your organisation. Use the QuickScan, try the ALLY demo, browse building blocks, and get inspired by real cases.',
+  },
+  {
+    icon: planIcon,
+    alt: 'plan',
+    title: '2. Plan',
+    text: 'Define your priorities and map out your strategy. Join an ALLY workshop and select the building blocks that fit your goals and context.',
+  },
+  {
+    icon: buildIcon,
+    alt: 'build',
+    title: '3. Build',
+    text: 'Put your strategy into practice. Start implementing selected building blocks and integrate responsible AI into your daily operations.',
+  },
+  {
+    icon: shareIcon,
+    alt: 'share',
+    title: '4. Commit & share',
+    text: 'Show your commitment and inspire others. Share your experience and contribute a case to help grow the responsible AI community.',
+  },
+]
+
+const legislationSection = {
+  title: 'Ally and legislation',
+  description: 'ALLY is not a legal compliance tool and does not contain building blocks that directly address compliance with the AI Act, GDPR or any other legal frameworks. However, ALLY does complement legal frameworks, and goes one step further to support you in setting up the structures and actions that are required to achieve responsible AI. To improve your organisation\'s legal compliance specifically, we recommend consulting a legal expert or tool specifically aimed at legal compliance.'
+}
+
 </script>
 
 <style scoped lang="scss">
 @use "/assets/scss/colors" as *;
 @use "/assets/scss/spacing" as *;
 
+.full-width-section {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 8rem;
+  gap: 1rem;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.intro-sections, .why-ally-sections {
+  display: flex;
+  gap: 2rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+
+.intro-section, .why-ally-section {
+  width: 20rem;
+  max-width: 20rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
 .about-container {
-  background-color: $deep-purple;
   border-radius: 0.8rem;
   width: 100%;
   display: flex;
@@ -78,20 +309,146 @@ const pageData = computed(() => {
   height: 100%;
 }
 
+.icon-container {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .logos {
   display: flex;
-  justify-content: space-around;
-}
-
-.logo {
-  width: 20rem;
-  height: auto;
-}
-
-.sections {
-  display: flex;
   flex-direction: column;
+  border-radius: 0.8rem;
+  width: 100%;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logos-container {
+  height: 100%;
+  margin-top: 2rem;
+  display: flex;
   gap: 2rem;
-  margin: 2rem 0;
+  text-align: left;
+  justify-content: space-evenly;
+
+  .logo-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 20rem;
+    justify-content: center
+  }
+}
+
+.why-ally {
+  &-container {
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &-title {
+    text-align: center;
+  }
+
+  &-description {
+    text-align: center;
+    max-width: 40rem;
+  }
+}
+
+.ally-process {
+  &-container {
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  &-title {
+    text-align: center;
+  }
+
+  &-description {
+    text-align: center;
+    max-width: 40rem;
+    margin-bottom: 2rem;
+  }
+
+  &-sections {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    justify-content: center;
+  }
+
+  &-sections.mobile { 
+    grid-template-columns: 1fr;
+  }
+
+  &-section {
+    width: 30rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+
+.legislation {
+  &-section {
+    width: 50%;
+    margin-left: 0;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem 0;
+  }
+
+  &-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+
+  &-description {
+    font-size: 1.2rem;
+  }
+
+}
+
+
+@media (max-width: 1200px) {
+  .legislation-section {
+    width: 70%;
+  }
+}
+
+@media (max-width: 900px) {
+  .legislation-section {
+    width: 90%;
+  }
+}
+
+@media (max-width: 600px) {
+  .legislation-section {
+    width: 100vw;
+    margin-left: -50vw;
+    left: 50%;
+    right: 50%;
+    margin-right: -50vw;
+    padding: 1rem 0;
+    position: relative;
+    box-sizing: border-box;
+  }
 }
 </style>

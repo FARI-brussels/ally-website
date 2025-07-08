@@ -1,52 +1,84 @@
 <template>
   <main class="main">
-    <div class="search-container">
-      <div v-if="pageData" class="search-container__text-content">
-        <PageSection
-          html
-          on-dark
-          :title="pageData.title"
-          :description="pageData.content[0]"
-        />
+    <div class="filter-container">
+      <div v-if="pageData" class="color-gray-light-mode-900">
+        <strong class="color-brand-700"> Cases </strong>
+        <h1 class="color-gray-light-mode-900 title">See responsible AI in action</h1>
+        <span class="color-gray-light-mode-500 description"> {{ pageData.content[0] }} </span>
       </div>
     </div>
 
-    <div class="chips">
-      <ChipItem
-        v-for="{ label, value } in categories"
-        :key="value"
-        :label="label"
-        :class="[filters.includes(value) ? 'selected' : '', value]"
-        @click="() => toggleFilterItem(value)"
-      />
+    <div class="filter-container">
+      <template v-if="isMobile">
+        <FormDropDown
+          v-model="selectedCategoryOptions"
+          :options="categoryOptions"
+          placeholder="Filter by category"
+        />
+      </template>
+      <template v-else>
+        <div
+          class="filter-item color-gray-light-mode-700"
+          :class="{ 'all-selected': filters.length === categories.length }"
+          @click="() => toggleFilterItem(null)"
+        >
+         <span class="color-brand-700">  {{ filters.length === categories.length ? 'Deselect all' : 'Select all' }}</span>
+        </div>
+        <transition-group
+          name="filter-pop"
+          tag="div"
+          class="filter-items-group"
+        >
+          <div
+            v-for="category in categories"
+            :key="category.label"
+            class="filter-item color-gray-light-mode-700"
+            :class="[
+              { 'selected': filters.includes(category.value) },
+              category.className
+            ]"
+            @click="() => toggleFilterItem(category.value)"
+          >
+            {{ category.label }}
+          </div>
+        </transition-group>
+      </template>
     </div>
 
     <div class="content-wrapper">
-      <CardDesktop
-        v-for="block in filteredBlocks"
-        :key="block.id"
-        :title="block.title[locale]"
-        :description="block.description[locale]"
-        :url="block.id"
-        @click="navigateTo(`/cases/${block.id}`)"
-      />
-
-      <CardDesktop
-        v-if="!filteredBlocks.length"
-        title="Not found"
-        description="Try another search filter"
-      />
+      <transition-group
+        name="card-pop"
+        tag="div"
+        class="content-wrapper"
+      >
+        <CardMain
+          v-for="block in filteredBlocks"
+          :key="block.id"
+          category="Case Study"
+          :title="block.title[locale]"
+          :description="block.description[locale]"
+          @click="navigateTo(`/cases/${block.id}`)"
+        />
+      </transition-group>
     </div>
   </main>
 </template>
 
 <script setup lang="ts">
+import type { Ref } from 'vue';
+import type { Case } from '~/types/directus/Case';
+import type { DirectusBuildingBlock } from '~/types/directus/BuildingBlock';
+import FormDropDown from '~/components/Form/DropDown.vue';
+import { useIsMobile } from '~/composables/useIsMobile';
+import type { OptionProps } from '~/types/components/Dropdown';
+
 const { locale } = storeToRefs(useGlobalStore());
 const { pages } = storeToRefs(useStaticPageStore());
 const { getStaticPage } = useStaticPageStore();
-const { cases } = storeToRefs(useCasesStore());
+const { cases } = storeToRefs(useCasesStore()) as { cases: Ref<Case[]> };
 const { getCases } = useCasesStore();
 const { getBuildingBlockCategories } = useGlobalStore();
+const { isMobile } = useIsMobile();
 
 onMounted(
   async () =>
@@ -69,130 +101,169 @@ const pageData = computed(() => {
   };
 });
 
-const filteredBlocks = computed(() => {
-  if (!cases.value) return [];
+const categories = [
+  { label: "Values & structures", value: "governance_values", className: "cat-values" },
+  { label: "Culture & skills", value: "culture_skills", className: "cat-culture" },
+  { label: "Communication & participation", value: "communication_involvement", className: "cat-communication" },
+  { label: "Methods & processes", value: "methods_processes", className: "cat-methods" },
+];
 
-  if (!filters.value.length) return cases.value;
+const filters = ref<string[]>([...categories.map(c => c.value)]);
 
-  const c = cases.value.filter((item) =>
-    filters.value.includes(item.building_blocks_used?.category.slug),
-  );
-
-  return c;
+const categoryOptions: OptionProps[] = categories.map(c => ({ label: c.label, value: c.value }));
+const selectedCategoryOptions = computed<OptionProps[]>({
+  get() {
+    return categoryOptions.filter(opt => filters.value.includes(opt.value as string));
+  },
+  set(opts: OptionProps[]) {
+    filters.value = opts.map(opt => opt.value as string);
+  }
 });
 
-function toggleFilterItem(category: string) {
+function toggleFilterItem(category: string | null) {
+  if (category === null) {
+    if (filters.value.length === categories.length) {
+      filters.value = [];
+    } else {
+      filters.value = [...categories.map(c => c.value)];
+    }
+    return;
+  }
   const index = filters.value.indexOf(category);
-
   if (index > -1) filters.value.splice(index, 1);
   else filters.value.push(category);
 }
-const filters = ref<string[]>([]);
 
-const categories = [
-  { label: "Values & structures", value: "governance_values" },
-  { label: "Culture & skills", value: "culture_skills" },
-  {
-    label: "Communication & participation",
-    value: "communication_involvement",
-  },
-  { label: "Methods & processes", value: "methods_processes " },
-];
+const filteredBlocks = computed(() => {
+  if (!cases.value) return [];
+  if (filters.value.length === categories.length) return cases.value;
+
+  return cases.value.filter((item: Case) => {
+    const slugs = new Set<string>();
+    if (item.building_blocks_used?.category?.slug) {
+      slugs.add(item.building_blocks_used.category.slug.trim());
+    }
+    if (Array.isArray(item.building_blocks_used?.alternative_building_blocks)) {
+      (item.building_blocks_used.alternative_building_blocks as DirectusBuildingBlock[]).forEach((alt: DirectusBuildingBlock) => {
+        if (alt.category?.slug) slugs.add(alt.category.slug.trim());
+      });
+    }
+    return [...slugs].some(slug => filters.value.includes(slug));
+  });
+});
 </script>
 
 <style scoped lang="scss">
 @use "/assets/scss/colors" as *;
-@use "/assets/scss/spacing" as *;
-@use "sass:color";
 
-.search-container {
-  background-color: $deep-purple;
-  border-radius: 0.8rem;
-  width: 100%;
+.main {
   display: flex;
   flex-direction: column;
-  padding: 2rem 10rem;
-  height: 100%;
-  margin-bottom: 4rem;
-
-  &__text-content {
-    display: flex;
-    flex-direction: column;
-    gap: 1 rem;
-    margin-bottom: 2rem;
-  }
-
-  &__title {
-    color: white;
-    text-align: center;
-    font-size: 2.2rem;
-    font-weight: 700;
-  }
-  &__description {
-    color: white;
-    text-align: center;
-    font-size: 1.3rem;
-  }
+  gap: 2rem;
 }
 
-.chips {
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.description {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.filter-container {
   display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
-}
+  gap: 1rem;
 
-.chip {
-  cursor: pointer;
-  transition: all 200ms ease;
-}
+  .filter-item {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    border: 4px solid transparent;
+    transition:
+      border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      background 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    font-weight: 500;
+  }
 
-$chip-colors: (
-  "culture_skills": #e7ffe8,
-  "governance_values": #aac2fa60,
-  "methods_processes": #ffe6ab60,
-  "communication_involvement": #fa89b880,
-);
+  .filter-item.selected {
+    transform: scale(1.08);
+    z-index: 1;
+  }
 
-@each $name, $color in $chip-colors {
-  .#{#{$name}} {
-    background-color: $color;
-
-    &.selected {
-      box-shadow: inset 0 0 2px color.scale($color, $lightness: -60%);
-      background-color: color.scale($color, $lightness: -40%);
-    }
+  .all-selected {
+    background-color: map-get($colors, "brand-200");
   }
 }
 
 .content-wrapper {
   display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  margin-bottom: 2rem;
+  flex-wrap: wrap;
   gap: 3rem;
 }
 
-.categories-overview {
-  margin-top: 1rem;
-  flex: 50%;
+.filter-item.selected.cat-values {
+  border-color: rgba(map-get($colors, "values-structures"), 0.3);
+}
+.filter-item.selected.cat-culture {
+  border-color: rgba(map-get($colors, "cultures-skills"), 0.3);
+}
+.filter-item.selected.cat-communication {
+  border-color: rgba(map-get($colors, "communication-participation"), 0.3);
+}
+.filter-item.selected.cat-methods {
+  border-color: rgba(map-get($colors, "methods-processes"), 0.3);
 }
 
-.content-wrapper > *:first-child {
-  flex: 1;
+.filter-items-group {
+  display: flex;
+  gap: 1rem;
 }
 
-.content-wrapper > *:nth-child(2) {
-  flex: 2;
+.filter-pop-enter-active,
+.filter-pop-leave-active {
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.card {
-  height: 16rem;
-  color: $text-color;
-  background-color: white;
-  margin-bottom: 1rem;
-  .title {
-    font-weight: bold;
-  }
+.filter-pop-enter-from {
+  opacity: 0;
+  transform: scale(0.7) translateY(20px) rotate(-8deg);
+}
+.filter-pop-enter-to {
+  opacity: 1;
+  transform: scale(1) translateY(0) rotate(0);
+}
+.filter-pop-leave-from {
+  opacity: 1;
+  transform: scale(1) translateY(0) rotate(0);
+}
+.filter-pop-leave-to {
+  opacity: 0;
+  transform: scale(0.7) translateY(-20px) rotate(8deg);
+}
+
+.card-pop-enter-active,
+.card-pop-leave-active {
+  transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+.card-pop-enter-from {
+  opacity: 0;
+  transform: scale(0.85) translateY(40px) rotate(-3deg);
+}
+.card-pop-enter-to {
+  opacity: 1;
+  transform: scale(1) translateY(0) rotate(0);
+}
+.card-pop-leave-from {
+  opacity: 1;
+  transform: scale(1) translateY(0) rotate(0);
+}
+.card-pop-leave-to {
+  opacity: 0;
+  transform: scale(0.85) translateY(-40px) rotate(3deg);
 }
 </style>
