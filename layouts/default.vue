@@ -9,7 +9,7 @@
     </header>
     <div class="content-wrapper">
       <div class="content">
-        <slot />
+        <NuxtPage />
       </div>
 
       <footer class="footer">
@@ -25,13 +25,22 @@ const { locale } = storeToRefs(useGlobalStore());
 
 const desiredOrder = ["/", "/building-blocks", "/cases", "/about"];
 
+const routeLabels: Record<string, string> = {
+  "/": "Home",
+  "/building-blocks": "Building Blocks",
+  "/cases": "Cases",
+  "/about": "About"
+};
+
 const routes = useRouter()
   .getRoutes()
   .filter(({ path }) => !path.includes(":"));
 
-const orderedRoutes = desiredOrder.map((path) =>
-  routes.find((route) => route.path === path),
-);
+const orderedRoutes = desiredOrder.map((path) => {
+  const route = routes.find((route) => route.path === path);
+  return route ? { ...route, label: routeLabels[route.path] || route.name } : null;
+}).filter(Boolean);
+
 </script>
 <style scoped lang="scss">
 @use "/assets/scss/colors" as *;
@@ -42,7 +51,6 @@ const orderedRoutes = desiredOrder.map((path) =>
   flex-direction: column;
   width: 100%;
   height: 100%;
-  // justify-content: space-between;
 }
 
 .header {
