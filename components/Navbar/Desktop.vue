@@ -1,5 +1,5 @@
 <template>
-  <nav>
+  <nav :class="{ dark: $props.dark, small: $props.small }">
     <NuxtLink v-for="{ name, path, label } in items" :key="path" :to="path">
       {{ label || name }}
     </NuxtLink>
@@ -7,9 +7,13 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ items?: { name?: string; path?: string; label?: string }[] }>();
 
-console.log(props.items);
+  const props = defineProps<{ 
+    items?: { name?: string; path?: string; label?: string }[] 
+    dark?: boolean
+    small?: boolean
+  }>();
+
 </script>
 
 <style scoped lang="scss">
@@ -42,4 +46,19 @@ nav {
     }
   }
 }
+
+.dark {
+  color: map-get($colors, "brand-200");
+  a {
+    &:hover {
+      color: white;
+    }
+  }
+}
+
+.small {
+  font-size: 1rem;
+}
+
+
 </style>

@@ -1,22 +1,21 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper wrapper-mobile">
     <div class='content'>
-      <div class="footer-main">
-        <img class="logo ally-logo" src="/assets/logos/logo_ALLY_white.svg" >
-        <p class="footer-description">ALLY helps you turn AI principles into concrete action, guiding your organisation toward transparency, accountability, and trust.</p>
-        <NavbarDesktop :items="$props.items" dark small class="navbar"/>
+    <div class="footer-main">
+      <img class="logo ally-logo" src="/assets/logos/logo_ALLY_white.svg" >
+      <p class="footer-description">ALLY helps you turn AI principles into concrete action, guiding your organisation toward transparency, accountability, and trust.</p>
+      <NavbarDesktop :items="$props.items" dark small class="navbar"/>
 
-      </div>
-
-      <div class="logos">
-        <img src="/assets/logos/FARI_logo_white.png" class="logo">
-        <img src="/assets/logos/ULB_VUB_white.png" class="logo" >
-        <img src="/assets/logos/Logo_KDM_EN_wit 2.png" class="logo">
-        <img src="/assets/logos/AI_Flanders_logo.png" class="logo">
-        <img src="/assets/logos/EU.svg" class="logo">
-      </div>
     </div>
 
+    <div class="logos">
+      <img src="/assets/logos/FARI_logo_white.png" class="logo">
+      <img src="/assets/logos/ULB_VUB_white.png" class="logo" >
+      <img src="/assets/logos/Logo_KDM_EN_wit 2.png" class="logo">
+      <img src="/assets/logos/AI_Flanders_logo.png" class="logo">
+      <img src="/assets/logos/EU.svg" class="logo">
+    </div>
+  </div>
     <hr class="footer-divider" >
     <p class="copyright">&copy; 2025 ALLY. All rights reserved. </p>
   </div>
@@ -38,16 +37,15 @@
 
 .content {
   display: flex;
+  flex-direction: column;
 }
 
 .footer-main {
-  width: 40%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: baseline;
+  justify-content: center;
+  align-items: center;
   gap: 2rem;
-  padding-right: 6rem;
 }
 
 .footer-description {
@@ -59,10 +57,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-  margin-left: auto;
-  justify-content: space-between;
-  padding: 1rem;
-  width: 30%;
 }
 
 .logo {
@@ -75,8 +69,11 @@
 }
 
 .navbar {
-  justify-content: start;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 2rem
 }
+
 
 .footer-divider {
   border: none;

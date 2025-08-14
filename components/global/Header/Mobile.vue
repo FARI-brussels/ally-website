@@ -1,33 +1,26 @@
 <template>
   <div class="wrapper">
     <div class="header">
-      <button class="hamburger" @click="(event: MouseEvent) => toggleMenu()">
-        <span :class="{ open: isMenuOpen }" />
-        <span :class="{ open: isMenuOpen }" />
-        <span :class="{ open: isMenuOpen }" />
-      </button>
+      <img class="logo" src="~/assets/logos/logo_ALLY_new.svg" >
+      <img
+        src="@/assets/icons/menu.svg"
+        alt="menu-button"
+        @click="() => toggleMenu()"
+      >
+
       <div class="menu" :class="{ visible: isMenuOpen }">
         <div class="menu-title">
-          <LanguageSelector
-            :locales="[
-              { label: 'EN', value: 'en' },
-              { label: 'FR', value: 'fr' },
-              { label: 'NL', value: 'nl' },
-            ]"
-            :locale="locale"
-            @change="(e: string) => $emit('change:locale', e)"
-          />
           <img
-            src="@/assets/close-button.svg"
+            src="@/assets/icons/close-button.svg"
             class="close-button"
             alt="close-button"
             @click="() => toggleMenu()"
-          />
+          >
         </div>
 
-        <NavbarMobile class="navbar" :items="$props.items" />
+        <NavbarMobile class="navbar" :items="$props.items" @click="() => toggleMenu()"/>
       </div>
-      <span class="title"> Ally - Ethical policy toolbox </span>
+     
     </div>
   </div>
 </template>
@@ -41,8 +34,13 @@ const [isMenuOpen, toggleMenu] = useToggle(false);
 </script>
 
 <style scoped lang="scss">
-@use "src/assets/colors" as *;
-@use "src/assets/spacing" as *;
+@use "~/assets/scss/colors" as *;
+@use "~/assets/scss/spacing" as *;
+
+
+.logo {
+      height: 3rem;
+    }
 
 .wrapper {
   display: flex;
@@ -63,43 +61,26 @@ const [isMenuOpen, toggleMenu] = useToggle(false);
       text-transform: uppercase;
     }
 
-    .hamburger {
-      background: none;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      height: 1.5rem;
-      padding: 0.25rem;
-      transition: transform 0.3s ease;
-      margin-right: auto;
-
-      span {
-        display: block;
-        width: 1.5rem;
-        height: 0.2rem;
-        background-color: $medium-purple;
-        transition: all 0.3s ease;
-      }
-    }
   }
 
   .menu {
     display: flex;
     flex-direction: column;
     background-color: white;
-    position: absolute;
-    left: -40rem;
-    width: 24rem;
-    height: 100vh;
-    top: 0;
-    z-index: 999;
+    position: fixed;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  height: 100vh;
+  background: white;
+  transition: right 0.3s ease;
+  z-index: 9999;
     padding: 2rem;
-    transition: all 0.3s ease;
+    transition: right 0.3s ease;
     -webkit-box-shadow: 10px 0px 35px -14px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: 10px 0px 35px -14px rgba(0, 0, 0, 0.4);
     box-shadow: 10px 0px 35px -14px rgba(0, 0, 0, 0.4);
+
     &-title {
       display: flex;
       justify-content: space-between;
@@ -117,8 +98,10 @@ const [isMenuOpen, toggleMenu] = useToggle(false);
   }
 
   .visible {
-    left: -4rem;
+    right: 0;
   }
+
+
 
   .navbar {
     padding: 2.5rem 0;

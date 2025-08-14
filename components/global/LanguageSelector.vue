@@ -5,7 +5,7 @@
       aria-haspopup="true"
       :aria-expanded="isOpen"
     >
-      <img alt="icon" src="/assets/icons/language-icon.svg" class="icon" />
+      <img alt="icon" src="/assets/icons/language-icon.svg" class="icon" >
 
       {{ props.locale?.split("-").pop() }}
     </button>
@@ -32,7 +32,14 @@ interface Props {
   locale: Locale;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  locales: () => [
+    { label: "EN", value: "en" },
+    { label: "FR", value: "fr" },
+    { label: "NL", value: "nl" },
+  ],
+  locale: "en",
+});
 const emit = defineEmits<{ (e: "change", locale: Locale): void }>();
 
 const isOpen = ref(false);

@@ -11,7 +11,7 @@
       <span v-if="category" class="card-category" :style="color ? { color } : {}">{{ category.replace(/-/g, ' & ') }}</span>
       <div class="card-title-row">
         <h2 class="card-title">{{ title }}</h2>
-        <img src="/assets/icons/arrow-right-new.svg" class="card-arrow" alt="Go to details" />
+        <img src="/assets/icons/arrow-right-new.svg" class="card-arrow" alt="Go to details">
       </div>
       <p class="card-description color-gray-light-mode-600">{{ description }}</p>
     </div>

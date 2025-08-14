@@ -44,14 +44,16 @@ import MoneyIconBlack from '~/assets/icons/money-icon-black.svg';
 import Search from '~/assets/icons/search.svg';
 import ThunderIcon from '~/assets/icons/thunder-icon.svg';
 import ThunderIconBlack from '~/assets/icons/thunder-icon-black.svg';
+import CopyLink from '~/assets/icons/copy-link.svg';
+import Check from '~/assets/icons/check.svg';
 
 defineProps({
   prependIcon: {
-    type: String as () => 'arrow-right' | 'search' | 'close' | 'chevron-down' | string,
+    type: String as () => 'arrow-right' | 'search' | 'close' | 'chevron-down' | 'copy-link' | 'check' | string,
     default: ''
   },
   appendIcon: {
-    type: String as () => 'arrow-right' | 'search' | 'close' | 'chevron-down' | string,
+    type: String as () => 'arrow-right' | 'search' | 'close' | 'chevron-down' | 'copy-link' | 'check' | string,
     default: ''
   },
   block: {
@@ -59,7 +61,7 @@ defineProps({
     default: false
   },
   variant: {
-    type: String as () => 'primary' | 'secondary',
+    type: String as () => 'primary' | 'secondary' | 'gray',
     default: 'primary'
   },
   disabled: {
@@ -87,11 +89,14 @@ const iconMap: Record<string, string> = {
   'search': Search,
   'thunder-icon': ThunderIcon,
   'thunder-icon-black': ThunderIconBlack,
+  'copy-link': CopyLink,
+  'check': Check
 };
 
 function iconPath(name: string) {
   return iconMap[name] || '';
 }
+
 </script>
 
 <style scoped lang="scss">
@@ -137,6 +142,17 @@ function iconPath(name: string) {
     background: map-get($colors, 'brand-600');
     color: map-get($colors, 'base-white');
     border: 1.5px solid map-get($colors, 'brand-600');
+    &:hover:not(:disabled), &:active:not(:disabled) {
+      background: map-get($colors, 'brand-300');
+      color: map-get($colors, 'base-white');
+      border-color: map-get($colors, 'brand-300');
+    }
+  }
+
+  &--gray {
+    background: map-get($colors, 'gray-light-mode-100');
+    color: map-get($colors, 'gray-light-mode-950');
+    border: 1.5px solid map-get($colors, 'gray-light-mode-100');
     &:hover:not(:disabled), &:active:not(:disabled) {
       background: map-get($colors, 'brand-300');
       color: map-get($colors, 'base-white');
