@@ -225,8 +225,9 @@ const externalLinksParagraph = {
 </script>
 
 <style scoped lang="scss">
-@use "/assets/scss/colors" as *;
+@use "/assets/scss/colors";
 @use "/assets/scss/spacing" as *;
+@use "sass:map";
 .main {
   opacity: 0;
   transform: translateY(30px);
@@ -278,7 +279,7 @@ const externalLinksParagraph = {
   border-radius: 1rem;
   padding: 2rem;
   cursor: default;
-  border: 1px solid map-get($colors, 'gray-light-mode-200');
+  border: 1px solid map.get(colors.$colors, 'gray-light-mode-200');
 
   button {
     display: flex;

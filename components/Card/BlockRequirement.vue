@@ -130,9 +130,10 @@ function getLevelLocaleString(map: LevelMap, level: string, locale: Locale): str
 </script>
 
 <style scoped lang="scss">
-@use "/assets/scss/colors" as *;
+@use "/assets/scss/colors";
 @use "/assets/scss/typography" as *;
 @use "sass:color";
+@use "sass:map";
 
 .card {
   width: 24rem;
@@ -143,7 +144,7 @@ function getLevelLocaleString(map: LevelMap, level: string, locale: Locale): str
   border-radius: 1rem;
   padding: 2rem;
   cursor: default;
-  border: 1px solid map-get($colors, 'gray-light-mode-200');
+  border: 1px solid map.get(colors.$colors, 'gray-light-mode-200');
 }
 
 .title {
@@ -165,7 +166,7 @@ function getLevelLocaleString(map: LevelMap, level: string, locale: Locale): str
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background-color: map-get($colors, 'gray-light-mode-200');
+  background-color: map.get(colors.$colors, 'gray-light-mode-200');
   margin-right: 0.5rem;
 }
 
@@ -184,9 +185,9 @@ function getLevelLocaleString(map: LevelMap, level: string, locale: Locale): str
 .chip {
   display: inline-flex;
   align-items: center;
-  border: 1px solid map-get($colors, 'gray-light-mode-300');
-  color: map-get($colors, 'gray-light-mode-500');
-  background-color: map-get($colors, 'gray-light-mode-200');
+  border: 1px solid map.get(colors.$colors, 'gray-light-mode-300');
+  color: map.get(colors.$colors, 'gray-light-mode-500');
+  background-color: map.get(colors.$colors, 'gray-light-mode-200');
   border-radius: 1rem;
   padding: 0.25rem 0.75rem;
   font-size: 0.95rem;
@@ -204,6 +205,6 @@ function getLevelLocaleString(map: LevelMap, level: string, locale: Locale): str
   font-size: 1rem;
   font-weight: $text-medium;
   margin-bottom: 0.5rem;
-  color: map-get($colors, 'gray-light-mode-500');
+  color: map.get(colors.$colors, 'gray-light-mode-500');
 }
 </style>

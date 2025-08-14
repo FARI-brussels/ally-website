@@ -29,7 +29,8 @@ defineProps<HeroProps>();
 </script>
 
 <style scoped lang="scss">
-@use "/assets/scss/colors" as *;
+@use "/assets/scss/colors";
+@use 'sass:map';
 
 .wrapper {
   position: relative;
@@ -56,8 +57,8 @@ defineProps<HeroProps>();
   padding-top: 2rem;
   background: linear-gradient(
     to bottom,
-    map-get($colors, "brand-800") 0%,
-    map-get($colors, "brand-800") 50%,
+    map.get(colors.$colors, "brand-800") 0%,
+    map.get(colors.$colors, "brand-800") 50%,
     transparent 100%
   );
 }
@@ -84,21 +85,21 @@ defineProps<HeroProps>();
   transition: background 0.2s, color 0.2s;
 }
 .btn-primary {
-  background: map-get($colors, "brand-600");
-  color: map-get($colors, "base-white");
+  background: map.get(colors.$colors, "brand-600");
+  color: map.get(colors.$colors, "base-white");
   border: none;
 }
 .btn-primary:hover {
-  background: map-get($colors, "brand-700");
+  background: map.get(colors.$colors, "brand-700");
 }
 .btn-secondary {
   background: transparent;
-  color: map-get($colors, "base-white");
-  border: 2px solid map-get($colors, "base-white");
+  color: map.get(colors.$colors, "base-white");
+  border: 2px solid map.get(colors.$colors, "base-white");
 }
 .btn-secondary:hover {
-  background: map-get($colors, "base-white");
-  color: map-get($colors, "brand-800");
+  background: map.get(colors.$colors, "base-white");
+  color: map.get(colors.$colors, "brand-800");
 }
 
 @media (max-width: 900px) {

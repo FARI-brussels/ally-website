@@ -1,3 +1,6 @@
+@use 'sass:map';
+@use 'sass:color';
+
 $text-color: #414141;
 $border-color: #d5d5d5;
 $deep-purple: #341354;
@@ -103,21 +106,21 @@ $colors: (
   background: linear-gradient(
     63deg,
     $color 6.28%,
-    darken($color, 10%) 92.94%
+    color.adjust($color, $lightness: -10%) 92.94%
   );
   border-radius: 10.022px;
 }
 
 // Category gradient classes
 .category-values-structures {
-  @include category-gradient(map-get($colors, "values-structures"));
+  @include category-gradient(map.get($colors, "values-structures"));
 }
 .category-cultures-skills {
-  @include category-gradient(map-get($colors, "cultures-skills"));
+  @include category-gradient(map.get($colors, "cultures-skills"));
 }
 .category-communication-participation {
-  @include category-gradient(map-get($colors, "communication-participation"));
+  @include category-gradient(map.get($colors, "communication-participation"));
 }
 .category-methods-processes {
-  @include category-gradient(map-get($colors, "methods-processes"));
+  @include category-gradient(map.get($colors, "methods-processes"));
 }

@@ -1,5 +1,5 @@
 <template>
-  <component :is="url ? 'a' : 'div'" :href="url" class="card" target="_blank" rel="noopener noreferrer">
+  <component :is="url ? 'a' : 'div'" :href="url" class="card" rel="noopener noreferrer">
     <img 
       v-if="image" 
       :src="image" 

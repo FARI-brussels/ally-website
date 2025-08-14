@@ -162,7 +162,8 @@ const filteredBlocks = computed(() => {
 </script>
 
 <style scoped lang="scss">
-@use "/assets/scss/colors" as *;
+@use "/assets/scss/colors";
+@use "sass:map";
 
 .main {
   display: flex;
@@ -203,7 +204,7 @@ const filteredBlocks = computed(() => {
   }
 
   .all-selected {
-    background-color: map-get($colors, "brand-200");
+    background-color: map.get(colors.$colors, "brand-200");
   }
 }
 
@@ -229,16 +230,16 @@ const filteredBlocks = computed(() => {
 }
 
 .filter-item.selected.cat-values {
-  border-color: rgba(map-get($colors, "values-structures"), 0.3);
+  border-color: rgba(map.get(colors.$colors, "values-structures"), 0.3);
 }
 .filter-item.selected.cat-culture {
-  border-color: rgba(map-get($colors, "cultures-skills"), 0.3);
+  border-color: rgba(map.get(colors.$colors, "cultures-skills"), 0.3);
 }
 .filter-item.selected.cat-communication {
-  border-color: rgba(map-get($colors, "communication-participation"), 0.3);
+  border-color: rgba(map.get(colors.$colors, "communication-participation"), 0.3);
 }
 .filter-item.selected.cat-methods {
-  border-color: rgba(map-get($colors, "methods-processes"), 0.3);
+  border-color: rgba(map.get(colors.$colors, "methods-processes"), 0.3);
 }
 
 .filter-items-group {

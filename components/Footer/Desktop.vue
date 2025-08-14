@@ -29,8 +29,9 @@
 </script>
 
 <style scoped lang="scss">
-@use "~/assets/scss/colors" as *;
+@use "~/assets/scss/colors";
 @use "~/assets/scss/typography" as *;
+@use "sass:map";
 
 .wrapper {
   padding: 2rem 4rem;
@@ -51,7 +52,7 @@
 }
 
 .footer-description {
-  color: map-get($colors, "brand-200");
+  color: map.get(colors.$colors, "brand-200");
   font-weight: $text-medium;
 }
 
@@ -80,12 +81,12 @@
 
 .footer-divider {
   border: none;
-  border-top: 1px solid map-get($colors, "brand-600");
+  border-top: 1px solid map.get(colors.$colors, "brand-600");
   margin: 3rem 0;
   width: 100%;
 }
 
 .copyright {
-  color: map-get($colors, "brand-200");
+  color: map.get(colors.$colors, "brand-200");
 }
 </style>

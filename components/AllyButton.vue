@@ -100,7 +100,8 @@ function iconPath(name: string) {
 </script>
 
 <style scoped lang="scss">
-@use '/assets/scss/colors' as *;
+@use '/assets/scss/colors';
+@use 'sass:map';
 
 .ally-btn {
   display: inline-flex;
@@ -110,9 +111,9 @@ function iconPath(name: string) {
   font-weight: 600;
   border-radius: 0.5rem;
   padding: 0.75rem 1.5rem;
-  border: 1.5px solid map-get($colors, 'gray-light-mode-300');
-  background: map-get($colors, 'base-white');
-  color: map-get($colors, 'gray-light-mode-950');
+  border: 1.5px solid map.get(colors.$colors, 'gray-light-mode-300');
+  background: map.get(colors.$colors, 'base-white');
+  color: map.get(colors.$colors, 'gray-light-mode-950');
   cursor: pointer;
   transition: background 0.15s, color 0.15s, border 0.15s;
   outline: none;
@@ -128,35 +129,35 @@ function iconPath(name: string) {
   }
 
   &--primary {
-    background: map-get($colors, 'base-white');
-    color: map-get($colors, 'gray-light-mode-950');
-    border: 1.5px solid map-get($colors, 'gray-light-mode-300');
+    background: map.get(colors.$colors, 'base-white');
+    color: map.get(colors.$colors, 'gray-light-mode-950');
+    border: 1.5px solid map.get(colors.$colors, 'gray-light-mode-300');
     &:hover:not(:disabled), &:active:not(:disabled) {
-      background: map-get($colors, 'brand-300');
-      color: map-get($colors, 'gray-light-mode-950');
-      border-color: map-get($colors, 'brand-300');
+      background: map.get(colors.$colors, 'brand-300');
+      color: map.get(colors.$colors, 'gray-light-mode-950');
+      border-color: map.get(colors.$colors, 'brand-300');
     }
   }
 
   &--secondary {
-    background: map-get($colors, 'brand-600');
-    color: map-get($colors, 'base-white');
-    border: 1.5px solid map-get($colors, 'brand-600');
+    background: map.get(colors.$colors, 'brand-600');
+    color: map.get(colors.$colors, 'base-white');
+    border: 1.5px solid map.get(colors.$colors, 'brand-600');
     &:hover:not(:disabled), &:active:not(:disabled) {
-      background: map-get($colors, 'brand-300');
-      color: map-get($colors, 'base-white');
-      border-color: map-get($colors, 'brand-300');
+      background: map.get(colors.$colors, 'brand-300');
+      color: map.get(colors.$colors, 'base-white');
+      border-color: map.get(colors.$colors, 'brand-300');
     }
   }
 
   &--gray {
-    background: map-get($colors, 'gray-light-mode-100');
-    color: map-get($colors, 'gray-light-mode-950');
-    border: 1.5px solid map-get($colors, 'gray-light-mode-100');
+    background: map.get(colors.$colors, 'gray-light-mode-100');
+    color: map.get(colors.$colors, 'gray-light-mode-950');
+    border: 1.5px solid map.get(colors.$colors, 'gray-light-mode-100');
     &:hover:not(:disabled), &:active:not(:disabled) {
-      background: map-get($colors, 'brand-300');
-      color: map-get($colors, 'base-white');
-      border-color: map-get($colors, 'brand-300');
+      background: map.get(colors.$colors, 'brand-300');
+      color: map.get(colors.$colors, 'base-white');
+      border-color: map.get(colors.$colors, 'brand-300');
     }
   }
 
@@ -174,15 +175,15 @@ function iconPath(name: string) {
   }
   &--primary:disabled,
   &--primary.ally-btn--disabled {
-    background: map-get($colors, 'gray-light-mode-100');
-    color: map-get($colors, 'gray-light-mode-500');
-    border-color: map-get($colors, 'gray-light-mode-200');
+    background: map.get(colors.$colors, 'gray-light-mode-100');
+    color: map.get(colors.$colors, 'gray-light-mode-500');
+    border-color: map.get(colors.$colors, 'gray-light-mode-200');
   }
   &--secondary:disabled,
   &--secondary.ally-btn--disabled {
-    background: map-get($colors, 'brand-100');
-    color: map-get($colors, 'gray-light-mode-400');
-    border-color: map-get($colors, 'gray-light-mode-200');
+    background: map.get(colors.$colors, 'brand-100');
+    color: map.get(colors.$colors, 'gray-light-mode-400');
+    border-color: map.get(colors.$colors, 'gray-light-mode-200');
   }
 }
 </style> 

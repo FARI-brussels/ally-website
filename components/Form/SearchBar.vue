@@ -23,7 +23,8 @@ const handleSubmit = () => model.value && emit("submit", model.value);
 </script>
 
 <style scoped lang="scss">
-@use "/assets/scss/colors" as *;
+@use "/assets/scss/colors";
+@use "sass:map";
 .search-bar-wrapper {
   position: relative;
   width: 100%;
@@ -34,7 +35,7 @@ const handleSubmit = () => model.value && emit("submit", model.value);
   flex: 1;
   padding: 8px 8px 8px 2.5rem; 
   border-radius: 0.5rem;
-  border: 1px solid $border-color;
+  border: 1px solid colors.$border-color;
   height: 3rem;
   width: 100%;
   box-sizing: border-box;
@@ -43,8 +44,8 @@ const handleSubmit = () => model.value && emit("submit", model.value);
 }
 .search-input:focus {
   outline: none;
-  box-shadow: 0 0 0 2px map-get($colors, "brand-600");
-  border-color: map-get($colors, "brand-600");
+  box-shadow: 0 0 0 2px map.get(colors.$colors, "brand-600");
+  border-color: map.get(colors.$colors, "brand-600");
 }
 .search-icon {
   position: absolute;

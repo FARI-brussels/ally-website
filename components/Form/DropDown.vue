@@ -56,9 +56,10 @@ function toggleOption(option: OptionProps) {
 </script>
 
 <style scoped lang="scss">
-@use "assets/scss/colors" as *;
+@use "assets/scss/colors";
 @use "assets/scss/typography" as *;
 @use "sass:color";
+@use "sass:map";
 .dropdown {
   position: relative;
   width: 100%;
@@ -78,7 +79,7 @@ function toggleOption(option: OptionProps) {
   align-items: center;
   justify-content: space-between;
   height: 3rem;
-  border: 1px solid map-get($colors, "gray-light-mode-300");
+  border: 1px solid map.get(colors.$colors, "gray-light-mode-300");
   box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
   width: 100%;
 }
@@ -97,9 +98,9 @@ function toggleOption(option: OptionProps) {
   width: 100%;
   z-index: 1000;
   background-color: white;
-  -webkit-box-shadow: 0px 0px 2.5rem -22px color.scale($text-color, $alpha: -0.85%);
-  -moz-box-shadow: 0px 0px 2.5rem -22px color.scale($text-color, $alpha: -0.85%);
-  box-shadow: 0px 0px 2.5rem -22px color.scale($text-color, $alpha: -0.85%);
+  -webkit-box-shadow: 0px 0px 2.5rem -22px color.scale(colors.$text-color, $alpha: -0.85%);
+  -moz-box-shadow: 0px 0px 2.5rem -22px color.scale(colors.$text-color, $alpha: -0.85%);
+  box-shadow: 0px 0px 2.5rem -22px color.scale(colors.$text-color, $alpha: -0.85%);
 }
 
 .list-item {
@@ -112,7 +113,7 @@ function toggleOption(option: OptionProps) {
   gap: 0.5rem;
 
   &:hover {
-    background-color: lighten(map-get($colors, "brand-600"), 50%);
+    background-color: color.adjust(map.get(colors.$colors, "brand-600"), $lightness: 50%);
   }
 
   & {
@@ -133,8 +134,8 @@ function toggleOption(option: OptionProps) {
   margin-right: 0.5em;
 }
 .list-item input[type="checkbox"]:checked {
-  background: map-get($colors, "brand-600");
-  border-color: map-get($colors, "brand-600");
+  background: map.get(colors.$colors, "brand-600");
+  border-color: map.get(colors.$colors, "brand-600");
 }
 .list-item input[type="checkbox"]:checked::after {
     content: "";
