@@ -1,5 +1,5 @@
 <template>
-  <main class="main">
+  <div class="main">
     <HeroHomeDesktop v-bind="heroProps" :class="isMobile ? 'hero full-width-section' : 'hero'" />
 
     <div class="info-section" :class="{ 'info-section-mobile': isMobile }">
@@ -79,7 +79,7 @@
         />
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <script setup lang="ts">

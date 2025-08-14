@@ -1,8 +1,8 @@
 <template>
-  <main class="main">
+  <div class="main">
     <div class="search-container color-gray-light-mode-900" :class="{ mobile: isMobile }">
       <div v-if="pageData" class="search-container__text-content">
-        <div class="page-section-wrapper" v-if="!isMobile">
+        <div v-if="!isMobile" class="page-section-wrapper" >
           <PageSection
             html
             :title="pageData.title || ''"
@@ -24,30 +24,39 @@
             <FormSearchBar v-model="searchTerm" />
           </div>
           <div class="dropdowns-grid">
+            <div class="row">
             <FormDropDown
               v-model="selectedCategory"
               :options="categories"
               placeholder="Pillar"
+              class="dropdown"
             />
             <FormDropDown
               v-model="selectedCost"
               :options="cost"
               placeholder="Cost"
+              class="dropdown"
             />
+          </div>
+          <div class="row">
             <FormDropDown
               v-model="selectedDifficulty"
               :options="difficulty"
               placeholder="Difficulty"
+              class="dropdown"
             />
             <FormDropDown
               v-model="selectedEffort"
               :options="effort"
               placeholder="Effort"
+              class="dropdown"
             />
+          </div>
           </div>
         </template>
         <template v-else>
           <FormSearchBar v-model="searchTerm" />
+          <div class="dropdowns-grid">
           <FormDropDown
             v-model="selectedCategory"
             :options="categories"
@@ -68,6 +77,7 @@
             :options="effort"
             placeholder="Effort"
           />
+          </div>
         </template>
       </div>
     </div>
@@ -76,13 +86,13 @@
       <template v-for="cat in categoryConfigs" :key="cat.slug">
         <transition name="fade">
           <div v-if="selectedCategory.some(opt => opt.value === cat.slug) && cat.blocks.value.length">
-            <PageSection v-if="cat.section.value" v-bind="cat.section.value" />
+            <PageSection v-if="cat.section.value" v-bind="cat.section.value" class="block-section"/>
             <BlockList :blocks="cat.blocks.value" />
           </div>
         </transition>
       </template>
     </div>
-  </main>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -318,6 +328,19 @@ const categoryConfigs = [
   display: contents;
 }
 
+.search-filter.mobile .dropdowns-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 2rem 0;
+  .row {
+    display: flex;
+    gap: 2rem;
+    grid-column: 1 / span 2;
+  }
+
+}
+
 .search-filter.desktop .dropdowns-grid > * {
   width: 100%;
 }
@@ -362,6 +385,14 @@ const categoryConfigs = [
   .title {
     font-weight: bold;
   }
+}
+
+.content-wrapper {
+  margin-bottom: 2rem;
+}
+
+.block-section {
+  margin: 2rem 0;
 }
 
 .fade-enter-active, .fade-leave-active {

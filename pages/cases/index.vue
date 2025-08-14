@@ -1,11 +1,19 @@
 <template>
-  <main class="main">
+  <div class="main">
     <div class="filter-container">
-      <div v-if="pageData" class="color-gray-light-mode-900">
+
+      <div v-if="pageData && !isMobile" class="color-gray-light-mode-900 page-section-wrapper">
         <strong class="color-brand-700"> Cases </strong>
         <h1 class="color-gray-light-mode-900 title">See responsible AI in action</h1>
-        <span class="color-gray-light-mode-500 description"> {{ pageData.content[0] }} </span>
+        <span class="color-gray-light-mode-500 description "> {{ pageData.content[0] }} </span>
       </div>
+      <div v-else-if="isMobile" class="color-gray-light-mode-900">
+        <strong class="color-brand-700"> Cases </strong>
+        <h1 class="color-gray-light-mode-900 title">See responsible AI in action</h1>
+        <span class="color-gray-light-mode-500 description "> {{ pageData.content[0] }} </span>
+      </div>
+
+
     </div>
 
     <div class="filter-container">
@@ -61,7 +69,7 @@
         />
       </transition-group>
     </div>
-  </main>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -199,10 +207,25 @@ const filteredBlocks = computed(() => {
   }
 }
 
+.page-section-wrapper {
+  width: 40%;
+  min-width: 350px;
+  max-width: 700px;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 1200px) {
+  .page-section-wrapper {
+    width: 66%;
+  }
+}
+
+
 .content-wrapper {
   display: flex;
   flex-wrap: wrap;
   gap: 3rem;
+  margin-bottom: 2rem;
 }
 
 .filter-item.selected.cat-values {

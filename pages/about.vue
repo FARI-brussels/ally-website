@@ -1,5 +1,5 @@
 <template>
-  <main class="main">
+  <div class="main">
     <div class="introduction full-width-section bg-color-brand-25">
       <strong class="color-brand-700">About</strong>
       <h1>{{ pageData.title }}</h1>
@@ -93,7 +93,7 @@
 </section>
 
 
-</main>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -405,12 +405,14 @@ const legislationSection = {
 
 .legislation {
   &-section {
+    text-align: center;
     width: 50%;
-    margin-left: 0;
+    margin-left: auto;
     margin-right: auto;
+    margin-bottom: 2rem;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     padding: 2rem 0;
   }
 

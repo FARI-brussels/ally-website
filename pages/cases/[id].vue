@@ -1,5 +1,5 @@
 <template>
-  <main class="main" :class="{ 'page-fade-in': pageVisible, 'main--loading': loading }">
+  <div class="main" :class="{ 'page-fade-in': pageVisible, 'main--loading': loading }">
     <div class="intro-section" :class="{ 'intro-section--mobile': isMobile }">
       <PageSection
         html
@@ -20,13 +20,13 @@
 
     <div v-if="selectedCase?.building_blocks_used" class="alternatives-section">
       <h2 class="section-title">
-        {{ alterativesTitle[locale] }}
+        {{ blocksUsed[locale] }}
       </h2>
       <div class="alternatives-section-list" :class="{ 'alternatives-section-list--mobile': isMobile }">
         <TransitionGroup name="stagger-fade" tag="div">
           <CardMain
             :image="getImage(selectedCase?.building_blocks_used?.category?.slug)"
-            :category="selectedCase?.building_blocks_used?.category?.slug[locale]"
+            :category="selectedCase?.building_blocks_used?.category?.title[locale]"
             :title="selectedCase?.building_blocks_used.title[locale]"
             :description="selectedCase?.building_blocks_used.description[locale]"
             :url="`/building-blocks/${selectedCase?.building_blocks_used.id}`"
@@ -35,7 +35,7 @@
         </TransitionGroup>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -50,9 +50,10 @@ const pageVisible = ref(false);
 onMounted(async () => {
   await findCase(Number(route.params.id));
   loading.value = false;
-  setTimeout(() => {
-    pageVisible.value = true;
-  }, 50);
+  setTimeout(() => 
+    pageVisible.value = true, 50);
+
+    console.log(selectedCase.value)
 });
 
 const { isMobile } = useIsMobile();
@@ -62,7 +63,7 @@ function getImage(category: CategorySlug) {
   return `/blocks/${mapCategory(category)}-${Math.floor(Math.random() * 3) + 1}.png`;
 }
 
-const alterativesTitle = {
+const blocksUsed = {
   en: 'Building blocks used in this case',
   nl: 'Bouwstenen die in dit geval zijn gebruikt',
   fr: 'Blocs de construction utilisés dans ce cas',
@@ -89,7 +90,6 @@ const alterativesTitle = {
   pointer-events: none;
 }
 
-// Section: Intro
 .intro-section {
   display: flex;
   justify-content: space-between;

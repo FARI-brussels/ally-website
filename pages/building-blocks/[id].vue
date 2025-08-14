@@ -1,5 +1,5 @@
 <template>
-  <main class="main" :class="{ 'page-fade-in': pageVisible, 'main--loading': loading }">
+  <div class="main" :class="{ 'page-fade-in': pageVisible, 'main--loading': loading }">
     <Transition name="fade-loader">
       <div v-if="loading" class="page-loader" key="loader">
         <span class="spinner"></span>
@@ -65,6 +65,15 @@
           :time="selectedBlock?.time || ''"
           :maintenance="selectedBlock?.maintenance || ''"
         />
+      <div v-if="!isMobile" class="copy-link-container">
+          <h3 class="copy-link-title"> Share this block </h3>
+          <AllyButton 
+            :prepend-icon="copyLinkIcon" 
+            :label="copyLinkText"
+            variant="gray"
+            @click="copyLinkToClipBoard"
+            />
+        </div>
       </div>
     </div>
 
@@ -111,23 +120,22 @@
         {{ alternativesDescription[locale] }}
       </p>
 
-      <div class="alternatives-section-list" :class="{ 'alternatives-section-list--mobile': isMobile }">
-        <TransitionGroup name="stagger-fade" tag="div">
-          <CardMain
-            v-for="(block, idx) in selectedBlock?.alternative_building_blocks"
-            :key="block.id"
-            :style="{ transitionDelay: (idx * 100) + 'ms' }"
-            :image="getImage(block.category?.slug)"
-            :category="block.category?.title[locale]"
-            :title="block.title[locale]"
-            :description="block.description[locale]"
-            :url="`/building-blocks/${block.id}`"
-            @click="navigateTo(`/building-blocks/${block.id}`)"
-          />
-        </TransitionGroup>
-      </div>
+      <TransitionGroup name="stagger-fade" tag="div" class="alternatives-section-list" :class="{ 'alternatives-section-list--mobile': isMobile }">
+        <CardMain
+          v-for="(block, idx) in selectedBlock?.alternative_building_blocks"
+          :key="block.id"
+          :style="{ transitionDelay: (idx * 100) + 'ms' }"
+          :image="getImage(block.category?.slug)"
+          :category="block.category?.title[locale]"
+          :title="block.title[locale]"
+          :description="block.description[locale]"
+          :url="`/building-blocks/${block.id}`"
+          @click="navigateTo(`/building-blocks/${block.id}`)"
+        />
+      </TransitionGroup>
+
     </div>
-  </main>
+  </div>
 </template>
 <script setup lang="ts">
 import { mapCategory } from '~/utils/mapCategory';
@@ -156,6 +164,20 @@ onMounted(async () => {
 function getImage(category: CategorySlug) {
   if (!category) return '';
   return `/blocks/${mapCategory(category)}-${Math.floor(Math.random() * 3) + 1}.png`;
+}
+
+const copyLinkIcon = ref('copy-link')
+const copyLinkText = ref('Copy link to this building block')
+
+function copyLinkToClipBoard() {
+  navigator.clipboard.writeText(window.location.href);
+  copyLinkIcon.value = 'check'
+  copyLinkText.value =  'Copied!'
+
+  setTimeout(() => { 
+    copyLinkIcon.value = 'copy-link' 
+    copyLinkText.value = 'Copy link to this building block'
+  }, 5000)
 }
 
 
@@ -212,7 +234,7 @@ const externalLinksParagraph = {
 }
 
 .section-title {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
@@ -246,6 +268,40 @@ const externalLinksParagraph = {
   }
 }
 
+.copy-link-container {
+  width: 24rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  border-radius: 1rem;
+  padding: 2rem;
+  cursor: default;
+  border: 1px solid map-get($colors, 'gray-light-mode-200');
+
+  button {
+    display: flex;
+    padding: 10px 14px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    border: 0;
+    padding: 1rem 0.75rem;
+  }
+
+  .icon-svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+}
+}
+
+.copy-link-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
 
 .links {
   padding: $desktop-padding;
@@ -270,6 +326,7 @@ const externalLinksParagraph = {
 .external-links {
   display: flex;
   flex-direction: column;
+
  
   gap: 2rem;
   width: 20rem;
@@ -289,7 +346,8 @@ const externalLinksParagraph = {
 
   &-list {
     display: flex;
-    gap: 1rem;
+    gap: 2rem;
+    flex-wrap: wrap;
 
     &--mobile {
       flex-direction: column;
