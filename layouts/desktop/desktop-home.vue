@@ -13,7 +13,8 @@
       </div>
 
       <footer class="footer">
-        <FooterDesktop />
+        <FooterMobile v-if="isMobile" :items="orderedRoutes"/>
+        <FooterDesktop v-else :items="orderedRoutes"/>
       </footer>
     </div>
   </div>

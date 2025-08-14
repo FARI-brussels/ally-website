@@ -1,19 +1,29 @@
 <template>
   <div class="layout">
+
     <header class="header">
       <HeaderDesktop
+        v-if="!isMobile"
+        :items="orderedRoutes"
+        :locale="locale"
+        @change:locale="setLocale"
+      />
+      <HeaderMobile
+        v-if="isMobile"
         :items="orderedRoutes"
         :locale="locale"
         @change:locale="setLocale"
       />
     </header>
+
     <div class="content-wrapper">
-      <div class="content">
+      <main class="content">
         <NuxtPage />
-      </div>
+      </main>
 
       <footer class="footer">
-        <FooterDesktop />
+        <FooterMobile v-if="isMobile" :items="orderedRoutes"/>
+        <FooterDesktop v-else :items="orderedRoutes"/>
       </footer>
     </div>
   </div>
@@ -23,6 +33,7 @@
 const { setLocale } = useGlobalStore();
 const { locale } = storeToRefs(useGlobalStore());
 
+const { isMobile } = useIsMobile();
 const desiredOrder = ["/", "/building-blocks", "/cases", "/about"];
 
 const routeLabels: Record<string, string> = {
