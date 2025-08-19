@@ -236,6 +236,7 @@ const buildingBlocks = computed((): Array<{ id: number; title: string; descripti
   .category-color { width: 4.8rem; height: 3.3rem; border-radius: .4rem; }
 }
 .categories-section-mobile {
+  padding: $mobile-padding;
   flex-direction: column;
   .categories-title, .categories-title-mobile, .categories-list, .categories-list-mobile { width: 100%; }
   .card, .card-mobile { flex-basis: 100%; max-width: 100%; }

@@ -1,7 +1,7 @@
 <template>
   <div class="layout">
 
-    <header class="header">
+    <header class="header" :class="{mobile: isMobile}">
       <HeaderDesktop
         v-if="!isMobile"
         :items="orderedRoutes"
@@ -17,7 +17,9 @@
     </header>
 
     <div class="content-wrapper">
-      <main class="content">
+      <main class="content" :class="{
+        mobile: isMobile
+      }">
         <NuxtPage />
       </main>
 
@@ -80,11 +82,13 @@ const orderedRoutes = desiredOrder.map((path) => {
 }
 
 .content {
-  // flex: 1;
   background-color: #ffffff;
-  // overflow-y: auto;
   padding: 0rem $desktop-padding;
   height: fit-content;
+}
+
+.mobile {
+  padding: 0rem $mobile-padding;
 }
 
 .footer {
