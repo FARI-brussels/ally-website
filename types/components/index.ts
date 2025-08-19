@@ -17,3 +17,38 @@ export type {
   OptionProps,
   OptionsList,
 };
+
+// Shared types for reuse across the app
+export interface Category {
+  title?: { [locale: string]: string };
+  description?: { [locale: string]: string };
+  slug: string;
+}
+
+export interface BlockCategory {
+  slug: string;
+  title?: { [locale: string]: string };
+}
+
+export interface Block {
+  id: number;
+  title?: { [locale: string]: string };
+  description?: { [locale: string]: string };
+  category?: BlockCategory;
+  cost?: string;
+  effort?: string;
+}
+
+export interface PagesStore {
+  home?: {
+    title?: { [locale: string]: string };
+    content?: import("../parsers/Page").HomePageContent[];
+    hero?: {
+      media?: string;
+      title?: { [locale: string]: string };
+      description?: { [locale: string]: string };
+    };
+  };
+}
+
+export type CategorySlug = 'governance_values' | 'culture_skills' | 'communication_involvement' | 'methods_processes';

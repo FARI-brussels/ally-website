@@ -2,36 +2,49 @@
   <div class="card">
     <h2 class="title">{{ title }}</h2>
     <div class="item">
-      <img src="~/assets/icons/clock-icon-black.svg" />
+      <span class="icon-container bg-color-gray-light-mode-200">
+        <img src="~/assets/icons/clock-icon-black.svg" class="icon-svg" >
+      </span>
       {{ time }}
     </div>
     <div class="item">
-      <img src="~/assets/icons/money-icon-black.svg" />
+      <span class="icon-container bg-color-gray-light-mode-200">
+        <img src="~/assets/icons/money-icon-black.svg" class="icon-svg" >
+      </span>
       {{ cost }}
     </div>
     <div class="item">
-      <img src="~/assets/icons/thunder-icon-black.svg" />
+      <span class="icon-container bg-color-gray-light-mode-200">
+        <img src="~/assets/icons/thunder-icon-black.svg" class="icon-svg" >
+      </span>
       {{ effort }}
     </div>
-    <div class="item">
-      <img src="~/assets/icons/thunder-icon-black.svg" />
-      {{ involvement }}
+    
+    <div class="item involvement-item">
+      <div class="involvement-label">{{ involvementLabel }}</div>
+      <span class="chip-list">
+        <span v-for="chip in involvementChips" :key="chip" class="chip bg-color-gray-light-mode-200 border-color-gray-light-mode-500 color-gray-light-mode-500">
+          {{ chip }}
+        </span>
+      </span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { RequirementCardProps } from "~/types/components/Card";
+import type { Locale, LocaleMap, LevelMap } from '~/types/Locale';
+import { computed } from 'vue';
 
 const props = defineProps<RequirementCardProps>();
 
-const localeTitle = {
+const localeTitle: LocaleMap = {
   en: "What do you need?",
   fr: "De quoi avez-vous besoin?",
   nl: "Wat heb je nodig?",
 };
 
-const localeTime = {
+const localeTime: LevelMap = {
   low: {
     en: "low time consumption",
     fr: "faible consommation de temps",
@@ -49,7 +62,7 @@ const localeTime = {
   },
 };
 
-const localeEffort = {
+const localeEffort: LevelMap = {
   low: {
     en: "low effort",
     fr: "faible effort",
@@ -67,7 +80,7 @@ const localeEffort = {
   },
 };
 
-const localeCost = {
+const localeCost: LevelMap = {
   low: {
     en: "low cost",
     fr: "faible coût",
@@ -85,36 +98,53 @@ const localeCost = {
   },
 };
 
-const title = computed(() => localeTitle[props.locale]);
+const involvementLabelMap: LocaleMap = {
+  en: "Who's involved:",
+  fr: "Qui est impliqué:",
+  nl: "Wie is betrokken:",
+};
 
-const time = computed(() => localeTime?.[props.time]?.[props.locale]);
 
-const effort = computed(() => localeEffort?.[props.effort]?.[props.locale]);
 
-const cost = computed(() => localeCost?.[props.cost]?.[props.locale]);
+const title = computed(() => getLocaleString(localeTitle, props.locale));
+const time = computed(() => getLevelLocaleString(localeTime, props.time, props.locale));
+const effort = computed(() => getLevelLocaleString(localeEffort, props.effort, props.locale));
+const cost = computed(() => getLevelLocaleString(localeCost, props.cost, props.locale));
+const involvementLabel = computed(() => getLocaleString(involvementLabelMap, props.locale));
+const involvementChips = computed(() =>
+  props.involvement
+    .split('\n')
+    .map(s => s.trim())
+    .filter(Boolean)
+);
 
-const involvement = computed(() => props.involvement);
-// const involvement = computed(() => localeInvolvement?.[props.involvement]?.[props.locale])
+
+function getLocaleString(map: LocaleMap, locale: Locale): string {
+  return map[locale] ?? '';
+}
+
+function getLevelLocaleString(map: LevelMap, level: string, locale: Locale): string {
+  return map[level]?.[locale] ?? '';
+}
+
 </script>
 
 <style scoped lang="scss">
-@use "/assets/scss/colors" as *;
+@use "/assets/scss/colors";
 @use "/assets/scss/typography" as *;
 @use "sass:color";
+@use "sass:map";
 
 .card {
   width: 24rem;
-  height: 20rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.5rem;
-  color: $text-color;
-  background-color: rgba($light-blue, 0.6);
+  gap: 1rem;
   border-radius: 1rem;
-  padding: 1.25rem;
+  padding: 2rem;
   cursor: default;
-  // border: 2px solid $light-blue;
+  border: 1px solid map.get(colors.$colors, 'gray-light-mode-200');
 }
 
 .title {
@@ -126,11 +156,55 @@ const involvement = computed(() => props.involvement);
 .item {
   display: flex;
   align-items: center;
-  font-weight: $text-medium-bold;
   gap: 1rem;
 }
 
-img {
-  max-width: 2rem;
+.icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: map.get(colors.$colors, 'gray-light-mode-200');
+  margin-right: 0.5rem;
+}
+
+.icon-svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+}
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid map.get(colors.$colors, 'gray-light-mode-300');
+  color: map.get(colors.$colors, 'gray-light-mode-500');
+  background-color: map.get(colors.$colors, 'gray-light-mode-200');
+  border-radius: 1rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.95rem;
+  font-weight: $text-medium-bold;
+  margin-right: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.involvement-item {
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.involvement-label {
+  font-size: 1rem;
+  font-weight: $text-medium;
+  margin-bottom: 0.5rem;
+  color: map.get(colors.$colors, 'gray-light-mode-500');
 }
 </style>

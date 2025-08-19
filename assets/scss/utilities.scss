@@ -1,0 +1,39 @@
+@use 'spacing' as *;
+@use 'colors';
+@use 'class-generator';
+
+.color {
+  @include class-generator.class-generator(colors.$colors, 'color');
+}
+
+.bg-color {
+  @include class-generator.class-generator(colors.$colors, 'background-color');
+}
+
+.border-color {
+  @include class-generator.class-generator(colors.$colors, 'border-color');
+}
+
+.stroke-color {
+  @include class-generator.class-generator(colors.$colors, 'stroke');
+}
+
+.fill-color {
+  @include class-generator.class-generator(colors.$colors, 'fill');
+}
+
+// Spacing utility classes
+.m {
+  @include class-generator.class-generator($spacings, 'margin', '-m-');
+}
+.p {
+  @include class-generator.class-generator($spacings, 'padding', '-p-');
+}
+.gap {
+  @include class-generator.class-generator($spacings, 'gap', '-gap-');
+}
+
+// Border radius utility classes
+.radius {
+  @include class-generator.class-generator($radius, 'border-radius', '-radius-');
+}

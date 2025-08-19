@@ -24,3 +24,18 @@ export interface Page {
   };
   sections: Section[];
 }
+
+// --- Added for home/index page types ---
+export interface HomePageContent {
+  [locale: string]: string;
+}
+export interface HomePageHero {
+  media?: string;
+  title?: { [locale: string]: string };
+  description?: { [locale: string]: string };
+}
+export interface HomePage {
+  title?: { [locale: string]: string };
+  content?: HomePageContent[];
+  hero?: HomePageHero;
+}

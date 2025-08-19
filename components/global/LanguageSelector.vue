@@ -5,7 +5,7 @@
       aria-haspopup="true"
       :aria-expanded="isOpen"
     >
-      <img alt="icon" src="/assets/icons/language-icon.svg" class="icon" />
+      <img alt="icon" src="/assets/icons/language-icon.svg" class="icon" >
 
       {{ props.locale?.split("-").pop() }}
     </button>
@@ -32,7 +32,14 @@ interface Props {
   locale: Locale;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  locales: () => [
+    { label: "EN", value: "en" },
+    { label: "FR", value: "fr" },
+    { label: "NL", value: "nl" },
+  ],
+  locale: "en",
+});
 const emit = defineEmits<{ (e: "change", locale: Locale): void }>();
 
 const isOpen = ref(false);
@@ -62,7 +69,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 </script>
 
 <style scoped lang="scss">
-@use "/assets/scss/colors" as *;
+@use "/assets/scss/colors";
 @use "/assets/scss/typography" as *;
 @use "sass:color";
 
@@ -77,7 +84,7 @@ const handleKeydown = (event: KeyboardEvent) => {
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 4px;
-  color: $medium-purple;
+  color: colors.$medium-purple;
   text-transform: uppercase;
   display: flex;
   align-items: center;
@@ -97,9 +104,9 @@ const handleKeydown = (event: KeyboardEvent) => {
   padding: 0.5rem;
   width: 100%;
   z-index: 1000;
-  -webkit-box-shadow: 0px 0px 2.5rem -22px color.scale($text-color, $alpha: -0.85%);
-  -moz-box-shadow: 0px 0px 2.5rem -22px color.scale($text-color, $alpha: -0.85%);
-  box-shadow: 0px 0px 2.5rem -22px color.scale($text-color, $alpha: -0.85%);
+  -webkit-box-shadow: 0px 0px 2.5rem -22px color.scale(colors.$text-color, $alpha: -0.85%);
+  -moz-box-shadow: 0px 0px 2.5rem -22px color.scale(colors.$text-color, $alpha: -0.85%);
+  box-shadow: 0px 0px 2.5rem -22px color.scale(colors.$text-color, $alpha: -0.85%);
   li {
     padding: 0.5rem;
     cursor: pointer;
@@ -114,10 +121,10 @@ const handleKeydown = (event: KeyboardEvent) => {
 }
 
 .dropdown-menu li[aria-selected="true"] {
-  color: $medium-purple;
+  color: colors.$medium-purple;
 }
 
 .dropdown-menu li:hover {
-  background-color: lighten($medium-purple, 50%);
+  background-color: color.adjust(colors.$medium-purple, $lightness: 50%);
 }
 </style>

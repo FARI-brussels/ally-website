@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <!-- <RouterLink v-for="{ name, path } in items" :key="path" :to="path">{{ name }}</RouterLink> -->
+    <RouterLink v-for="{ name, path, label } in items" :key="path" :to="path">     {{ label || name }}</RouterLink>
   </nav>
 </template>
 
@@ -9,7 +9,7 @@ defineProps<{ items?: unknown[] }>();
 </script>
 
 <style scoped lang="scss">
-@use "/assets/colors" as *;
+@use "~/assets/scss/colors" as *;
 @use "sass:color";
 
 nav {

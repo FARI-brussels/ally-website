@@ -1,18 +1,25 @@
 <template>
-  <nav>
-    <NuxtLink v-for="{ name, path } in items" :key="path" :to="path"
-      >{{ name }}
+  <nav :class="{ dark: $props.dark, small: $props.small }">
+    <NuxtLink v-for="{ name, path, label } in items" :key="path" :to="path">
+      {{ label || name }}
     </NuxtLink>
   </nav>
 </template>
 
 <script setup lang="ts">
-defineProps<{ items?: unknown[] }>();
+
+  const props = defineProps<{ 
+    items?: { name?: string; path?: string; label?: string }[] 
+    dark?: boolean
+    small?: boolean
+  }>();
+
 </script>
 
 <style scoped lang="scss">
-@use "/assets/scss/colors" as *;
+@use "/assets/scss/colors";
 @use "sass:color";
+@use "sass:map";
 
 nav {
   width: 100%;
@@ -20,7 +27,7 @@ nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  color: $text-color;
+  color: colors.$text-color;
   white-space: nowrap;
 
   a.router-link-exact-active {
@@ -35,9 +42,24 @@ nav {
     display: inline-block;
     margin-right: 2.875rem;
     &:hover {
-      color: $deep-purple;
+      color: colors.$deep-purple;
       background-color: transparent;
     }
   }
 }
+
+.dark {
+  color: map.get(colors.$colors, "brand-200");
+  a {
+    &:hover {
+      color: white;
+    }
+  }
+}
+
+.small {
+  font-size: 1rem;
+}
+
+
 </style>
