@@ -1,6 +1,11 @@
 <template>
   <div class="main">
-    <div class="introduction full-width-section bg-color-brand-25">
+    <div 
+      class="introduction full-width-section bg-color-brand-25"
+      :class="{
+        'introduction-mobile': isMobile
+      }"
+      >
       <strong class="color-brand-700">About</strong>
       <h1>{{ pageData.title }}</h1>
       <p>{{ pageData.description }}</p>
@@ -259,6 +264,16 @@ const legislationSection = {
 @use "/assets/scss/colors" as *;
 @use "/assets/scss/spacing" as *;
 
+
+.introduction {
+  padding: 4rem 8rem;
+  &-mobile {
+    padding: $mobile-padding;
+  }
+}
+
+
+
 .full-width-section {
   width: 100vw;
   position: relative;
@@ -270,7 +285,7 @@ const legislationSection = {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4rem 8rem;
+
   gap: 1rem;
 }
 
@@ -331,6 +346,7 @@ const legislationSection = {
   height: 100%;
   margin-top: 2rem;
   display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
   text-align: left;
   justify-content: space-evenly;
