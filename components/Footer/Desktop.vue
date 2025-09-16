@@ -3,7 +3,7 @@
     <div class='content'>
       <div class="footer-main">
         <img class="logo ally-logo" src="/assets/logos/logo_ALLY_white.svg" >
-        <p class="footer-description">ALLY helps you turn AI principles into concrete action, guiding your organisation toward transparency, accountability, and trust.</p>
+        <p class="footer-description">ALLY is a comprehensive guide designed to help organisations create an actionable strategy for responsible AI.</p>
         <NavbarDesktop :items="$props.items" dark small class="navbar"/>
 
       </div>

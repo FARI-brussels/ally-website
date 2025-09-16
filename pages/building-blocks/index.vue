@@ -392,7 +392,8 @@ const categoryConfigs = [
 }
 
 .block-section {
-  margin: 2rem 0;
+  margin: 5rem 0 2rem 0;
+
 }
 
 .fade-enter-active, .fade-leave-active {

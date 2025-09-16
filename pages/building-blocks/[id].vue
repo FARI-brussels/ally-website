@@ -5,8 +5,20 @@
         <span class="spinner"></span>
       </div>
     </Transition>
+  <div
+    class="breadcrumb"
+    v-if="selectedBlock?.category?.title?.[locale] && selectedBlock?.title?.[locale]"
+  >
+  <BreadCrumb 
+    categoryText="Building block"
+    :labelText="selectedBlock?.category?.title?.[locale] || ''"
+    :colorKey="mapCategory(selectedBlock?.category?.slug)"
+    />
+  </div>
+
 
     <div class="intro-section" :class="{ 'intro-section--mobile': isMobile }">
+      
         <PageSection
           html
           :title="selectedBlock?.title[locale] || ''"
@@ -89,8 +101,6 @@
         />
         <div class="external-links-list" :class="{ 'external-links-list--mobile': isMobile }">
 
-
-
         <a 
           v-for="link in selectedBlock?.external_links"
           :key="link.id"
@@ -100,13 +110,12 @@
 
         >
         <div class="external-links-title">
-          <h2 class="section-title">{{ link.title[locale] }}</h2>
+          <h2 class="section-title-small">{{ link.title[locale] }}</h2>
 
           <img src="/assets/icons/external-link.svg" class="external-links-title-icon">
         </div>
         <p>{{ link.description?.[locale] }}</p>
       </a>
-
     </div>
       </div>
 
@@ -134,6 +143,7 @@
         />
       </TransitionGroup>
 
+
     </div>
   </div>
 </template>
@@ -159,6 +169,8 @@ onMounted(async () => {
   setTimeout(() => {
     pageVisible.value = true;
   }, 50);
+
+  console.log(selectedBlock.value);
 });
 
 function getImage(category: CategorySlug) {
@@ -218,23 +230,31 @@ const externalLinksTitle = {
 };
 
 const externalLinksParagraph = {
-  en: "Explore these supporting materials to enhance your understanding and gain comprehensive insights into the topic at hand.",
+  en: "Explore these resources and start right away",
   nl: "Verken deze ondersteunende materialen om uw begrip te vergroten en uitgebreid inzicht te krijgen in het onderwerp.",
   fr: "Explorez ces documents de soutien pour améliorer votre compréhension et obtenir des informations complètes sur le sujet traité.",
 };
 </script>
 
 <style scoped lang="scss">
-@use "/assets/scss/colors";
+@use "/assets/scss/colors" as *;
 @use "/assets/scss/spacing" as *;
 @use "sass:map";
+@use 'sass:color';
 .main {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+
+
 .section-title {
+  font-size: 2.2rem;
+  font-weight: bold;
+}
+
+.section-title-small {
   font-size: 1.5rem;
   font-weight: bold;
 }
@@ -279,7 +299,7 @@ const externalLinksParagraph = {
   border-radius: 1rem;
   padding: 2rem;
   cursor: default;
-  border: 1px solid map.get(colors.$colors, 'gray-light-mode-200');
+  border: 1px solid map.get($colors, 'gray-light-mode-200');
 
   button {
     display: flex;
@@ -320,9 +340,17 @@ const externalLinksParagraph = {
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
+  padding: 0;
+  padding-top: 3rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
+
+
 
 .external-links {
   display: flex;

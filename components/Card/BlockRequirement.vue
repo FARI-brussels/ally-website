@@ -2,19 +2,19 @@
   <div class="card">
     <h2 class="title">{{ title }}</h2>
     <div class="item">
-      <span class="icon-container bg-color-gray-light-mode-200">
+      <span class="icon-container bg-color-gray-light-mode-50">
         <img src="~/assets/icons/clock-icon-black.svg" class="icon-svg" >
       </span>
       {{ time }}
     </div>
     <div class="item">
-      <span class="icon-container bg-color-gray-light-mode-200">
+      <span class="icon-container bg-color-gray-light-mode-50">
         <img src="~/assets/icons/money-icon-black.svg" class="icon-svg" >
       </span>
       {{ cost }}
     </div>
     <div class="item">
-      <span class="icon-container bg-color-gray-light-mode-200">
+      <span class="icon-container bg-color-gray-light-mode-50">
         <img src="~/assets/icons/thunder-icon-black.svg" class="icon-svg" >
       </span>
       {{ effort }}
@@ -23,7 +23,7 @@
     <div class="item involvement-item">
       <div class="involvement-label">{{ involvementLabel }}</div>
       <span class="chip-list">
-        <span v-for="chip in involvementChips" :key="chip" class="chip bg-color-gray-light-mode-200 border-color-gray-light-mode-500 color-gray-light-mode-500">
+        <span v-for="chip in involvementChips" :key="chip" class="chip bg-color-gray-light-mode-50 border-color-gray-light-mode-500 color-gray-light-mode-500">
           {{ chip }}
         </span>
       </span>
@@ -166,7 +166,6 @@ function getLevelLocaleString(map: LevelMap, level: string, locale: Locale): str
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 50%;
-  background-color: map.get(colors.$colors, 'gray-light-mode-200');
   margin-right: 0.5rem;
 }
 
@@ -187,7 +186,6 @@ function getLevelLocaleString(map: LevelMap, level: string, locale: Locale): str
   align-items: center;
   border: 1px solid map.get(colors.$colors, 'gray-light-mode-300');
   color: map.get(colors.$colors, 'gray-light-mode-500');
-  background-color: map.get(colors.$colors, 'gray-light-mode-200');
   border-radius: 1rem;
   padding: 0.25rem 0.75rem;
   font-size: 0.95rem;

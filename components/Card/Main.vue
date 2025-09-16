@@ -31,6 +31,9 @@ defineProps<{
 </script>
 
 <style scoped lang="scss">
+@use "/assets/scss/colors" as *;
+@use "sass:map";
+
 .card {
   cursor: pointer;
   display: flex;
@@ -59,7 +62,8 @@ defineProps<{
 }
 .card-category {
   font-size: 0.85rem;
-  color: #7b5be6;
+  color: map.get($colors, 'brand-700');
+  
   font-weight: 600;
   margin-bottom: 0.3rem;
 }

@@ -1,5 +1,11 @@
 <template>
   <div class="main" :class="{ 'page-fade-in': pageVisible, 'main--loading': loading }">
+
+
+    <div class="breadcrumb">
+      <BreadCrumb categoryText="Case" :labelText="selectedCase?.title?.[locale] || ''"/>
+    </div>
+
     <div class="intro-section" :class="{ 'intro-section--mobile': isMobile }">
       <PageSection
         html
@@ -7,6 +13,7 @@
         :description="selectedCase?.description[locale]"
       />
     </div>
+
 
     <div class="main-content">
       <div class="page-items" :class="{ 'page-items--mobile': isMobile }">
@@ -53,7 +60,7 @@ onMounted(async () => {
   setTimeout(() => 
     pageVisible.value = true, 50);
 
-    console.log(selectedCase.value)
+    console.log(selectedCase.value);
 });
 
 const { isMobile } = useIsMobile();
@@ -74,11 +81,15 @@ const blocksUsed = {
 @use "/assets/scss/colors" as *;
 @use "/assets/scss/spacing" as *;
 
-// Layout
 .main {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section-title {
+  font-size: 2.2rem;
+  margin-top: 1.2rem;
 }
 
 .page-fade-in {
