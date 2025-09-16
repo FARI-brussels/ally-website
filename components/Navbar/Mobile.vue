@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <RouterLink v-for="{ name, path, label } in items" :key="path" :to="path">     {{ label || name }}</RouterLink>
+    <NuxtLink v-for="{ name, path, label } in items" :key="path" :to="path">     {{ label || name }}</NuxtLink>
   </nav>
 </template>
 
@@ -14,7 +14,8 @@ defineProps<{ items?: unknown[] }>();
 
 nav {
   width: 100%;
-  font-size: 1rem;
+
+  line-height: 24px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
@@ -32,6 +33,9 @@ nav {
   a {
     display: inline-block;
     margin-right: 2.875rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    font-size: 1rem;
     &:hover {
       color: $deep-purple;
       background-color: transparent;

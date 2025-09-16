@@ -48,6 +48,14 @@
           <h2 class="title">{{ card.title }}</h2>
           <p class="description">{{ card.description }}</p>
         </div>
+                <AllyButton
+          append-icon="arrow-right"
+          variant="primary"
+          class="action"
+          :block="isMobile"
+          label="View blocks"
+          @click="navigateTo('/building-blocks')"
+        />
       </div>
     </div>
 
@@ -64,7 +72,7 @@
           variant="primary"
           class="action"
           :block="isMobile"
-          label="discover all cases"
+          label="Discover all cases"
           @click="navigateTo('/cases')"
         />
       </div>
@@ -72,12 +80,15 @@
         <CardMain
           v-for="{ id, title, description } in cases.slice(0, 3)"
           :key="id"
-          category="Case Study"
+          category="Case study"
           :title="title[locale]"
           :description="description[locale]"
           :url="`/cases/${id}`"
         />
       </div>
+    <AllyDivider />
+
+    <WhyAlly />
     </div>
   </div>
 </template>
@@ -90,6 +101,8 @@ import { isCategorySlug } from '~/utils/category';
 import type { HeroProps } from '~/types/components/Hero';
 import type { HomePageContent } from '~/types/parsers/Page';
 import type { Category, Block, PagesStore } from '~/types/components';
+import AllyDivider from '@/components/Divider.vue';
+
 
 const { getBuildingBlockCategories } = useGlobalStore();
 const { getStaticPage } = useStaticPageStore();
@@ -177,6 +190,8 @@ const buildingBlocks = computed((): Array<{ id: number; title: string; descripti
   }
   return Object.values(uniqueByCategory);
 });
+
+
 </script>
 
 <style scoped lang="scss">
@@ -189,7 +204,7 @@ const buildingBlocks = computed((): Array<{ id: number; title: string; descripti
 }
 
 .info-section {
-  margin-top: 2rem;
+  margin-top: 3rem;
   display: flex;
   justify-content: space-between;
   align-items: start;
@@ -213,7 +228,7 @@ const buildingBlocks = computed((): Array<{ id: number; title: string; descripti
   }
 }
 
-.building-blocks-section { margin: $desktop-padding 0; }
+.building-blocks-section { margin: 3rem 0; }
 
 .full-width-section {
   width: 100vw;
@@ -231,7 +246,17 @@ const buildingBlocks = computed((): Array<{ id: number; title: string; descripti
   gap: 1rem;
   .categories-title { width: 28%; min-width: 250px; }
   .categories-list { width: 70%; display: flex; flex-wrap: wrap; gap: 1rem;
-    .card { flex: 1 1 calc(50% - 1rem); max-width: calc(50% - 1rem); min-width: 250px; }
+    .card { 
+      flex: 1 1 calc(50% - 1rem); 
+      max-width: calc(50% - 1rem); 
+      min-width: 250px; 
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      &-mobile {
+        max-width: 100%;
+      }
+    }
   }
   .category-color { width: 4.8rem; height: 3.3rem; border-radius: .4rem; }
 }
@@ -239,13 +264,21 @@ const buildingBlocks = computed((): Array<{ id: number; title: string; descripti
   padding: $mobile-padding;
   flex-direction: column;
   .categories-title, .categories-title-mobile, .categories-list, .categories-list-mobile { width: 100%; }
-  .card, .card-mobile { flex-basis: 100%; max-width: 100%; }
+
+  .card, .card-mobile { 
+    flex-basis: 100%; 
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
   .card-mobile {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
+    max-width: 100%;
   }
   .categories-list-mobile {
     display: flex;
@@ -262,7 +295,12 @@ const buildingBlocks = computed((): Array<{ id: number; title: string; descripti
   }
 }
 
-.case-preview { display: flex; gap: 2rem; flex-wrap: wrap; }
+.case-preview { 
+  display: flex; 
+  gap: 2rem; 
+  flex-wrap: wrap; 
+}
+
 .case-preview-mobile { 
   flex-direction: column; 
   display: flex;
@@ -270,7 +308,30 @@ const buildingBlocks = computed((): Array<{ id: number; title: string; descripti
   justify-content: center;
   gap: 2rem;
 }
-.cases-section { display: flex; flex-direction: column; margin: 2rem 0; gap: 1rem; }
-.cases-introduction { display: flex; justify-content: space-between; align-items: start; .cases-title { width: 60%; } }
-.cases-introduction-mobile { flex-direction: column; .cases-title, .cases-title-mobile { width: 100%; } }
+.cases-section { 
+  display: flex; 
+  flex-direction: column; 
+  margin: 2rem 0; 
+  gap: 1rem; 
+}
+
+.cases-introduction { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: start; 
+
+  .cases-title { 
+    width: 60%; 
+    margin: 2rem 0;
+  } 
+}
+
+.cases-introduction-mobile { 
+  flex-direction: column; 
+  .cases-title, .cases-title-mobile { 
+    width: 100%; 
+  } 
+}
+
+
 </style>

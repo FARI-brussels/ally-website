@@ -1,5 +1,5 @@
 export const categoryMappings = { 
-  'culture_skills': "cultures-skills", 
+  'culture_skills': "culture-skills", 
   'governance_values': "values-structures", 
   'methods_processes': "methods-processes",
   "communication_involvement": "communication-participation"

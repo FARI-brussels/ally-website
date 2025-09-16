@@ -33,7 +33,7 @@
 @use "sass:map";
 
 .wrapper {
-  padding: 2rem 4rem;
+  padding: 2rem 3rem;
 }
 
 .content {
@@ -57,16 +57,25 @@
 .logos {
   display: flex;
   flex-wrap: wrap;
+  flex-grow: 0;
   gap: 2rem;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 .logo {
-  height: 2.5rem;
-  width: auto;
+  height: auto;
+  width: 9rem;
 }
+// .logo {
+//   height: 2rem;
+//   width: auto;
+// }
 
 .ally-logo {
   height: 4rem;
+  width: auto;
 }
 
 .navbar {

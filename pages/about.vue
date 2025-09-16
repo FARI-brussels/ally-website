@@ -1,8 +1,13 @@
 <template>
   <div class="main">
-    <div class="introduction full-width-section bg-color-brand-25">
+    <div 
+      class="introduction full-width-section bg-color-brand-25"
+      :class="{
+        'introduction-mobile': isMobile
+      }"
+      >
       <strong class="color-brand-700">About</strong>
-      <h1>{{ pageData.title }}</h1>
+      <h1 class="title">{{ pageData.title }}</h1>
       <p>{{ pageData.description }}</p>
 
       <section class="intro-sections">
@@ -56,21 +61,11 @@
       </div>
       
     </div>
-    <div class="why-ally-container">
-      <h2 class="why-ally-title">Why should you use Ally?</h2>
-      <p class="why-ally-description">Choose your path to action: run a quick scan to identify your next steps or join a workshop to co-create your responsible AI strategy.</p>
-   
-    <section class="why-ally-sections">
-      <div v-for="(section, idx) in whyAllySections" :key="idx" class="why-ally-section">
-        <div class="icon-container bg-color-brand-200">
-          <img :src="section.icon" :alt="section.alt" >
-        </div>
-        <h2>{{ section.title }}</h2>
-        <p>{{ section.text }}</p>
-      </div>
-    </section>
-  </div>
+
+    <WhyAlly />
+
   <AllyDivider />
+
   <div class="ally-process-container">
     <h2 class="ally-process-title">The ALLY Process</h2>
     <p class="ally-process-description">ALLY supports organisations step by step: from exploring challenges and identifying priorities, to planning with tailored building blocks, building your governance approach, and sharing your progress. Whether you're just starting or ready to scale, this process helps you turn ethical intentions into tangible actions.</p>
@@ -79,7 +74,7 @@
     class="ally-process-sections"
     :class="{ 'mobile': isMobile }"
   >
-    <div v-for="(section, idx) in allyProcessSections" :key="idx" class="ally-process-section bg-color-gray-light-mode-100">
+    <div v-for="(section, idx) in allyProcessSections" :key="idx" class="ally-process-section bg-color-gray-light-mode-50">
       <img :src="section.icon" :alt="section.alt" >
       <h2>{{ section.title }}</h2>
       <p>{{ section.text }}</p>
@@ -184,43 +179,6 @@ const extraSections = [
 ];
 
 
-const whyAllySections = [
-  {
-    icon: successIcon,
-    alt: 'Pillars',
-    title: 'Responsible AI Success?',
-    text: 'ALLY boosts your chances of designing, developing, implementing, and using responsible AI innovations.',
-  },
-  {
-    icon: trustIcon,
-    alt: 'Pillars',
-    title: 'Earn Trust and Reputation',
-    text: 'Responsible AI benefits society and your business alike by building trust and credibility with every stakeholder.',
-  },
-  {
-    icon: solutionsIcon,
-    alt: 'Pillars',
-    title: 'Pragmatic Ethical Solutions',
-    text: 'ALLY lays out clear, actionable steps to embed ethics in organisation-wide AI governance, drawing on others\' successes and lessons to strengthen your own strategy.',
-  },
-]
-
-const logos = [
-  {
-    src: kdmIcon,
-    alt: 'KDM',
-    description:
-      'The Knowledge Centre Data & Society is the central hub for the <strong>legal, social and ethical aspects </strong> of data-driven and AI applications. It brings together knowledge and experience on the interface of AI, data and societal issues tailored to industry, policy, civil society and the general public. The Knowledge Centre Data & Society has a broad mission and spectrum of activities: advice, training, process guidance, lectures and workshops.',
-  },
-  {
-    src: fariIcon,
-    alt: 'FARI',
-    description:
-      'FARI is an independent, not-for-profit artificial intelligence initiative led by the Vrije Universiteit Brussel (VUB) and the Université Libre de Bruxelles (ULB). The research institute aims to enable, promote and perform excellent cross-disciplinary research on artificial intelligence in Brussels, inspired by the humanistic values of freedom, equality and solidarity that lay at the foundations of both the VUB and the ULB, internationally acclaimed and with a local impact.',
-  },
-];
-
-
 const allyProcessSections = [
   {
     icon: exploreIcon,
@@ -253,11 +211,41 @@ const legislationSection = {
   description: 'ALLY is not a legal compliance tool and does not contain building blocks that directly address compliance with the AI Act, GDPR or any other legal frameworks. However, ALLY does complement legal frameworks, and goes one step further to support you in setting up the structures and actions that are required to achieve responsible AI. To improve your organisation\'s legal compliance specifically, we recommend consulting a legal expert or tool specifically aimed at legal compliance.'
 }
 
+
+const logos = [
+  {
+    src: kdmIcon,
+    alt: 'KDM',
+    description:
+      'The Knowledge Centre Data & Society is the central hub for the <strong>legal, social and ethical aspects </strong> of data-driven and AI applications. It brings together knowledge and experience on the interface of AI, data and societal issues tailored to industry, policy, civil society and the general public. The Knowledge Centre Data & Society has a broad mission and spectrum of activities: advice, training, process guidance, lectures and workshops.',
+  },
+  {
+    src: fariIcon,
+    alt: 'FARI',
+    description:
+      'FARI is an independent, not-for-profit artificial intelligence initiative led by the Vrije Universiteit Brussel (VUB) and the Université Libre de Bruxelles (ULB). The research institute aims to enable, promote and perform excellent cross-disciplinary research on artificial intelligence in Brussels, inspired by the humanistic values of freedom, equality and solidarity that lay at the foundations of both the VUB and the ULB, internationally acclaimed and with a local impact.',
+  },
+];
 </script>
 
 <style scoped lang="scss">
 @use "/assets/scss/colors" as *;
 @use "/assets/scss/spacing" as *;
+
+
+.introduction {
+  padding: 4rem 8rem;
+  &-mobile {
+    padding: $mobile-padding;
+  }
+}
+
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
 
 .full-width-section {
   width: 100vw;
@@ -270,7 +258,7 @@ const legislationSection = {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 4rem 8rem;
+
   gap: 1rem;
 }
 
@@ -331,6 +319,7 @@ const legislationSection = {
   height: 100%;
   margin-top: 2rem;
   display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
   text-align: left;
   justify-content: space-evenly;
@@ -344,24 +333,6 @@ const legislationSection = {
   }
 }
 
-.why-ally {
-  &-container {
-    padding: 4rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  &-title {
-    text-align: center;
-  }
-
-  &-description {
-    text-align: center;
-    max-width: 40rem;
-  }
-}
-
 .ally-process {
   &-container {
     padding: 4rem;
@@ -371,6 +342,8 @@ const legislationSection = {
   }
   
   &-title {
+    font-size: 2rem;
+    font-weight: bold;
     text-align: center;
   }
 

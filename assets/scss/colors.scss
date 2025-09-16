@@ -1,7 +1,7 @@
 @use 'sass:map';
 @use 'sass:color';
 
-$text-color: #414141;
+$text-color: #475467;
 $border-color: #d5d5d5;
 $deep-purple: #341354;
 $medium-purple: #8327cb;
@@ -97,7 +97,7 @@ $colors: (
   "success-900": #074D31,
   "success-950": #053321,
   "values-structures": #5DF0F1,
-  "cultures-skills": #FC59C9,
+  "culture-skills": #FC59C9,
   "communication-participation": #0F47D7,
   "methods-processes": #CE75F5
 );
@@ -115,8 +115,8 @@ $colors: (
 .category-values-structures {
   @include category-gradient(map.get($colors, "values-structures"));
 }
-.category-cultures-skills {
-  @include category-gradient(map.get($colors, "cultures-skills"));
+.category-culture-skills {
+  @include category-gradient(map.get($colors, "culture-skills"));
 }
 .category-communication-participation {
   @include category-gradient(map.get($colors, "communication-participation"));

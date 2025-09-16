@@ -35,7 +35,7 @@ defineProps<HeroProps>();
 .wrapper {
   position: relative;
   display: flex;
-
+  // padding: 2rem 0;
   justify-content: center;
   align-items: center;
   height: 40rem;
@@ -54,7 +54,8 @@ defineProps<HeroProps>();
   align-items: center;
   width: 100%;
   height: 100%;
-  padding-top: 2rem;
+  padding: 4rem;
+  text-align: center;
   background: linear-gradient(
     to bottom,
     map.get(colors.$colors, "brand-800") 0%,
@@ -112,7 +113,7 @@ defineProps<HeroProps>();
     padding-top: 1rem;
   }
   .title {
-    font-size: 1.8rem;
+    font-size: 3rem;
   }
   .description {
     font-size: 1rem;

@@ -10,6 +10,9 @@
 
       <div class="menu" :class="{ visible: isMenuOpen }">
         <div class="menu-title">
+          <NuxtLink :to="'/'">
+            <img class="logo" src="~/assets/logos/logo_ALLY_new.svg" >
+          </NuxtLink>
           <img
             src="@/assets/icons/close-button.svg"
             class="close-button"

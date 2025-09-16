@@ -4,7 +4,7 @@
 
       <div v-if="pageData && !isMobile" class="color-gray-light-mode-900 page-section-wrapper">
         <strong class="color-brand-700"> Cases </strong>
-        <h1 class="color-gray-light-mode-900 title">See responsible AI in action</h1>
+        <h1 class="color-gray-light-mode-900 title">Responsible AI in action</h1>
         <span class="color-gray-light-mode-500 description "> {{ pageData.content[0] }} </span>
       </div>
       <div v-else-if="isMobile" class="color-gray-light-mode-900">
@@ -62,7 +62,7 @@
         <CardMain
           v-for="block in filteredBlocks"
           :key="block.id"
-          category="Case Study"
+          category="Case study"
           :title="block.title[locale]"
           :description="block.description[locale]"
           @click="navigateTo(`/cases/${block.id}`)"
@@ -183,13 +183,17 @@ const filteredBlocks = computed(() => {
 
 .filter-container {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
+  width: 100%;;
 
   .filter-item {
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
+    margin-right: 0.5rem;
     cursor: pointer;
     border: 4px solid transparent;
+    width: fit-content;
     transition:
       border-color 0.35s cubic-bezier(0.22, 1, 0.36, 1),
       background 0.35s cubic-bezier(0.22, 1, 0.36, 1),
@@ -201,6 +205,8 @@ const filteredBlocks = computed(() => {
   .filter-item.selected {
     transform: scale(1.08);
     z-index: 1;
+    color: map-get(colors.$colors, "brand-700" );
+    background-color: map-get(colors.$colors, "brand-100" );
   }
 
   .all-selected {
@@ -222,6 +228,20 @@ const filteredBlocks = computed(() => {
 }
 
 
+  .filter-item.cat-values:hover {
+    border-color: rgba(map.get(colors.$colors, "values-structures"), 0.3);
+  }
+  .filter-item.cat-culture:hover {
+    border-color: rgba(map.get(colors.$colors, "culture-skills"), 0.3);
+  }
+  .filter-item.cat-communication:hover {
+    border-color: rgba(map.get(colors.$colors, "communication-participation"), 0.3);
+  }
+  .filter-item.cat-methods:hover {
+    border-color: rgba(map.get(colors.$colors, "methods-processes"), 0.3);
+  }
+
+
 .content-wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -229,22 +249,23 @@ const filteredBlocks = computed(() => {
   margin-bottom: 2rem;
 }
 
-.filter-item.selected.cat-values {
-  border-color: rgba(map.get(colors.$colors, "values-structures"), 0.3);
-}
-.filter-item.selected.cat-culture {
-  border-color: rgba(map.get(colors.$colors, "cultures-skills"), 0.3);
-}
-.filter-item.selected.cat-communication {
-  border-color: rgba(map.get(colors.$colors, "communication-participation"), 0.3);
-}
-.filter-item.selected.cat-methods {
-  border-color: rgba(map.get(colors.$colors, "methods-processes"), 0.3);
-}
+// .filter-item.selected.cat-values {
+//   border-color: rgba(map.get(colors.$colors, "values-structures"), 0.3);
+// }
+// .filter-item.selected.cat-culture {
+//   border-color: rgba(map.get(colors.$colors, "culture-skills"), 0.3);
+// }
+// .filter-item.selected.cat-communication {
+//   border-color: rgba(map.get(colors.$colors, "communication-participation"), 0.3);
+// }
+// .filter-item.selected.cat-methods {
+//   border-color: rgba(map.get(colors.$colors, "methods-processes"), 0.3);
+// }
 
 .filter-items-group {
   display: flex;
-  gap: 1rem;
+  gap: 1.3rem;
+  // justify-content: space-evenly;
 }
 
 .filter-pop-enter-active,
