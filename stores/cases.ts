@@ -46,9 +46,11 @@ export const useCasesStore = defineStore("cases", () => {
     let alternative_cases: Directuscase[] = [];
     const data = (await client.request(
       readItem("ally_case", id, {
-        fields: ["*.*"],
+    fields: ["*.*"],
       }),
     )) as Directuscase;
+
+    console.log("data case", data);
 
     if (data.external_links && data.external_links.length) {
       const slugs = data.external_links.map(
@@ -66,13 +68,6 @@ export const useCasesStore = defineStore("cases", () => {
         }),
       );
     }
-
-    // if (data.external_links && data.external_links.length)
-    //   external_links = (await client.request(
-    //     readItems("ally_external_link", {
-    //       fields: ["*.*"],
-    //     }),
-    //   )) as DirectusExternalLink[];
 
     if (data.alternative_cases && data.alternative_cases.length)
       alternative_cases = (await client.request(
@@ -111,7 +106,7 @@ async function parseCase(caseItem) {
     id,
     translations,
     alternative_cases = [],
-    building_blocks_used,
+    blocks_used,
   } = caseItem;
 
   const block = {
@@ -120,7 +115,6 @@ async function parseCase(caseItem) {
     content: {},
   };
 
-  // const sectionMap = {};
 
   const { findBlock } = useBuildingBlockStore();
 
@@ -130,15 +124,12 @@ async function parseCase(caseItem) {
     block.content[languages_code] = content;
   });
 
+  const building_blocks_used = blocks_used && await Promise.all(blocks_used.map(async (b) => await findBlock(b.ally_building_block_id)))
+
   return {
     id,
     alternative_cases: await Promise.all(alternative_cases.map(parseCase)),
     ...block,
-    building_blocks_used: building_blocks_used
-      ? await findBlock(building_blocks_used.id)
-      : null,
-    // building_blocks_used: building_blocks_used ?  await Promise.all(
-    //   building_blocks_used.map(({ id }: { id: number }) => findBlock(id)),
-    // ) : [],
+    building_blocks_used
   };
 }

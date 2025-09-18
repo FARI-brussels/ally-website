@@ -32,12 +32,13 @@
       <div class="alternatives-section-list" :class="{ 'alternatives-section-list--mobile': isMobile }">
         <TransitionGroup name="stagger-fade" tag="div">
           <CardMain
-            :image="getImage(selectedCase?.building_blocks_used?.category?.slug)"
-            :category="selectedCase?.building_blocks_used?.category?.title[locale]"
-            :title="selectedCase?.building_blocks_used.title[locale]"
-            :description="selectedCase?.building_blocks_used.description[locale]"
-            :url="`/building-blocks/${selectedCase?.building_blocks_used.id}`"
-            @click="navigateTo(`/building-blocks/${selectedCase?.building_blocks_used.id}`)"
+            v-for="block in selectedCase?.building_blocks_used"
+            :image="getImage(block.category?.slug)"
+            :category="block.category?.title[locale]"
+            :title="block.title[locale]"
+            :description="block.description[locale]"
+            :url="`/building-blocks/${block.id}`"
+            @click="navigateTo(`/building-blocks/${block.id}`)"
           />
         </TransitionGroup>
       </div>
