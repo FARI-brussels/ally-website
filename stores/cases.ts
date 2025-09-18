@@ -46,11 +46,10 @@ export const useCasesStore = defineStore("cases", () => {
     let alternative_cases: Directuscase[] = [];
     const data = (await client.request(
       readItem("ally_case", id, {
-    fields: ["*.*"],
+      fields: ["*.*"],
       }),
     )) as Directuscase;
 
-    console.log("data case", data);
 
     if (data.external_links && data.external_links.length) {
       const slugs = data.external_links.map(
