@@ -13,16 +13,16 @@
       </div>
 
       <footer class="footer">
-        <FooterMobile v-if="isMobile" :items="orderedRoutes"/>
-        <FooterDesktop v-else :items="orderedRoutes"/>
+        <FooterMobile v-if="isMobile" :items="orderedRoutes" />
+        <FooterDesktop v-else :items="orderedRoutes" />
       </footer>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { provide } from 'vue';
-import { useIsMobile } from '~/composables/useIsMobile';
+import { provide } from "vue";
+import { useIsMobile } from "~/composables/useIsMobile";
 
 const { setLocale } = useGlobalStore();
 const { locale } = storeToRefs(useGlobalStore());
@@ -38,8 +38,9 @@ const orderedRoutes = desiredOrder.map((path) =>
 );
 
 const { isMobile } = useIsMobile();
-provide('isMobile', isMobile);
+provide("isMobile", isMobile);
 </script>
+
 <style scoped lang="scss">
 @use "/assets/scss/colors" as *;
 @use "/assets/scss/spacing" as *;
@@ -49,7 +50,6 @@ provide('isMobile', isMobile);
   flex-direction: column;
   width: 100%;
   height: 100%;
-  // justify-content: space-between;
 }
 
 .header {
@@ -58,10 +58,6 @@ provide('isMobile', isMobile);
   top: 0;
   background-color: white;
   z-index: 4;
-
-  // @media (max-width: 600px) {
-  //   padding: 0rem $desktop-padding;
-  // }
 }
 
 .content-wrapper {
@@ -72,9 +68,7 @@ provide('isMobile', isMobile);
 }
 
 .content {
-  // flex: 1;
   background-color: #ffffff;
-  // overflow-y: auto;
   padding: 0rem $desktop-padding;
   height: fit-content;
 

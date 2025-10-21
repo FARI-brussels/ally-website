@@ -1,19 +1,27 @@
 <template>
   <div class="main">
     <div class="filter-container">
-
-      <div v-if="pageData && !isMobile" class="color-gray-light-mode-900 page-section-wrapper">
+      <div
+        v-if="pageData && !isMobile"
+        class="color-gray-light-mode-900 page-section-wrapper"
+      >
         <strong class="color-brand-700"> Cases </strong>
-        <h1 class="color-gray-light-mode-900 title">Responsible AI in action</h1>
-        <span class="color-gray-light-mode-500 description "> {{ pageData.content[0] }} </span>
+        <h1 class="color-gray-light-mode-900 title">
+          Responsible AI in action
+        </h1>
+        <span class="color-gray-light-mode-500 description">
+          {{ pageData.content[0] }}
+        </span>
       </div>
       <div v-else-if="isMobile" class="color-gray-light-mode-900">
         <strong class="color-brand-700"> Cases </strong>
-        <h1 class="color-gray-light-mode-900 title">See responsible AI in action</h1>
-        <span class="color-gray-light-mode-500 description "> {{ pageData.content[0] }} </span>
+        <h1 class="color-gray-light-mode-900 title">
+          See responsible AI in action
+        </h1>
+        <span class="color-gray-light-mode-500 description">
+          {{ pageData?.content[0] }}
+        </span>
       </div>
-
-
     </div>
 
     <div class="filter-container">
@@ -30,7 +38,13 @@
           :class="{ 'all-selected': filters.length === categories.length }"
           @click="() => toggleFilterItem(null)"
         >
-         <span class="color-brand-700">  {{ filters.length === categories.length ? 'Deselect all' : 'Select all' }}</span>
+          <span class="color-brand-700">
+            {{
+              filters.length === categories.length
+                ? "Deselect all"
+                : "Select all"
+            }}</span
+          >
         </div>
         <transition-group
           name="filter-pop"
@@ -42,8 +56,8 @@
             :key="category.label"
             class="filter-item color-gray-light-mode-700"
             :class="[
-              { 'selected': filters.includes(category.value) },
-              category.className
+              { selected: filters.includes(category.value) },
+              category.className,
             ]"
             @click="() => toggleFilterItem(category.value)"
           >
@@ -54,11 +68,7 @@
     </div>
 
     <div class="content-wrapper">
-      <transition-group
-        name="card-pop"
-        tag="div"
-        class="content-wrapper"
-      >
+      <transition-group name="card-pop" tag="div" class="content-wrapper">
         <CardMain
           v-for="block in filteredBlocks"
           :key="block.id"
@@ -73,12 +83,12 @@
 </template>
 
 <script setup lang="ts">
-import type { Ref } from 'vue';
-import type { Case } from '~/types/directus/Case';
-import type { DirectusBuildingBlock } from '~/types/directus/BuildingBlock';
-import FormDropDown from '~/components/Form/DropDown.vue';
-import { useIsMobile } from '~/composables/useIsMobile';
-import type { OptionProps } from '~/types/components/Dropdown';
+import type { Ref } from "vue";
+import type { Case } from "~/types/directus/Case";
+import type { DirectusBuildingBlock } from "~/types/directus/BuildingBlock";
+import FormDropDown from "~/components/Form/DropDown.vue";
+import { useIsMobile } from "~/composables/useIsMobile";
+import type { OptionProps } from "~/types/components/Dropdown";
 
 const { locale } = storeToRefs(useGlobalStore());
 const { pages } = storeToRefs(useStaticPageStore());
@@ -110,22 +120,43 @@ const pageData = computed(() => {
 });
 
 const categories = [
-  { label: "Values & structures", value: "governance_values", className: "cat-values" },
-  { label: "Culture & skills", value: "culture_skills", className: "cat-culture" },
-  { label: "Communication & participation", value: "communication_involvement", className: "cat-communication" },
-  { label: "Methods & processes", value: "methods_processes", className: "cat-methods" },
+  {
+    label: "Values & structures",
+    value: "governance_values",
+    className: "cat-values",
+  },
+  {
+    label: "Culture & skills",
+    value: "culture_skills",
+    className: "cat-culture",
+  },
+  {
+    label: "Communication & participation",
+    value: "communication_involvement",
+    className: "cat-communication",
+  },
+  {
+    label: "Methods & processes",
+    value: "methods_processes",
+    className: "cat-methods",
+  },
 ];
 
-const filters = ref<string[]>([...categories.map(c => c.value)]);
+const filters = ref<string[]>([...categories.map((c) => c.value)]);
 
-const categoryOptions: OptionProps[] = categories.map(c => ({ label: c.label, value: c.value }));
+const categoryOptions: OptionProps[] = categories.map((c) => ({
+  label: c.label,
+  value: c.value,
+}));
 const selectedCategoryOptions = computed<OptionProps[]>({
   get() {
-    return categoryOptions.filter(opt => filters.value.includes(opt.value as string));
+    return categoryOptions.filter((opt) =>
+      filters.value.includes(opt.value as string),
+    );
   },
   set(opts: OptionProps[]) {
-    filters.value = opts.map(opt => opt.value as string);
-  }
+    filters.value = opts.map((opt) => opt.value as string);
+  },
 });
 
 function toggleFilterItem(category: string | null) {
@@ -133,7 +164,7 @@ function toggleFilterItem(category: string | null) {
     if (filters.value.length === categories.length) {
       filters.value = [];
     } else {
-      filters.value = [...categories.map(c => c.value)];
+      filters.value = [...categories.map((c) => c.value)];
     }
     return;
   }
@@ -152,11 +183,14 @@ const filteredBlocks = computed(() => {
       slugs.add(item.building_blocks_used.category.slug.trim());
     }
     if (Array.isArray(item.building_blocks_used?.alternative_building_blocks)) {
-      (item.building_blocks_used.alternative_building_blocks as DirectusBuildingBlock[]).forEach((alt: DirectusBuildingBlock) => {
+      (
+        item.building_blocks_used
+          .alternative_building_blocks as DirectusBuildingBlock[]
+      ).forEach((alt: DirectusBuildingBlock) => {
         if (alt.category?.slug) slugs.add(alt.category.slug.trim());
       });
     }
-    return [...slugs].some(slug => filters.value.includes(slug));
+    return [...slugs].some((slug) => filters.value.includes(slug));
   });
 });
 </script>
@@ -185,7 +219,7 @@ const filteredBlocks = computed(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  width: 100%;;
+  width: 100%;
 
   .filter-item {
     padding: 0.5rem 1rem;
@@ -205,8 +239,8 @@ const filteredBlocks = computed(() => {
   .filter-item.selected {
     transform: scale(1.08);
     z-index: 1;
-    color: map-get(colors.$colors, "brand-700" );
-    background-color: map-get(colors.$colors, "brand-100" );
+    color: map-get(colors.$colors, "brand-700");
+    background-color: map-get(colors.$colors, "brand-100");
   }
 
   .all-selected {
@@ -227,20 +261,21 @@ const filteredBlocks = computed(() => {
   }
 }
 
-
-  .filter-item.cat-values:hover {
-    border-color: rgba(map.get(colors.$colors, "values-structures"), 0.3);
-  }
-  .filter-item.cat-culture:hover {
-    border-color: rgba(map.get(colors.$colors, "culture-skills"), 0.3);
-  }
-  .filter-item.cat-communication:hover {
-    border-color: rgba(map.get(colors.$colors, "communication-participation"), 0.3);
-  }
-  .filter-item.cat-methods:hover {
-    border-color: rgba(map.get(colors.$colors, "methods-processes"), 0.3);
-  }
-
+.filter-item.cat-values:hover {
+  border-color: rgba(map.get(colors.$colors, "values-structures"), 0.3);
+}
+.filter-item.cat-culture:hover {
+  border-color: rgba(map.get(colors.$colors, "culture-skills"), 0.3);
+}
+.filter-item.cat-communication:hover {
+  border-color: rgba(
+    map.get(colors.$colors, "communication-participation"),
+    0.3
+  );
+}
+.filter-item.cat-methods:hover {
+  border-color: rgba(map.get(colors.$colors, "methods-processes"), 0.3);
+}
 
 .content-wrapper {
   display: flex;
@@ -249,23 +284,10 @@ const filteredBlocks = computed(() => {
   margin-bottom: 2rem;
 }
 
-// .filter-item.selected.cat-values {
-//   border-color: rgba(map.get(colors.$colors, "values-structures"), 0.3);
-// }
-// .filter-item.selected.cat-culture {
-//   border-color: rgba(map.get(colors.$colors, "culture-skills"), 0.3);
-// }
-// .filter-item.selected.cat-communication {
-//   border-color: rgba(map.get(colors.$colors, "communication-participation"), 0.3);
-// }
-// .filter-item.selected.cat-methods {
-//   border-color: rgba(map.get(colors.$colors, "methods-processes"), 0.3);
-// }
 
 .filter-items-group {
   display: flex;
   gap: 1.3rem;
-  // justify-content: space-evenly;
 }
 
 .filter-pop-enter-active,

@@ -50,6 +50,8 @@ export interface DirectusBuildingBlock {
   cost: string;
   effort: string;
   involvement: string;
+  maintentance: "low" | "medium" | "high";
+  time: "low" | "medium" | "high";
   maximum_hours_required: number;
   minimum_hours_required: number;
   alternative_building_blocks: DirectusBuildingBlock[];

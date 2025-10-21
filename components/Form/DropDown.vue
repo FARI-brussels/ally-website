@@ -1,7 +1,7 @@
 <template>
   <div ref="dropdown" class="dropdown">
     <button @click="toggleDropdown">
-      <span> {{ placeholder  }} </span>
+      <span> {{ placeholder }} </span>
       <img
         alt="icon"
         :src="ChevronDown"
@@ -16,11 +16,7 @@
         class="list-item"
         @click.stop="toggleOption(option)"
       >
-        <input
-          type="checkbox"
-          :checked="isSelected(option)"
-          @change.prevent
-        >
+        <input type="checkbox" :checked="isSelected(option)" @change.prevent>
         {{ option.label }}
       </li>
     </ul>
@@ -45,10 +41,7 @@ function isSelected(option: OptionProps) {
 function toggleOption(option: OptionProps) {
   const idx = model.value.findIndex((o) => o.value === option.value);
   if (idx > -1) {
-    model.value = [
-      ...model.value.slice(0, idx),
-      ...model.value.slice(idx + 1),
-    ];
+    model.value = [...model.value.slice(0, idx), ...model.value.slice(idx + 1)];
   } else {
     model.value = [...model.value, option];
   }
@@ -98,9 +91,12 @@ function toggleOption(option: OptionProps) {
   width: 100%;
   z-index: 1000;
   background-color: white;
-  -webkit-box-shadow: 0px 0px 2.5rem -22px color.scale(colors.$text-color, $alpha: -0.85%);
-  -moz-box-shadow: 0px 0px 2.5rem -22px color.scale(colors.$text-color, $alpha: -0.85%);
-  box-shadow: 0px 0px 2.5rem -22px color.scale(colors.$text-color, $alpha: -0.85%);
+  -webkit-box-shadow: 0px 0px 2.5rem -22px
+    color.scale(colors.$text-color, $alpha: -0.85%);
+  -moz-box-shadow: 0px 0px 2.5rem -22px
+    color.scale(colors.$text-color, $alpha: -0.85%);
+  box-shadow: 0px 0px 2.5rem -22px
+    color.scale(colors.$text-color, $alpha: -0.85%);
 }
 
 .list-item {
@@ -113,7 +109,10 @@ function toggleOption(option: OptionProps) {
   gap: 0.5rem;
 
   &:hover {
-    background-color: color.adjust(map.get(colors.$colors, "brand-600"), $lightness: 50%);
+    background-color: color.adjust(
+      map.get(colors.$colors, "brand-600"),
+      $lightness: 50%
+    );
   }
 
   & {
@@ -130,7 +129,9 @@ function toggleOption(option: OptionProps) {
   background: white;
   cursor: pointer;
   position: relative;
-  transition: background 0.2s, border-color 0.2s;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
   margin-right: 0.5em;
 }
 .list-item input[type="checkbox"]:checked {
@@ -138,16 +139,16 @@ function toggleOption(option: OptionProps) {
   border-color: map.get(colors.$colors, "brand-600");
 }
 .list-item input[type="checkbox"]:checked::after {
-    content: "";
-    display: block;
-    position: absolute;
-    left: 0.35rem;
-    top: 0.1rem;
-    width: 0.4em;
-    height: 0.7em;
-    border: solid white;
-    border-width: 0 0.18em 0.18em 0;
-    transform: rotate(45deg);
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0.35rem;
+  top: 0.1rem;
+  width: 0.4em;
+  height: 0.7em;
+  border: solid white;
+  border-width: 0 0.18em 0.18em 0;
+  transform: rotate(45deg);
 }
 
 .icon {

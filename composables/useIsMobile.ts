@@ -1,4 +1,4 @@
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from "vue";
 
 const isMobile = ref(false);
 
@@ -9,10 +9,10 @@ function checkMobile() {
 export function useIsMobile() {
   onMounted(() => {
     checkMobile();
-    window.addEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
   });
   onUnmounted(() => {
-    window.removeEventListener('resize', checkMobile);
+    window.removeEventListener("resize", checkMobile);
   });
   return { isMobile: isMobile as Ref<boolean> };
-} 
+}

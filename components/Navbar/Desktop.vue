@@ -7,13 +7,11 @@
 </template>
 
 <script setup lang="ts">
-
-  const props = defineProps<{ 
-    items?: { name?: string; path?: string; label?: string }[] 
-    dark?: boolean
-    small?: boolean
-  }>();
-
+defineProps<{
+  items?: { name?: string; path?: string; label?: string }[];
+  dark?: boolean;
+  small?: boolean;
+}>();
 </script>
 
 <style scoped lang="scss">
@@ -60,6 +58,4 @@ nav {
 .small {
   font-size: 1rem;
 }
-
-
 </style>

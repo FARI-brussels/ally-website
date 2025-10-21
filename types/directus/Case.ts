@@ -1,5 +1,4 @@
-import type { Block } from '../components';
-import type { DirectusBuildingBlock } from './BuildingBlock';
+import type { DirectusBuildingBlock } from "./BuildingBlock";
 
 export interface Case {
   id: number;
@@ -10,4 +9,4 @@ export interface Case {
   alternative_cases?: Case[];
 }
 
-export type Cases = Case[]; 
+export type Cases = Case[];

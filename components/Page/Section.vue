@@ -18,21 +18,17 @@ const props = defineProps<SectionProps>();
 const renderer = new marked.Renderer();
 
 renderer.link = ({ href, title, text }) => {
-console.log({href, title, text})
-  if (href && href.startsWith("javascript:")) {
-    return `<a>${text}</a>`;
-  }
+  if (href && href.startsWith("javascript:")) return `<a>${text}</a>`;
+  
   const titleAttr = title ? ` title="${title}"` : "";
   return `<br> <br> <a href="${href}"${titleAttr} class="fake-ally-btn">${text}</a>`;
 };
 
-
 const safeHtml = computed(() => {
   const rawHtml = marked(props.description, { renderer });
 
-  return sanitizeHtml(rawHtml);
+  return sanitizeHtml(rawHtml as string); //should be fixed
 });
-
 
 function sanitizeHtml(unsafeHtml: string) {
   let sanitizedHtml = unsafeHtml.replace(
@@ -46,6 +42,7 @@ function sanitizeHtml(unsafeHtml: string) {
 
   return sanitizedHtml;
 }
+
 </script>
 
 <style scoped lang="scss">
@@ -69,17 +66,12 @@ h2 {
 div {
   font-size: 1.2rem;
 }
-
-
 </style>
 
-
 <style lang="scss">
-
 @use "/assets/scss/colors" as *;
 @use "/assets/scss/typography" as *;
 @use "sass:map";
-
 
 .fake-ally-btn {
   display: inline-flex;
@@ -92,12 +84,14 @@ div {
   background-color: #684688;
   color: white;
   cursor: pointer;
-  transition: background-color 0.15s, color 0.15s, border 0.15s;
+  transition:
+    background-color 0.15s,
+    color 0.15s,
+    border 0.15s;
   text-decoration: none;
 
   &:hover {
-    background-color: #8E6DAC;
+    background-color: #8e6dac;
   }
 }
-
 </style>

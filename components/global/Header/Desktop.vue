@@ -2,18 +2,18 @@
   <div class="wrapper">
     <div class="header">
       <NuxtLink :to="'/'">
-        <img class="logo" src="~/assets/logos/logo_ALLY_new.svg" >
+        <img class="logo" src="~/assets/logos/logo_ALLY_new.svg">
       </NuxtLink>
 
-      <NavbarDesktop class="navbar" :items="$props.items" />
+      <NavbarDesktop class="navbar" :items="items" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import type { Locale } from "~/types/Locale";
-defineProps<{ items?: unknown[]; locale: Locale }>();
-
+import type { Routes } from "~/types/components/Routes";
+defineProps<{ items?: Routes; locale: Locale }>();
 </script>
 
 <style scoped lang="scss">

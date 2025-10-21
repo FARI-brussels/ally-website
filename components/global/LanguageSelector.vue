@@ -5,7 +5,7 @@
       aria-haspopup="true"
       :aria-expanded="isOpen"
     >
-      <img alt="icon" src="/assets/icons/language-icon.svg" class="icon" >
+      <img alt="icon" src="/assets/icons/language-icon.svg" class="icon">
 
       {{ props.locale?.split("-").pop() }}
     </button>
@@ -24,7 +24,6 @@
 </template>
 
 <script lang="ts" setup>
-// import { onClickOutside } from '@vueuse/core'
 import type { Locale, LocaleObject } from "@/types/Locale";
 
 interface Props {
@@ -104,9 +103,12 @@ const handleKeydown = (event: KeyboardEvent) => {
   padding: 0.5rem;
   width: 100%;
   z-index: 1000;
-  -webkit-box-shadow: 0px 0px 2.5rem -22px color.scale(colors.$text-color, $alpha: -0.85%);
-  -moz-box-shadow: 0px 0px 2.5rem -22px color.scale(colors.$text-color, $alpha: -0.85%);
-  box-shadow: 0px 0px 2.5rem -22px color.scale(colors.$text-color, $alpha: -0.85%);
+  -webkit-box-shadow: 0px 0px 2.5rem -22px
+    color.scale(colors.$text-color, $alpha: -0.85%);
+  -moz-box-shadow: 0px 0px 2.5rem -22px
+    color.scale(colors.$text-color, $alpha: -0.85%);
+  box-shadow: 0px 0px 2.5rem -22px
+    color.scale(colors.$text-color, $alpha: -0.85%);
   li {
     padding: 0.5rem;
     cursor: pointer;
