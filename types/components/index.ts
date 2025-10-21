@@ -5,6 +5,7 @@ import type { ButtonProps } from "./Button";
 import type { ChipProps } from "./Chip";
 import type { SectionProps } from "./Section";
 import type { OptionProps, OptionsList } from "./Dropdown";
+import type { Route, Routes } from "./Routes";
 
 export type {
   BannerProps,
@@ -16,6 +17,8 @@ export type {
   SectionProps,
   OptionProps,
   OptionsList,
+  Route,
+  Routes
 };
 
 // Shared types for reuse across the app
@@ -51,4 +54,8 @@ export interface PagesStore {
   };
 }
 
-export type CategorySlug = 'governance_values' | 'culture_skills' | 'communication_involvement' | 'methods_processes';
+export type CategorySlug =
+  | "governance_values"
+  | "culture_skills"
+  | "communication_involvement"
+  | "methods_processes";
