@@ -7,7 +7,7 @@ a {
   text-decoration: none;
   transition: 0.4s;
   &:visited {
-    color: currentColor;
+    color: inherit;
   }
 }
 
