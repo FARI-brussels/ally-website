@@ -32,11 +32,12 @@
       <h2 class="section-title">
         {{ blocksUsed[locale] }}
       </h2>
-      <div
-        class="alternatives-section-list"
-        :class="{ 'alternatives-section-list--mobile': isMobile }"
-      >
-        <TransitionGroup name="stagger-fade" tag="div">
+        <TransitionGroup 
+          name="stagger-fade" 
+          tag="div" 
+          class="alternatives-section-list"
+          :class="{ 'alternatives-section-list--mobile': isMobile }"
+        >
           <CardMain
             v-for="block in selectedCase?.building_blocks_used"
             :key="block.id"
@@ -48,7 +49,7 @@
             @click="navigateTo(`/building-blocks/${block.id}`)"
           />
         </TransitionGroup>
-      </div>
+
     </div>
   </div>
 </template>
@@ -178,6 +179,7 @@ const blocksUsed = {
     }
   }
 }
+
 
 .stagger-fade-enter-active {
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
