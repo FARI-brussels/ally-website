@@ -42,7 +42,7 @@
           v-for="block in selectedCase?.building_blocks_used"
           :key="block.id"
           :image="getImage(block.category?.slug)"
-          :category="block.category?.title[locale]"
+          :category="block.category?.title?.[locale]"
           :title="block.title[locale]"
           :description="block.description[locale]"
           :url="`/building-blocks/${block.id}`"
