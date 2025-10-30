@@ -38,13 +38,14 @@ const { setLocale } = useGlobalStore();
 const { locale } = storeToRefs(useGlobalStore());
 
 const { isMobile } = useIsMobile();
-const desiredOrder = ["/", "/building-blocks", "/cases", "/about"];
+const desiredOrder = ["/", "/building-blocks", "/cases", "/workshop", "/about"];
 
 const routeLabels: Record<string, string> = {
   "/": "Home",
   "/building-blocks": "Building Blocks",
   "/cases": "Cases",
   "/about": "About",
+  "/workshop": "Workshop",
 };
 
 const routes = useRouter()

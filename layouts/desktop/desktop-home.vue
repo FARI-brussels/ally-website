@@ -27,7 +27,7 @@ import { useIsMobile } from "~/composables/useIsMobile";
 const { setLocale } = useGlobalStore();
 const { locale } = storeToRefs(useGlobalStore());
 
-const desiredOrder = ["/", "/building-blocks", "/cases", "/about"];
+const desiredOrder = ["/", "/building-blocks", "/cases", "/workshop", "/about"];
 
 const routes = useRouter()
   .getRoutes()

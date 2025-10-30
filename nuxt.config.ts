@@ -6,7 +6,17 @@ export default defineNuxtConfig({
     pinia: "/node_modules/@pinia/nuxt/node_modules/pinia/dist/pinia.mjs",
   }, //temporary workaround for a bug
   css: ["~/assets/scss/main.scss"],
-  modules: ["@vueuse/nuxt", "@pinia/nuxt", "@nuxt/eslint"],
+  modules: [
+    "@vueuse/nuxt",
+    "@pinia/nuxt",
+    "@nuxt/eslint",
+    "@nuxt/test-utils/module",
+  ],
+  runtimeConfig: {
+    public: {
+      workshopFormUrl: process.env.NUXT_PUBLIC_WORKSHOP_FORM_URL,
+    },
+  },
   app: {
     pageTransition: { name: "page", mode: "out-in" },
     head: {
