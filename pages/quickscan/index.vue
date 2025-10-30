@@ -23,7 +23,7 @@
               type="radio"
               :name="q.id"
               :value="opt.value"
-            />
+            >
             <span class="option-letter">{{ opt.letter }}</span>
             <span class="option-label">{{ opt.label }}</span>
           </label>
@@ -39,17 +39,6 @@
         @click="handleSubmit"
       />
     </form>
-
-    <div v-if="results.length" id="results-section" class="results">
-      <h2 class="title color-gray-light-mode-900">
-        Your Recommended Blocks ({{ results.length }})
-      </h2>
-      <p class="description color-gray-light-mode-500">
-        These blocks are tailored to your answers, prioritizing high-impact
-        areas while considering your resource constraints.
-      </p>
-      <BlockList :blocks="results" expanded />
-    </div>
   </div>
 </template>
 
@@ -68,7 +57,6 @@ import {
 } from "~/quickscan/questions";
 
 import { calculateSuggestions } from "~/quickscan/logic";
-import { createBlockMetadata, type BlockMetadata } from "~/quickscan/blockData";
 
 const { blocks } = storeToRefs(useBuildingBlockStore());
 const { getBlocks } = useBuildingBlockStore();
@@ -87,40 +75,29 @@ const questions = [
   focusField,
 ];
 
-onMounted(
-  async () => await Promise.all([getBuildingBlockCategories(), getBlocks()]),
+onMounted(async () => 
+  await Promise.all([getBuildingBlockCategories(), getBlocks()])
 );
 
 const answers = ref<Record<string, string>>({});
-const results = ref<BlockMetadata[]>([]);
+
 const submitEnabled = computed(
   () => Object.keys(answers.value).length === questions.length,
 );
 
 function handleSubmit() {
-  const fullBlockMetadataMap = createBlockMetadata(blocks.value);
-  const allBlocksMetadata = Array.from(fullBlockMetadataMap.values());
+  const finalSuggestions = calculateSuggestions({
+    answers: answers.value,
+    blocks: blocks.value,
+  });
 
-  const finalSuggestions = calculateSuggestions(
-    answers.value,
-    fullBlockMetadataMap,
-    allBlocksMetadata,
-  );
-
-  results.value = finalSuggestions;
-  const blockIds = finalSuggestions.map((block) => block.blockId);
-  const idParam = blockIds.join(",");
+  const idParam = finalSuggestions.join(",");
   router.push({
     path: "/quickscan/result",
     query: {
-      blocks: idParam, // e.g., blocks=8,16,5,20,19,13,15,4,6,17
+      blocks: idParam,
     },
   });
-  // console.log(results.value)
-
-  // document
-  //   .getElementById("results-section")
-  //   ?.scrollIntoView({ behavior: "smooth" });
 }
 </script>
 

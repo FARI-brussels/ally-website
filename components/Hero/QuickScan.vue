@@ -12,7 +12,7 @@
         />
       </div>
     </div>
-    <img class="bg-image" src="/images/Section.png" />
+    <img class="bg-image" src="/images/Section.png" >
   </div>
 </template>
 

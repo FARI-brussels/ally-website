@@ -1,12 +1,12 @@
-export type { CategorySlug } from "~/types/components";
+export type { CategorySlug } from "~/types/shared";
 
 export const CATEGORY_SLUGS: CategorySlug[] = [
-  "governance_values",
-  "culture_skills",
-  "communication_involvement",
-  "methods_processes",
+  "values-structures",
+  "culture-skills",
+  "communication-participation",
+  "methods-processes",
 ];
 
-export function isCategorySlug(slug: unknown): slug is CategorySlug {
+export function isCategorySlug(slug: string) {
   return CATEGORY_SLUGS.includes(slug as CategorySlug);
 }

@@ -1,6 +1,6 @@
 import type { BannerProps } from "./Banner";
 import type { HeroProps } from "./Hero";
-import type { CardProps, GlassCardProps } from "./Card";
+import type { CardProps } from "./Card";
 import type { ButtonProps } from "./Button";
 import type { ChipProps } from "./Chip";
 import type { SectionProps } from "./Section";
@@ -11,14 +11,13 @@ export type {
   BannerProps,
   HeroProps,
   CardProps,
-  GlassCardProps,
   ButtonProps,
   ChipProps,
   SectionProps,
   OptionProps,
   OptionsList,
   Route,
-  Routes
+  Routes,
 };
 
 // Shared types for reuse across the app
@@ -55,7 +54,7 @@ export interface PagesStore {
 }
 
 export type CategorySlug =
-  | "governance_values"
-  | "culture_skills"
-  | "communication_involvement"
-  | "methods_processes";
+  | "values-structures"
+  | "culture-skills"
+  | "communication-participation"
+  | "methods-processes";

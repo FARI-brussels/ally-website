@@ -113,7 +113,7 @@ export const focusField: AllyQuickscanQuestion = {
     "On what do you want to focus the most/first? Ethical actions related to ...",
   options: [
     { letter: "A", value: "values_structures", label: "Values & Structures" },
-    { letter: "B", value: "processes_methods", label: "Processes & Methods" },
+    { letter: "B", value: "methods_processes", label: "Processes & Methods" },
     { letter: "C", value: "culture_skills", label: "Culture & Skills" },
     {
       letter: "D",

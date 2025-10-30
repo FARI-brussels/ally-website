@@ -1,7 +1,13 @@
-import type { Locale } from "../Locale";
-export interface CardProps {
-  title?: string;
-  description?: string;
+import type { Locale } from "~/types/shared";
+import type { Block, LocalizedBlock } from "~/types/blocks/base";
+
+export interface CardProps
+  extends Partial<
+    Pick<
+      LocalizedBlock,
+      "id" | "title" | "description" | "benefits" | "category"
+    >
+  > {
   categories?: string[];
   url?: string | number;
   color?: "primary" | "secondary";
@@ -10,18 +16,12 @@ export interface CardProps {
   slug?: string;
 }
 
-export interface GlassCardProps {
-  title?: string;
-  description?: string;
-  categories?: { label: string; value: string }[];
-  url?: string;
+export interface RequirementCardProps
+  extends Pick<
+    Block,
+    "time" | "cost" | "effort" | "maintenance" | "involvement"
+  > {
+  locale: Locale;
 }
 
-export interface RequirementCardProps {
-  locale: Locale;
-  time: string;
-  cost: string;
-  effort: string;
-  involvement: string;
-  maintenance: string;
-}
+export type LargeCardProps = CardProps | RequirementCardProps;

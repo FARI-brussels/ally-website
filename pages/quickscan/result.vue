@@ -41,6 +41,7 @@
           :block="isMobile"
           class="workshop-btn"
           append-icon="arrow-right"
+          @click="$router.push('/workshop')"
         />
       </div>
       <img
@@ -56,7 +57,6 @@
 
 <script setup lang="ts">
 import type { BlockMetadata } from "~/quickscan/blockData";
-import { mapCategory } from "~/utils/mapCategory";
 
 const route = useRoute();
 const buildingBlockStore = useBuildingBlockStore();
@@ -86,9 +86,9 @@ onMounted(async () => {
   }
 
   try {
-    const fetchPromises = requestedIds.map((id) =>
-      buildingBlockStore.getBlock(id),
-    );
+    const fetchPromises = requestedIds.map(async (id) => 
+      await buildingBlockStore.getBlock(id));
+
     const fetchedBlocks = await Promise.all(fetchPromises);
 
     results.value = fetchedBlocks
@@ -97,7 +97,7 @@ onMounted(async () => {
         ...b,
         title: b.title[locale.value],
         description: b.description[locale.value],
-        category: mapCategory(b?.category.slug),
+        category: b?.category.slug,
       }));
 
     results.value.forEach((block) =>
@@ -105,9 +105,8 @@ onMounted(async () => {
     );
 
     buildingBlockCategories.value.forEach(({ slug, title, description }) => {
-      console.log({ slug, title, description });
-      organizedBlocks[mapCategory(slug)].title = title[locale.value];
-      organizedBlocks[mapCategory(slug)].description =
+      organizedBlocks[slug].title = title[locale.value];
+      organizedBlocks[slug].description =
         description[locale.value];
     });
   } catch (err) {

@@ -1,4 +1,4 @@
-import type { Locale } from "~/types/Locale";
+import type { Locale } from "~/types/shared";
 import type { Section, Page } from "~/types/parsers/Page";
 import type { DirectusHero } from "~/types/directus/DirectusHero";
 import { createDirectus, rest, readItem } from "@directus/sdk";

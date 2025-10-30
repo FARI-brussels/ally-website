@@ -18,7 +18,12 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
   async function getBlocks() {
     const data = (await client.request(
       readItems("ally_building_block", {
-        fields: ["*.*"],
+      fields: [
+            "*",
+            "translations.*",
+            "category.*",  // Get all category fields
+            "category.translations.*"  // IMPORTANT: Get category translations
+          ],
         filter: {
           status: {
             _eq: "published",
@@ -35,6 +40,8 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
         })
         .map(parseBlock),
     );
+
+
   }
 
   async function findBlock(id: number) {
@@ -59,7 +66,9 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
     try {
       const data = await client.request(
         readItem("ally_building_block", id, {
-          fields: ["*.*"],
+          fields: [
+            "*.*"
+          ],
           filter: {
             status: {
               _eq: "published",
@@ -96,7 +105,14 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
 
         alternatives = await client.request(
           readItems("ally_building_block", {
-            fields: ["*.*"],
+            fields: [
+              "*",
+              "external_links.ally_external_link_slug",
+              "alternative_building_blocks.related_ally_building_block_id",
+              "translations.*",
+              "category.*",  // Get all category fields
+              "category.translations.*"  // IMPORTANT: Get category translations
+            ],
             filter: {
               id: {
                 _in: ids,
@@ -152,7 +168,7 @@ async function parseBlock(buildingBlock: DirectusBuildingBlock) {
     maintenance,
     category,
     translations,
-
+    ranking,
     alternatives = [],
     external_links,
   } = buildingBlock;
@@ -166,8 +182,12 @@ async function parseBlock(buildingBlock: DirectusBuildingBlock) {
     how_to_execute: {},
     kpis: {},
   };
-
-  const blockCategory = await findBuildingBlockCategory(category?.slug);
+  const blockCategory = category.translations?.[0]?.title 
+  ? {
+    ...category,
+    slug: mapCategory(category.slug),
+  } 
+  : await findBuildingBlockCategory(category?.slug);
 
   translations.forEach(
     ({
@@ -193,6 +213,7 @@ async function parseBlock(buildingBlock: DirectusBuildingBlock) {
     involvement: parseInvolvementContent(involvement?.blocks[0]?.data),
     time,
     maintenance,
+    ranking,
     category: blockCategory,
     alternative_building_blocks: await Promise.all(
       alternatives.map(parseBlock),
