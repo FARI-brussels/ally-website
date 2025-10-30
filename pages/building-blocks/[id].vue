@@ -13,7 +13,7 @@
       <BreadCrumb
         category-text="Building block"
         :label-text="selectedBlock?.category?.title?.[locale] || ''"
-        :color-key="mapCategory(selectedBlock?.category?.slug)"
+        :color-key="selectedBlock?.category?.slug"
       />
     </div>
 
@@ -137,7 +137,7 @@
           :key="block.id"
           :style="{ transitionDelay: idx * 100 + 'ms' }"
           :image="getImage(block.category?.slug)"
-          :category="block.category?.title[locale]"
+          :category="block.category?.title?.[locale]"
           :title="block.title[locale]"
           :description="block.description[locale]"
           :url="`/building-blocks/${block.id}`"
@@ -148,7 +148,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { mapCategory } from "~/utils/mapCategory";
 import type { CategorySlug } from "~/types/components";
 import { useIsMobile } from "~/composables/useIsMobile";
 import { ref, onMounted } from "vue";
@@ -164,15 +163,15 @@ const loading = ref(true);
 const pageVisible = ref(false);
 
 onMounted(async () => {
-  await findBlock(Number(route.params.id));
-  loading.value = false;
-  setTimeout(() => pageVisible.value = true, 50);
-
+  await findBlock(Number(route.params.id)).then(() => {
+    loading.value = false;
+    pageVisible.value = true
+  })
 });
 
 function getImage(category: CategorySlug) {
   if (!category) return "";
-  return `/blocks/${mapCategory(category)}-${Math.floor(Math.random() * 3) + 1}.png`;
+  return `/blocks/${category}-${Math.floor(Math.random() * 3) + 1}.png`;
 }
 
 const copyLinkIcon = ref("copy-link");
@@ -439,6 +438,4 @@ const externalLinksParagraph = {
 .main--loading {
   pointer-events: none;
 }
-
-
 </style>

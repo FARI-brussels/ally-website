@@ -77,7 +77,7 @@
           :key="idx"
           class="ally-process-section bg-color-gray-light-mode-50"
         >
-          <img :src="section.icon" :alt="section.alt" />
+          <img :src="section.icon" :alt="section.alt">
           <h2>{{ section.title }}</h2>
           <p>{{ section.text }}</p>
         </div>

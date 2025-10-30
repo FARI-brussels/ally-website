@@ -26,13 +26,19 @@
           :items="$props.items"
           @click="() => toggleMenu()"
         />
+        <!-- <AllyButton
+          variant="primary"
+          prepend-icon="scan"
+          label="do the quickscan"
+          @click="$router.push('/quickscan')"
+        /> -->
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Locale } from "~/types/Locale";
+import type { Locale } from "~/types/shared";
 import type { Routes } from "~/types/components/Routes";
 defineProps<{ items?: Routes; locale: Locale }>();
 

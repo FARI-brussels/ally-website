@@ -122,22 +122,22 @@ const pageData = computed(() => {
 const categories = [
   {
     label: "Values & structures",
-    value: "governance_values",
+    value: "values-structures",
     className: "cat-values",
   },
   {
     label: "Culture & skills",
-    value: "culture_skills",
+    value: "culture-skills",
     className: "cat-culture",
   },
   {
     label: "Communication & participation",
-    value: "communication_involvement",
+    value: "communication-participation",
     className: "cat-communication",
   },
   {
     label: "Methods & processes",
-    value: "methods_processes",
+    value: "methods-processes",
     className: "cat-methods",
   },
 ];
@@ -283,7 +283,6 @@ const filteredBlocks = computed(() => {
   gap: 3rem;
   margin-bottom: 2rem;
 }
-
 
 .filter-items-group {
   display: flex;

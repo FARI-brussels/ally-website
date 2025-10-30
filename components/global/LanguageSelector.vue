@@ -5,7 +5,7 @@
       aria-haspopup="true"
       :aria-expanded="isOpen"
     >
-      <img alt="icon" src="/assets/icons/language-icon.svg" class="icon">
+      <img alt="icon" src="/assets/icons/language-icon.svg" class="icon" >
 
       {{ props.locale?.split("-").pop() }}
     </button>
@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { Locale, LocaleObject } from "@/types/Locale";
+import type { Locale, LocaleObject } from "@/types/shared";
 
 interface Props {
   locales: LocaleObject[];

@@ -20,7 +20,7 @@ defineProps<{
 @use "sass:map";
 
 nav {
-  width: 100%;
+  // width: 100%;
   font-size: 1.4rem;
   display: flex;
   flex-wrap: wrap;

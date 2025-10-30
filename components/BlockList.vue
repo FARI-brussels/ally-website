@@ -5,47 +5,51 @@
     class="block-list"
     :class="{ mobile: isMobile }"
   >
-    <template v-for="block in blocks" :key="block.id">
+    <template
+      v-for="{
+        title,
+        description,
+        category,
+        cost,
+        effort,
+        time,
+        involvement,
+        maintenance,
+        id,
+      } in blocks"
+      :key="id"
+    >
       <CardMain
         v-if="!$props.expanded"
-        :title="typeof block.title === 'string' ? block.title : ''"
-        :description="
-          typeof block.description === 'string' ? block.description : ''
-        "
-        :image="
-          getImage(typeof block.category === 'string' ? block.category : '')
-        "
-        :url="`/building-blocks/${block.id}`"
-        :category="typeof block.category === 'string' ? block.category : ''"
-        :color="
-          categoryColors[
-            typeof block.category === 'string' ? block.category : ''
-          ]
-        "
+        v-bind="{
+          id,
+          title,
+          description,
+          category,
+        }"
+        :image="getImage(category)"
+        :url="`/building-blocks/${id}`"
+        :color="categoryColors[category]"
       />
 
       <CardBlockLarge
         v-else
         class="unified-card-spacing"
-        :title="typeof block.title === 'string' ? block.title : ''"
-        :description="
-          typeof block.description === 'string' ? block.description : ''
-        "
-        :image="
-          getImage(typeof block.category === 'string' ? block.category : '')
-        "
-        :url="`/building-blocks/${block.id}`"
-        :category="typeof block.category === 'string' ? block.category : ''"
-        :color="
-          categoryColors[
-            typeof block.category === 'string' ? block.category : ''
-          ]
-        "
+        v-bind="{
+          id,
+          title,
+          description,
+          category,
+          effort,
+          cost,
+          involvement,
+          maintenance,
+          time,
+        }"
+        :image="getImage(category)"
+        :url="`/building-blocks/${id}`"
+        :color="categoryColors[category]"
         locale="en"
-        :cost="block.cost as 'low' | 'medium' | 'high' | undefined"
-        :effort="block.effort as 'low' | 'medium' | 'high' | undefined"
-        :involvement="block.involvement || ''"
-        :time="block.time as 'low' | 'medium' | 'high' | undefined"
       />
     </template>
   </transition-group>
@@ -55,6 +59,7 @@
 import CardMain from "~/components/Card/Main.vue";
 import { categoryColors } from "~/utils/categoryColors";
 import type { Block } from "~/types/components";
+import type { CategorySlug } from "~/types/shared";
 
 defineProps<{ blocks: Block[]; expanded?: boolean }>();
 
@@ -62,23 +67,20 @@ const imageQueues: Record<string, number[]> = {};
 
 function getNextImageIndex(category: string, totalImages = 4): number {
   if (!imageQueues[category] || imageQueues[category].length === 0) {
-    // Initialize and shuffle the queue for this category
     imageQueues[category] = Array.from(
       { length: totalImages },
       (_, i) => i + 1,
     ).sort(() => Math.random() - 0.5);
   }
-  // Pop the first index and push it to the end
+
   const idx = imageQueues[category].shift()!;
   imageQueues[category].push(idx);
   return idx;
 }
 
-function getImage(category: string) {
-  console.log({ category });
+function getImage(category: CategorySlug) {
   if (!category) return "";
   const index = getNextImageIndex(category);
-  console.log(`/blocks/${category}-${index}.png`);
   return `/blocks/${category}-${index}.png`;
 }
 

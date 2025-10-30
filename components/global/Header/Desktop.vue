@@ -2,16 +2,22 @@
   <div class="wrapper">
     <div class="header">
       <NuxtLink :to="'/'">
-        <img class="logo" src="~/assets/logos/logo_ALLY_new.svg">
+        <img class="logo" src="~/assets/logos/logo_ALLY_new.svg" >
       </NuxtLink>
 
       <NavbarDesktop class="navbar" :items="items" />
+      <!-- <AllyButton
+        variant="primary"
+        prepend-icon="scan"
+        label="do the quickscan"
+        @click="$router.push('/quickscan')"
+      /> -->
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Locale } from "~/types/Locale";
+import type { Locale } from "~/types/shared";
 import type { Routes } from "~/types/components/Routes";
 defineProps<{ items?: Routes; locale: Locale }>();
 </script>
@@ -37,6 +43,7 @@ defineProps<{ items?: Routes; locale: Locale }>();
 
   .navbar {
     padding: 2.5rem 0;
+    margin: 0 auto; //remove this when quickscan button is made visible
   }
 }
 </style>

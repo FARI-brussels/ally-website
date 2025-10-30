@@ -6,12 +6,7 @@
     rel="noopener noreferrer"
     :class="{ 'is-link': url, 'is-not-link': !url, 'has-requirements': !!time }"
   >
-    <img 
-      v-if="image" 
-      :src="image" 
-      class="card-image" 
-      alt="Card image"
-    >
+    <img v-if="image" :src="image" class="card-image" alt="Card image" >
     <div class="card-content">
       <span
         v-if="category"
@@ -38,19 +33,19 @@
 
       <div class="item">
         <span class="icon-container bg-color-gray-light-mode-50">
-          <img src="/assets/icons/clock-icon-black.svg" class="icon-svg">
+          <img src="/assets/icons/clock-icon-black.svg" class="icon-svg" >
         </span>
         {{ timeRequirement }}
       </div>
       <div class="item">
         <span class="icon-container bg-color-gray-light-mode-50">
-          <img src="/assets/icons/money-icon-black.svg" class="icon-svg">
+          <img src="/assets/icons/money-icon-black.svg" class="icon-svg" >
         </span>
         {{ costRequirement }}
       </div>
       <div class="item">
         <span class="icon-container bg-color-gray-light-mode-50">
-          <img src="/assets/icons/thunder-icon-black.svg" class="icon-svg">
+          <img src="/assets/icons/thunder-icon-black.svg" class="icon-svg" >
         </span>
         {{ effortRequirement }}
       </div>
@@ -73,26 +68,15 @@
 
 <script setup lang="ts">
 import ArrowRight from "~/assets/icons/arrow-right.svg";
-import type { Locale } from '~/types/Locale'
+import type {
+  Locale,
+  LocaleMap,
+  LevelMap,
+  ResourceIntensity,
+} from "~/types/shared";
+import type { BlockCardProps } from "~/types/blocks/ui";
 
-type Level = "low" | "medium" | "high";
-type LocaleMap = Record<Locale, string>;
-type LevelMap = Record<Level, LocaleMap>;
-
-const props = defineProps<{
-  title: string;
-  description: string;
-  image?: string;
-  url?: string;
-  category?: string;
-  color?: string;
-
-  locale?: Locale;
-  time?: Level;
-  cost?: Level;
-  effort?: Level;
-  involvement?: string;
-}>();
+const props = defineProps<BlockCardProps>();
 
 const localeTitleMap: LocaleMap = {
   en: "What do you need?",
@@ -166,7 +150,7 @@ function getLocaleString(map: LocaleMap, locale: Locale): string {
 
 function getLevelLocaleString(
   map: LevelMap,
-  level: Level,
+  level: ResourceIntensity,
   locale: Locale,
 ): string {
   return map[level]?.[locale] ?? "";

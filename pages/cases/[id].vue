@@ -32,24 +32,23 @@
       <h2 class="section-title">
         {{ blocksUsed[locale] }}
       </h2>
-        <TransitionGroup 
-          name="stagger-fade" 
-          tag="div" 
-          class="alternatives-section-list"
-          :class="{ 'alternatives-section-list--mobile': isMobile }"
-        >
-          <CardMain
-            v-for="block in selectedCase?.building_blocks_used"
-            :key="block.id"
-            :image="getImage(block.category?.slug)"
-            :category="block.category?.title[locale]"
-            :title="block.title[locale]"
-            :description="block.description[locale]"
-            :url="`/building-blocks/${block.id}`"
-            @click="navigateTo(`/building-blocks/${block.id}`)"
-          />
-        </TransitionGroup>
-
+      <TransitionGroup
+        name="stagger-fade"
+        tag="div"
+        class="alternatives-section-list"
+        :class="{ 'alternatives-section-list--mobile': isMobile }"
+      >
+        <CardMain
+          v-for="block in selectedCase?.building_blocks_used"
+          :key="block.id"
+          :image="getImage(block.category?.slug)"
+          :category="block.category?.title[locale]"
+          :title="block.title[locale]"
+          :description="block.description[locale]"
+          :url="`/building-blocks/${block.id}`"
+          @click="navigateTo(`/building-blocks/${block.id}`)"
+        />
+      </TransitionGroup>
     </div>
   </div>
 </template>
@@ -64,16 +63,18 @@ const loading = ref(true);
 const pageVisible = ref(false);
 
 onMounted(async () => {
-  await findCase(Number(route.params.id));
-  loading.value = false;
-  setTimeout(() => (pageVisible.value = true), 50);
+  await findCase(Number(route.params.id)).then(() => {
+    loading.value = false;
+    pageVisible.value = true
+
+  })
 });
 
 const { isMobile } = useIsMobile();
 
 function getImage(category: CategorySlug) {
   if (!category) return "";
-  return `/blocks/${mapCategory(category)}-${Math.floor(Math.random() * 3) + 1}.png`;
+  return `/blocks/${category}-${Math.floor(Math.random() * 3) + 1}.png`;
 }
 
 const blocksUsed = {
@@ -179,7 +180,6 @@ const blocksUsed = {
     }
   }
 }
-
 
 .stagger-fade-enter-active {
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);

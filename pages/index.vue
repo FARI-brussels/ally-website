@@ -108,7 +108,6 @@
 <script setup lang="ts">
 import { computed, onMounted } from "vue";
 import BlockList from "~/components/BlockList.vue";
-import { mapCategory } from "~/utils/mapCategory";
 import { isCategorySlug } from "~/utils/category";
 import type { HeroProps } from "~/types/components/Hero";
 import type { HomePageContent } from "~/types/parsers/Page";
@@ -129,7 +128,7 @@ const { isMobile } = useIsMobile();
 onMounted(async () => {
   await Promise.all([
     getBuildingBlockCategories(),
-    getCases(),
+    // getCases(),
     getBlocks(),
     getStaticPage("home"),
   ]);
@@ -162,11 +161,11 @@ const blockData = computed(
     return (buildingBlockCategories.value as Category[]).map((cat) => {
       const mappedSlug = isCategorySlug(cat.slug)
         ? cat.slug
-        : "governance_values";
+        : "values-structures";
       return {
         title: cat.title?.[locale.value] ?? "",
         description: cat.description?.[locale.value] ?? "",
-        slug: mapCategory(mappedSlug),
+        slug: mappedSlug,
       };
     });
   },
@@ -189,14 +188,15 @@ const buildingBlocks = computed(
   }> => {
     if (!blocks.value || !blocks.value.length) return [];
     const mapped = (blocks.value as Block[]).map((block) => {
-      const mappedSlug = isCategorySlug(block.category?.slug)
+      const mappedSlug = isCategorySlug(block.category.slug)
         ? block.category?.slug
-        : "governance_values";
+        : "values-structures";
+
       return {
         id: block.id,
         title: block.title?.[locale.value] ?? "",
         description: block.description?.[locale.value] ?? "",
-        category: mapCategory(mappedSlug),
+        category: mappedSlug,
         categoryTitle: block.category?.title?.[locale.value],
         url: block.id,
       };

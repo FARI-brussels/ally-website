@@ -54,6 +54,7 @@ import ThunderIcon from "~/assets/icons/thunder-icon.svg";
 import ThunderIconBlack from "~/assets/icons/thunder-icon-black.svg";
 import CopyLink from "~/assets/icons/copy-link.svg";
 import Check from "~/assets/icons/check.svg";
+import Scan from "~/assets/icons/scan.svg";
 
 defineProps({
   prependIcon: {
@@ -64,6 +65,7 @@ defineProps({
       | "chevron-down"
       | "copy-link"
       | "check"
+      | "scan"
       | string,
     default: "",
   },
@@ -75,6 +77,7 @@ defineProps({
       | "chevron-down"
       | "copy-link"
       | "check"
+      | "scan"
       | string,
     default: "",
   },
@@ -104,6 +107,7 @@ const iconMap: Record<string, string> = {
   "thunder-icon-black": ThunderIconBlack,
   "copy-link": CopyLink,
   check: Check,
+  scan: Scan,
 };
 
 function iconPath(name: string) {
@@ -116,6 +120,7 @@ function iconPath(name: string) {
 @use "sass:map";
 
 .ally-btn {
+  width: fit-content;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;

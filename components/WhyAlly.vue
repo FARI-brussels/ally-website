@@ -13,7 +13,7 @@
         class="why-ally-section"
       >
         <div class="icon-container bg-color-brand-200">
-          <img :src="section.icon" :alt="section.alt" />
+          <img :src="section.icon" :alt="section.alt" >
         </div>
         <h2>{{ section.title }}</h2>
         <p>{{ section.text }}</p>

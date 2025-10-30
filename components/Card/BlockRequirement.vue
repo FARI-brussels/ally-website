@@ -3,19 +3,19 @@
     <h2 class="title">{{ title }}</h2>
     <div class="item">
       <span class="icon-container bg-color-gray-light-mode-50">
-        <img src="~/assets/icons/clock-icon-black.svg" class="icon-svg">
+        <img src="~/assets/icons/clock-icon-black.svg" class="icon-svg" >
       </span>
       {{ time }}
     </div>
     <div class="item">
       <span class="icon-container bg-color-gray-light-mode-50">
-        <img src="~/assets/icons/money-icon-black.svg" class="icon-svg">
+        <img src="~/assets/icons/money-icon-black.svg" class="icon-svg" >
       </span>
       {{ cost }}
     </div>
     <div class="item">
       <span class="icon-container bg-color-gray-light-mode-50">
-        <img src="~/assets/icons/thunder-icon-black.svg" class="icon-svg">
+        <img src="~/assets/icons/thunder-icon-black.svg" class="icon-svg" >
       </span>
       {{ effort }}
     </div>
@@ -37,7 +37,7 @@
 
 <script setup lang="ts">
 import type { RequirementCardProps } from "~/types/components/Card";
-import type { Locale, LocaleMap, LevelMap } from "~/types/Locale";
+import type { Locale, LocaleMap, LevelMap } from "~/types/shared";
 import { computed } from "vue";
 
 const props = defineProps<RequirementCardProps>();

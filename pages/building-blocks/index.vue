@@ -97,7 +97,7 @@
               cat.blocks.value.length
             "
           >
-          <PageSection
+            <PageSection
               v-if="cat.section.value"
               v-bind="cat.section.value"
               class="block-section"
@@ -111,7 +111,6 @@
 </template>
 
 <script setup lang="ts">
-import { mapCategory } from "~/utils/mapCategory";
 import type { Category, Block, OptionProps } from "~/types/components";
 import { isCategorySlug } from "~/utils/category";
 import type { CategorySlug } from "~/utils/category";
@@ -156,13 +155,13 @@ const pageData = computed<PageData>(() => {
 const searchTerm = ref<string>("");
 
 const categories = [
-  { label: "Values & structures", value: "governance_values" },
-  { label: "Culture & skills", value: "culture_skills" },
+  { label: "Values & structures", value: "values-structures" },
+  { label: "Culture & skills", value: "culture-skills" },
   {
     label: "Communication & participation",
-    value: "communication_involvement",
+    value: "communication-participation",
   },
-  { label: "Methods & processes", value: "methods_processes" },
+  { label: "Methods & processes", value: "methods-processes" },
 ];
 
 const cost = [
@@ -201,10 +200,10 @@ const cultureSection = getSection("culture_skills");
 const communicationSection = getSection("communication_involvement");
 const methodsSection = getSection("methods_processes");
 
-const governanceBlocks = getBlocksForCategory("governance_values");
-const cultureBlocks = getBlocksForCategory("culture_skills");
-const communicationBlocks = getBlocksForCategory("communication_involvement");
-const methodsBlocks = getBlocksForCategory("methods_processes");
+const governanceBlocks = getBlocksForCategory("values-structures");
+const cultureBlocks = getBlocksForCategory("culture-skills");
+const communicationBlocks = getBlocksForCategory("communication-participation");
+const methodsBlocks = getBlocksForCategory("methods-processes");
 
 function filterBlocks({
   blocks,
@@ -283,11 +282,9 @@ function getBlocksForCategory(slug: CategorySlug) {
           typeof block.description === "object" && block.description
             ? (block.description[locale.value] ?? "")
             : "",
-        category: mapCategory(
-          isCategorySlug(block.category?.slug)
-            ? block.category?.slug
-            : "governance_values",
-        ),
+        category: isCategorySlug(block.category?.slug)
+          ? (block.category?.slug as CategorySlug)
+          : "values-structures",
         categoryTitle: block.category?.title?.[locale.value],
         url: block.id,
       }));
@@ -309,22 +306,22 @@ function getSection(slug: string) {
 
 const categoryConfigs = [
   {
-    slug: "governance_values",
+    slug: "values-structures",
     section: governanceSection,
     blocks: governanceBlocks,
   },
   {
-    slug: "culture_skills",
+    slug: "culture-skills",
     section: cultureSection,
     blocks: cultureBlocks,
   },
   {
-    slug: "communication_involvement",
+    slug: "communication-participation",
     section: communicationSection,
     blocks: communicationBlocks,
   },
   {
-    slug: "methods_processes",
+    slug: "methods-processes",
     section: methodsSection,
     blocks: methodsBlocks,
   },
