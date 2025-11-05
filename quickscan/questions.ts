@@ -96,7 +96,7 @@ export const resourceField: AllyQuickscanQuestion = {
   question:
     "How many resources are available in your organisation to work on ethics (time, budget, effort)?",
   options: [
-    { letter: "A", value: "low", label: "Little resourcest" },
+    { letter: "A", value: "low", label: "Little resources" },
     {
       letter: "B",
       value: "medium",
