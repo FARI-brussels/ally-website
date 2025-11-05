@@ -119,7 +119,6 @@ const { getStaticPage } = useStaticPageStore();
 const { locale, buildingBlockCategories } = storeToRefs(useGlobalStore());
 const { pages } = storeToRefs(useStaticPageStore());
 const { cases } = storeToRefs(useCasesStore());
-const { getCases } = useCasesStore();
 const { blocks } = storeToRefs(useBuildingBlockStore());
 const { getBlocks } = useBuildingBlockStore();
 
@@ -128,7 +127,6 @@ const { isMobile } = useIsMobile();
 onMounted(async () => {
   await Promise.all([
     getBuildingBlockCategories(),
-    // getCases(),
     getBlocks(),
     getStaticPage("home"),
   ]);

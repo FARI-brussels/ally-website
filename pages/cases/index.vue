@@ -85,7 +85,6 @@
 <script setup lang="ts">
 import type { Ref } from "vue";
 import type { Case } from "~/types/directus/Case";
-import type { DirectusBuildingBlock } from "~/types/directus/BuildingBlock";
 import FormDropDown from "~/components/Form/DropDown.vue";
 import { useIsMobile } from "~/composables/useIsMobile";
 import type { OptionProps } from "~/types/components/Dropdown";
@@ -179,20 +178,18 @@ const filteredBlocks = computed(() => {
 
   return cases.value.filter((item: Case) => {
     const slugs = new Set<string>();
-    if (item.building_blocks_used?.category?.slug) {
-      slugs.add(item.building_blocks_used.category.slug.trim());
-    }
-    if (Array.isArray(item.building_blocks_used?.alternative_building_blocks)) {
-      (
-        item.building_blocks_used
-          .alternative_building_blocks as DirectusBuildingBlock[]
-      ).forEach((alt: DirectusBuildingBlock) => {
-        if (alt.category?.slug) slugs.add(alt.category.slug.trim());
+    
+    if (Array.isArray(item.building_blocks_used)) 
+      item.building_blocks_used.forEach((blockWrapper) => {
+        if (blockWrapper.category.slug) 
+          slugs.add(blockWrapper.category.slug.trim())     
       });
-    }
+    
+
     return [...slugs].some((slug) => filters.value.includes(slug));
   });
 });
+
 </script>
 
 <style scoped lang="scss">

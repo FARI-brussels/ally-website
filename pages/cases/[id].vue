@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="!loading && selectedCase"
     class="main"
     :class="{ 'page-fade-in': pageVisible, 'main--loading': loading }"
   >
