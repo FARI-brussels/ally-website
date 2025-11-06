@@ -1,9 +1,12 @@
 import { createDirectus, rest, readItems, readItem } from "@directus/sdk";
 import type { DirectusCase, DirectusExternalLink } from "~/types/directus/Case";
-const config = useRuntimeConfig();
-const client = createDirectus(config.public.directusUrl).with(rest());
+
 
 export const useCasesStore = defineStore("cases", () => {
+  const config = useRuntimeConfig();
+  const baseUrl = config.public.directusUrl
+  const client = createDirectus(baseUrl).with(rest());
+
   const error = ref(null);
   const loading = ref(false);
 
@@ -27,11 +30,10 @@ export const useCasesStore = defineStore("cases", () => {
     cases.value = await Promise.all(
       data
         .map((item) => {
-          console.log({item})
           delete item?.alternative_cases;
           return item;
         })
-        .map(parseCase),
+        .map((item) =>  parseCase(item, baseUrl) ),
     );
 
 
@@ -106,7 +108,6 @@ export const useCasesStore = defineStore("cases", () => {
       external_links,
     });
 
-    console.log(selectedCase.value)
   }
 
   return {
@@ -120,14 +121,14 @@ export const useCasesStore = defineStore("cases", () => {
   };
 });
 
-async function parseCase(item) {
+async function parseCase(item, baseUrl) {
   const { id, image, translations, alternative_cases = [], blocks_used } = item;
 
   const caseItem = {
     title: {},
     description: {},
     content: {},
-    image: image?.id ? getDirectusImageUrl(image.id) : null,
+    image: image?.id ? getDirectusImageUrl(image.id, baseUrl) : null,
   };
 
   translations.forEach(({ title, description, content, languages_code }) => {
@@ -170,10 +171,10 @@ async function parseCase(item) {
 
     return block;
   });
-console.log({caseItem})
+
   return {
     id,
-    alternative_cases: await Promise.all(alternative_cases.map(parseCase)),
+    alternative_cases: await Promise.all(alternative_cases.map( (c) => parseCase(c, baseUrl)   )),
     ...caseItem,
     building_blocks_used,
   };
@@ -208,15 +209,13 @@ function isValidCase(caseItem: unknown): caseItem is Case {
 
 
 
-function getDirectusImageUrl(imageId: string, options?: {
+function getDirectusImageUrl(imageId: string, baseUrl: string, options?: {
   width?: number;
   height?: number;
   quality?: number;
   format?: string;
 }): string {
   if (!imageId) return '';
-  const config = useRuntimeConfig();
-  const baseUrl = config.public.directusUrl;
   const params = new URLSearchParams();
   
   if (options?.width) params.append('width', options.width.toString());
