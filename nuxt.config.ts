@@ -15,6 +15,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       workshopFormUrl: process.env.NUXT_PUBLIC_WORKSHOP_FORM_URL,
+      directusUrl: process.env.NUXT_PUBLIC_DIRECTUS_URL || ''
     },
   },
   app: {
