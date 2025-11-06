@@ -1,9 +1,14 @@
 <template>
-  <div class="main" :class="{ 'page-fade-in': pageVisible, 'main--loading': loading }">
-
-
+  <div
+    v-if="!loading && selectedCase"
+    class="main"
+    :class="{ 'page-fade-in': pageVisible, 'main--loading': loading }"
+  >
     <div class="breadcrumb">
-      <BreadCrumb categoryText="Case" :labelText="selectedCase?.title?.[locale] || ''"/>
+      <BreadCrumb
+        category-text="Case"
+        :label-text="selectedCase?.title?.[locale] || ''"
+      />
     </div>
 
     <div class="intro-section" :class="{ 'intro-section--mobile': isMobile }">
@@ -13,7 +18,6 @@
         :description="selectedCase?.description[locale]"
       />
     </div>
-
 
     <div class="main-content">
       <div class="page-items" :class="{ 'page-items--mobile': isMobile }">
@@ -29,18 +33,23 @@
       <h2 class="section-title">
         {{ blocksUsed[locale] }}
       </h2>
-      <div class="alternatives-section-list" :class="{ 'alternatives-section-list--mobile': isMobile }">
-        <TransitionGroup name="stagger-fade" tag="div">
-          <CardMain
-            :image="getImage(selectedCase?.building_blocks_used?.category?.slug)"
-            :category="selectedCase?.building_blocks_used?.category?.title[locale]"
-            :title="selectedCase?.building_blocks_used.title[locale]"
-            :description="selectedCase?.building_blocks_used.description[locale]"
-            :url="`/building-blocks/${selectedCase?.building_blocks_used.id}`"
-            @click="navigateTo(`/building-blocks/${selectedCase?.building_blocks_used.id}`)"
-          />
-        </TransitionGroup>
-      </div>
+      <TransitionGroup
+        name="stagger-fade"
+        tag="div"
+        class="alternatives-section-list"
+        :class="{ 'alternatives-section-list--mobile': isMobile }"
+      >
+        <CardMain
+          v-for="block in selectedCase?.building_blocks_used"
+          :key="block.id"
+          :image="getImage(block.category?.slug)"
+          :category="block.category?.title?.[locale]"
+          :title="block.title[locale]"
+          :description="block.description[locale]"
+          :url="`/building-blocks/${block.id}`"
+          @click="navigateTo(`/building-blocks/${block.id}`)"
+        />
+      </TransitionGroup>
     </div>
   </div>
 </template>
@@ -55,25 +64,24 @@ const loading = ref(true);
 const pageVisible = ref(false);
 
 onMounted(async () => {
-  await findCase(Number(route.params.id));
-  loading.value = false;
-  setTimeout(() => 
-    pageVisible.value = true, 50);
+  await findCase(Number(route.params.id)).then(() => {
+    loading.value = false;
+    pageVisible.value = true
 
-    console.log(selectedCase.value);
+  })
 });
 
 const { isMobile } = useIsMobile();
 
 function getImage(category: CategorySlug) {
-  if (!category) return '';
-  return `/blocks/${mapCategory(category)}-${Math.floor(Math.random() * 3) + 1}.png`;
+  if (!category) return "";
+  return `/blocks/${category}-${Math.floor(Math.random() * 3) + 1}.png`;
 }
 
 const blocksUsed = {
-  en: 'Building blocks used in this case',
-  nl: 'Bouwstenen die in dit geval zijn gebruikt',
-  fr: 'Blocs de construction utilisés dans ce cas',
+  en: "Building blocks used in this case",
+  nl: "Bouwstenen die in dit geval zijn gebruikt",
+  fr: "Blocs de construction utilisés dans ce cas",
 };
 </script>
 
@@ -84,7 +92,9 @@ const blocksUsed = {
 .main {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .section-title {
@@ -137,7 +147,7 @@ const blocksUsed = {
 }
 
 .page-items {
-  display:flex;
+  display: flex;
   flex-direction: column;
   gap: 2rem;
   width: 50%;
@@ -148,8 +158,6 @@ const blocksUsed = {
   }
 }
 
-
-// Section: Alternatives
 .alternatives-section {
   display: flex;
   flex-direction: column;
@@ -174,7 +182,6 @@ const blocksUsed = {
   }
 }
 
-// Utilities & Transitions
 .stagger-fade-enter-active {
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -187,38 +194,16 @@ const blocksUsed = {
   transform: translateY(0);
 }
 
-// Loader (not currently used, but kept for future use)
-.page-loader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: white;
-  z-index: 1000;
-}
-.spinner {
-  width: 3rem;
-  height: 3rem;
-  border: 0.4rem solid #e0e0e0;
-  border-top: 0.4rem solid #7b5be6;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-.fade-loader-enter-active, .fade-loader-leave-active {
+.fade-loader-enter-active,
+.fade-loader-leave-active {
   transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.fade-loader-enter-from, .fade-loader-leave-to {
+.fade-loader-enter-from,
+.fade-loader-leave-to {
   opacity: 0;
 }
-.fade-loader-enter-to, .fade-loader-leave-from {
+.fade-loader-enter-to,
+.fade-loader-leave-from {
   opacity: 1;
 }
 </style>

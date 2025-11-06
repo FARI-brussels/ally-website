@@ -1,20 +1,19 @@
-@use 'colors';
-@use 'utilities';
-@use 'class-generator';
+@use "colors";
+@use "utilities";
+@use "class-generator";
 @import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap");
 
 a {
   text-decoration: none;
   transition: 0.4s;
   &:visited {
-    color: currentColor;
+    color: inherit;
   }
 }
 
 button {
   font-family: Rajdhani;
 }
-
 
 #app {
   height: 100vh;
@@ -33,7 +32,8 @@ button {
   height: 100vh;
 }
 
-h1, h2 {
+h1,
+h2 {
   line-height: normal;
 }
 

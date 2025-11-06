@@ -48,8 +48,10 @@ a {
   cursor: pointer;
   transition: all 0.2s;
   &:hover {
-    -webkit-box-shadow: 0px 0px 2.5rem -26px color.scale($text-color, $alpha: -0.8%);
-    -moz-box-shadow: 0px 0px 2.5rem -26px color.scale($text-color, $alpha: -0.8%);
+    -webkit-box-shadow: 0px 0px 2.5rem -26px
+      color.scale($text-color, $alpha: -0.8%);
+    -moz-box-shadow: 0px 0px 2.5rem -26px
+      color.scale($text-color, $alpha: -0.8%);
     box-shadow: 0px 0px 2.5rem -26px color.scale($text-color, $alpha: -0.8%);
   }
 }

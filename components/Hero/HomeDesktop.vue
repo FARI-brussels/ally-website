@@ -1,24 +1,29 @@
 <template>
-  <div 
-    class="wrapper" 
-    :style="{ 
-      backgroundImage: `url(${$props?.media})`, 
-      backgroundSize: 'contain', 
+  <div
+    class="wrapper"
+    :style="{
+      backgroundImage: `url(${$props?.media})`,
+      backgroundSize: 'contain',
       backgroundRepeat: 'no-repeat',
-      backgroundPositionY: 'bottom'
-    }">
-<div class="content">
- <h1 class="color-base-white title"> {{ $props?.title }}</h1>
- <p class="color-base-white description">{{ $props?.description }}</p>
- <div class="actions">
-   <template v-if="$props?.primary_action">
-     <a :href="$props.primary_action.url" class="btn btn-primary">{{ $props.primary_action.label }}</a>
-   </template>
-   <template v-if="$props?.secondary_action">
-     <a :href="$props.secondary_action.url" class="btn btn-secondary">{{ $props.secondary_action.label }}</a>
-   </template>
- </div>
-</div>
+      backgroundPositionY: 'bottom',
+    }"
+  >
+    <div class="content">
+      <h1 class="color-base-white title">{{ $props?.title }}</h1>
+      <p class="color-base-white description">{{ $props?.description }}</p>
+      <div class="actions">
+        <template v-if="$props?.primary_action">
+          <a :href="$props.primary_action.url" class="btn btn-primary">{{
+            $props.primary_action.label
+          }}</a>
+        </template>
+        <template v-if="$props?.secondary_action">
+          <a :href="$props.secondary_action.url" class="btn btn-secondary">{{
+            $props.secondary_action.label
+          }}</a>
+        </template>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -30,7 +35,7 @@ defineProps<HeroProps>();
 
 <style scoped lang="scss">
 @use "/assets/scss/colors";
-@use 'sass:map';
+@use "sass:map";
 
 .wrapper {
   position: relative;
@@ -83,7 +88,9 @@ defineProps<HeroProps>();
   font-size: 1.1rem;
   font-weight: 600;
   text-decoration: none;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 }
 .btn-primary {
   background: map.get(colors.$colors, "brand-600");

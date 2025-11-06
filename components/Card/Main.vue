@@ -1,25 +1,34 @@
 <template>
-  <component :is="url ? 'a' : 'div'" :href="url" class="card" rel="noopener noreferrer">
-    <img 
-      v-if="image" 
-      :src="image" 
-      class="card-image" 
-      alt="Card image" 
+  <component
+    :is="url ? 'a' : 'div'"
+    :href="url"
+    class="card"
+    rel="noopener noreferrer"
+  >
+    <img v-if="image" :src="image" class="card-image" alt="Card image">
+    <div class="card-content">
+      <span
+        v-if="category"
+        class="card-category"
+        :style="color ? { color } : {}"
+        >{{ category.replace(/-/g, " & ") }}</span
       >
-    <div 
-      class="card-content">
-      <span v-if="category" class="card-category" :style="color ? { color } : {}">{{ category.replace(/-/g, ' & ') }}</span>
       <div class="card-title-row">
         <h2 class="card-title">{{ title }}</h2>
-        <img src="/assets/icons/arrow-right-new.svg" class="card-arrow" alt="Go to details">
+        <img
+          src="/assets/icons/arrow-right-new.svg"
+          class="card-arrow"
+          alt="Go to details"
+        >
       </div>
-      <p class="card-description color-gray-light-mode-600">{{ description }}</p>
+      <p class="card-description color-gray-light-mode-600">
+        {{ description }}
+      </p>
     </div>
   </component>
 </template>
 
 <script setup lang="ts">
-
 defineProps<{
   title: string;
   description: string;
@@ -62,8 +71,8 @@ defineProps<{
 }
 .card-category {
   font-size: 0.85rem;
-  color: map.get($colors, 'brand-700');
-  
+  color: map.get($colors, "brand-700");
+
   font-weight: 600;
   margin-bottom: 0.3rem;
 }
@@ -71,7 +80,6 @@ defineProps<{
   display: flex;
   align-items: start;
   gap: 0.5rem;
-
 }
 .card-title {
   font-size: 1.2rem;

@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <div class="header">
-      <img class="logo" src="~/assets/logos/logo_ALLY_new.svg" >
+      <img class="logo" src="~/assets/logos/logo_ALLY_new.svg">
       <img
         src="@/assets/icons/menu.svg"
         alt="menu-button"
@@ -11,7 +11,7 @@
       <div class="menu" :class="{ visible: isMenuOpen }">
         <div class="menu-title">
           <NuxtLink :to="'/'">
-            <img class="logo" src="~/assets/logos/logo_ALLY_new.svg" >
+            <img class="logo" src="~/assets/logos/logo_ALLY_new.svg">
           </NuxtLink>
           <img
             src="@/assets/icons/close-button.svg"
@@ -21,17 +21,26 @@
           >
         </div>
 
-        <NavbarMobile class="navbar" :items="$props.items" @click="() => toggleMenu()"/>
+        <NavbarMobile
+          class="navbar"
+          :items="$props.items"
+          @click="() => toggleMenu()"
+        />
+        <!-- <AllyButton
+          variant="primary"
+          prepend-icon="scan"
+          label="do the quickscan"
+          @click="$router.push('/quickscan')"
+        /> -->
       </div>
-     
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { Locale } from "~/types/Locale";
-
-defineProps<{ items?: unknown[]; locale: Locale }>();
+import type { Locale } from "~/types/shared";
+import type { Routes } from "~/types/components/Routes";
+defineProps<{ items?: Routes; locale: Locale }>();
 
 const [isMenuOpen, toggleMenu] = useToggle(false);
 </script>
@@ -40,10 +49,9 @@ const [isMenuOpen, toggleMenu] = useToggle(false);
 @use "~/assets/scss/colors" as *;
 @use "~/assets/scss/spacing" as *;
 
-
 .logo {
-      height: 3rem;
-    }
+  height: 3rem;
+}
 
 .wrapper {
   display: flex;
@@ -63,7 +71,6 @@ const [isMenuOpen, toggleMenu] = useToggle(false);
       color: $medium-purple;
       text-transform: uppercase;
     }
-
   }
 
   .menu {
@@ -71,13 +78,13 @@ const [isMenuOpen, toggleMenu] = useToggle(false);
     flex-direction: column;
     background-color: white;
     position: fixed;
-  top: 0;
-  right: -100%;
-  width: 100%;
-  height: 100vh;
-  background: white;
-  transition: right 0.3s ease;
-  z-index: 9999;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100vh;
+    background: white;
+    transition: right 0.3s ease;
+    z-index: 9999;
     padding: 2rem;
     transition: right 0.3s ease;
     -webkit-box-shadow: 10px 0px 35px -14px rgba(0, 0, 0, 0.4);
@@ -103,8 +110,6 @@ const [isMenuOpen, toggleMenu] = useToggle(false);
   .visible {
     right: 0;
   }
-
-
 
   .navbar {
     padding: 2.5rem 0;

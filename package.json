@@ -18,6 +18,7 @@
     "@pinia/nuxt": "^0.5.4",
     "@vueuse/core": "^11.1.0",
     "@vueuse/nuxt": "^11.1.0",
+    "eslint": "^9.37.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "markdown-it": "^14.1.0",
@@ -29,9 +30,14 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@nuxt/test-utils": "^3.19.2",
     "@types/markdown-it": "^14.1.2",
+    "@vue/test-utils": "^2.4.6",
+    "happy-dom": "^18.0.1",
+    "playwright-core": "^1.56.1",
     "sass": "^1.79.3",
     "typescript": "^5.6.2",
+    "vitest": "^3.2.4",
     "vue-tsc": "^2.1.6"
   }
 }

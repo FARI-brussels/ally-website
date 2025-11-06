@@ -1,4 +1,21 @@
 import type { Locale } from "../Locale.ts";
+import type { PositiveInteger } from "../Utility.js";
+import type { ExternalLink } from "~/types/directus/BuildingBlock";
+
+type BlockValue = "low" | "medium" | "high";
+
+export interface ParsedBuildingBlock {
+  id: number;
+  cost: BlockValue;
+  effort: BlockValue;
+  time: BlockValue;
+  maintenance: BlockValue;
+  involvement: string;
+  ranking: PositiveInteger<number>;
+  category: string;
+  alternative_building_blocks: ParsedBuildingBlock[];
+  external_links: ExternalLink[];
+}
 
 interface Action {
   url: string;

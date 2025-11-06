@@ -1,5 +1,5 @@
 <template>
-  <hr class="ally-divider" />
+  <hr class="ally-divider">
 </template>
 
 <style scoped lang="scss">
@@ -9,4 +9,4 @@
   margin: 2rem 0;
   width: 100%;
 }
-</style> 
+</style>

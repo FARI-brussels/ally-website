@@ -1,6 +1,8 @@
 <template>
   <nav>
-    <NuxtLink v-for="{ name, path, label } in items" :key="path" :to="path">     {{ label || name }}</NuxtLink>
+    <NuxtLink v-for="{ name, path, label } in items" :key="path" :to="path">
+      {{ label || name }}</NuxtLink
+    >
   </nav>
 </template>
 

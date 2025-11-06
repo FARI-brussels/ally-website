@@ -1,7 +1,6 @@
 <template>
   <div class="layout">
-
-    <header class="header" :class="{mobile: isMobile}">
+    <header class="header" :class="{ mobile: isMobile }">
       <HeaderDesktop
         v-if="!isMobile"
         :items="orderedRoutes"
@@ -17,15 +16,18 @@
     </header>
 
     <div class="content-wrapper">
-      <main class="content" :class="{
-        mobile: isMobile
-      }">
+      <main
+        class="content"
+        :class="{
+          mobile: isMobile,
+        }"
+      >
         <NuxtPage />
       </main>
 
       <footer class="footer">
-        <FooterMobile v-if="isMobile" :items="orderedRoutes"/>
-        <FooterDesktop v-else :items="orderedRoutes"/>
+        <FooterMobile v-if="isMobile" :items="orderedRoutes" />
+        <FooterDesktop v-else :items="orderedRoutes" />
       </footer>
     </div>
   </div>
@@ -36,24 +38,28 @@ const { setLocale } = useGlobalStore();
 const { locale } = storeToRefs(useGlobalStore());
 
 const { isMobile } = useIsMobile();
-const desiredOrder = ["/", "/building-blocks", "/cases", "/about"];
+const desiredOrder = ["/", "/building-blocks", "/cases", "/workshop", "/about"];
 
 const routeLabels: Record<string, string> = {
   "/": "Home",
   "/building-blocks": "Building Blocks",
   "/cases": "Cases",
-  "/about": "About"
+  "/about": "About",
+  "/workshop": "Workshop",
 };
 
 const routes = useRouter()
   .getRoutes()
   .filter(({ path }) => !path.includes(":"));
 
-const orderedRoutes = desiredOrder.map((path) => {
-  const route = routes.find((route) => route.path === path);
-  return route ? { ...route, label: routeLabels[route.path] || route.name } : null;
-}).filter(Boolean);
-
+const orderedRoutes = desiredOrder
+  .map((path) => {
+    const route = routes.find((route) => route.path === path);
+    return route
+      ? { ...route, label: routeLabels[route.path] || route.name }
+      : null;
+  })
+  .filter(Boolean);
 </script>
 <style scoped lang="scss">
 @use "/assets/scss/colors" as *;

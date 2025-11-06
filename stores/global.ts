@@ -1,5 +1,6 @@
-import type { Locale } from "~/types/Locale";
+import type { Locale } from "~/types/shared";
 import { createDirectus, rest, readItems, readItem } from "@directus/sdk";
+import { mapCategory } from "~/utils/mapCategory";
 
 const client = createDirectus("https://fari-cms.directus.app").with(rest());
 
@@ -48,7 +49,6 @@ export const useGlobalStore = defineStore("global", () => {
 
   async function getBuildingBlockCategory(slug: string) {
     if (!slug) return null;
-
     const data = await client.request(
       readItem("ally_category", slug, {
         fields: ["*.*"],
@@ -92,11 +92,21 @@ export const useGlobalStore = defineStore("global", () => {
   };
 });
 
-function parseBlockData({ slug, translations }) {
+interface BlockData {
+  slug: string;
+  translations: Array<{
+    languages_code: string;
+    title: string;
+    description: string;
+  }>;
+}
+
+function parseBlockData({ slug, translations }: BlockData) {
+
   const item = {
-    slug,
-    title: {},
-    description: {},
+    slug: mapCategory(slug),
+    title: {} as Record<string, string>,
+    description: {} as Record<string, string>,
   };
 
   translations.forEach(({ languages_code, title, description }) => {

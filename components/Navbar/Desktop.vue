@@ -7,13 +7,11 @@
 </template>
 
 <script setup lang="ts">
-
-  const props = defineProps<{ 
-    items?: { name?: string; path?: string; label?: string }[] 
-    dark?: boolean
-    small?: boolean
-  }>();
-
+defineProps<{
+  items?: { name?: string; path?: string; label?: string }[];
+  dark?: boolean;
+  small?: boolean;
+}>();
 </script>
 
 <style scoped lang="scss">
@@ -22,7 +20,7 @@
 @use "sass:map";
 
 nav {
-  width: 100%;
+  // width: 100%;
   font-size: 1.4rem;
   display: flex;
   flex-wrap: wrap;
@@ -60,6 +58,4 @@ nav {
 .small {
   font-size: 1rem;
 }
-
-
 </style>

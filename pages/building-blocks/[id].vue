@@ -1,49 +1,46 @@
 <template>
-  <div class="main" :class="{ 'page-fade-in': pageVisible, 'main--loading': loading }">
-    <Transition name="fade-loader">
-      <div v-if="loading" class="page-loader" key="loader">
-        <span class="spinner"></span>
-      </div>
-    </Transition>
   <div
-    class="breadcrumb"
-    v-if="selectedBlock?.category?.title?.[locale] && selectedBlock?.title?.[locale]"
+    class="main"
+    :class="{ 'page-fade-in': pageVisible, 'main--loading': loading }"
   >
-  <BreadCrumb 
-    categoryText="Building block"
-    :labelText="selectedBlock?.category?.title?.[locale] || ''"
-    :colorKey="mapCategory(selectedBlock?.category?.slug)"
-    />
-  </div>
-
+    <div
+      v-if="
+        selectedBlock?.category?.title?.[locale] &&
+        selectedBlock?.title?.[locale]
+      "
+      class="breadcrumb"
+    >
+      <BreadCrumb
+        category-text="Building block"
+        :label-text="selectedBlock?.category?.title?.[locale] || ''"
+        :color-key="selectedBlock?.category?.slug"
+      />
+    </div>
 
     <div class="intro-section" :class="{ 'intro-section--mobile': isMobile }">
-      
-        <PageSection
-          html
-          :title="selectedBlock?.title[locale] || ''"
-          :description="selectedBlock?.description[locale] || ''"
-          :categories="[selectedBlock?.category.title[locale]]"
-          class="intro-section-text"
-        />
-        <img
-          v-if="selectedBlock?.category?.slug"
-          :src="getImage(selectedBlock.category.slug)"
-          alt="Block visual"
-          class="intro-section-image"
-        >
+      <PageSection
+        html
+        :title="selectedBlock?.title[locale] || ''"
+        :description="selectedBlock?.description[locale] || ''"
+        :categories="[selectedBlock?.category.title[locale]]"
+        class="intro-section-text"
+      />
+      <img
+        v-if="selectedBlock?.category?.slug"
+        :src="getImage(selectedBlock.category.slug)"
+        alt="Block visual"
+        class="intro-section-image"
+      >
     </div>
 
     <div class="main-content">
-
-    <div class="page-items" :class="{ 'page-items--mobile': isMobile }">
-      <PageSection
-        html
-        :title="benefitsTitle[locale] || ''"
-        :description="selectedBlock?.benefits[locale] || ''"
-
-      />
-      <CardBlockRequirement
+      <div class="page-items" :class="{ 'page-items--mobile': isMobile }">
+        <PageSection
+          html
+          :title="benefitsTitle[locale] || ''"
+          :description="selectedBlock?.benefits[locale] || ''"
+        />
+        <CardBlockRequirement
           v-if="isMobile"
           class="requirements"
           :locale="locale"
@@ -53,105 +50,107 @@
           :time="selectedBlock?.time || ''"
           :maintenance="selectedBlock?.maintenance || ''"
         />
-      <PageSection
-        html
-        :title="howToExecuteTitle[locale] || ''"
-        :description="selectedBlock?.how_to_execute[locale] || ''"
-      />
-      <PageSection
-        html
-        :title="kpisTitle[locale] || ''"
-        :description="selectedBlock?.kpis[locale] || ''"
-      />
-
-    </div>
-
-    <div v-if="!isMobile" class="sidebar">
-      <div class="sidebar-inner">
-        <CardBlockRequirement
-          class="requirements"
-          :locale="locale"
-          :cost="selectedBlock?.cost || ''"
-          :effort="selectedBlock?.effort || ''"
-          :involvement="selectedBlock?.involvement || ''"
-          :time="selectedBlock?.time || ''"
-          :maintenance="selectedBlock?.maintenance || ''"
+        <PageSection
+          html
+          :title="howToExecuteTitle[locale] || ''"
+          :description="selectedBlock?.how_to_execute[locale] || ''"
         />
-      <div v-if="!isMobile" class="copy-link-container">
-          <h3 class="copy-link-title"> Share this block </h3>
-          <AllyButton 
-            :prepend-icon="copyLinkIcon" 
-            :label="copyLinkText"
-            variant="gray"
-            @click="copyLinkToClipBoard"
+        <PageSection
+          html
+          :title="kpisTitle[locale] || ''"
+          :description="selectedBlock?.kpis[locale] || ''"
+        />
+      </div>
+
+      <div v-if="!isMobile" class="sidebar">
+        <div class="sidebar-inner">
+          <CardBlockRequirement
+            class="requirements"
+            :locale="locale"
+            :cost="selectedBlock?.cost || ''"
+            :effort="selectedBlock?.effort || ''"
+            :involvement="selectedBlock?.involvement || ''"
+            :time="selectedBlock?.time || ''"
+            :maintenance="selectedBlock?.maintenance || ''"
+          />
+          <div v-if="!isMobile" class="copy-link-container">
+            <h3 class="copy-link-title">Share this block</h3>
+            <AllyButton
+              :prepend-icon="copyLinkIcon"
+              :label="copyLinkText"
+              variant="gray"
+              @click="copyLinkToClipBoard"
             />
+          </div>
         </div>
       </div>
     </div>
 
-  </div>
-
-
-
-  <div class="links full-width-section bg-color-brand-25">
-
-    <PageSection
-          :title="externalLinksTitle[locale]"
-          :description="externalLinksParagraph[locale] || ''"
-        />
-        <div class="external-links-list" :class="{ 'external-links-list--mobile': isMobile }">
-
-        <a 
+    <div class="links full-width-section bg-color-brand-25">
+      <PageSection
+        :title="externalLinksTitle[locale]"
+        :description="externalLinksParagraph[locale] || ''"
+      />
+      <div
+        class="external-links-list"
+        :class="{ 'external-links-list--mobile': isMobile }"
+      >
+        <a
           v-for="link in selectedBlock?.external_links"
           :key="link.id"
           class="external-links"
           target="_blank"
           :href="link.url"
-
         >
-        <div class="external-links-title">
-          <h2 class="section-title-small">{{ link.title[locale] }}</h2>
+          <div class="external-links-title">
+            <h2 class="section-title-small">{{ link.title[locale] }}</h2>
 
-          <img src="/assets/icons/external-link.svg" class="external-links-title-icon">
-        </div>
-        <p>{{ link.description?.[locale] }}</p>
-      </a>
-    </div>
+            <img
+              src="/assets/icons/external-link.svg"
+              class="external-links-title-icon"
+            >
+          </div>
+          <p>{{ link.description?.[locale] }}</p>
+        </a>
       </div>
+    </div>
 
-
-
-    <div v-if="selectedBlock?.alternative_building_blocks.length" class="alternatives-section">
-      <h2 class="section-title" >
+    <div
+      v-if="selectedBlock?.alternative_building_blocks.length"
+      class="alternatives-section"
+    >
+      <h2 class="section-title">
         {{ alterativesTitle[locale] }}
       </h2>
       <p class="alternatives-section-description">
         {{ alternativesDescription[locale] }}
       </p>
 
-      <TransitionGroup name="stagger-fade" tag="div" class="alternatives-section-list" :class="{ 'alternatives-section-list--mobile': isMobile }">
+      <TransitionGroup
+        name="stagger-fade"
+        tag="div"
+        class="alternatives-section-list"
+        :class="{ 'alternatives-section-list--mobile': isMobile }"
+      >
         <CardMain
           v-for="(block, idx) in selectedBlock?.alternative_building_blocks"
           :key="block.id"
-          :style="{ transitionDelay: (idx * 100) + 'ms' }"
+          :style="{ transitionDelay: idx * 100 + 'ms' }"
           :image="getImage(block.category?.slug)"
-          :category="block.category?.title[locale]"
+          :category="block.category?.title?.[locale]"
           :title="block.title[locale]"
           :description="block.description[locale]"
           :url="`/building-blocks/${block.id}`"
           @click="navigateTo(`/building-blocks/${block.id}`)"
         />
       </TransitionGroup>
-
-
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { mapCategory } from '~/utils/mapCategory';
-import type { CategorySlug } from '~/types/components';
-import { useIsMobile } from '~/composables/useIsMobile';
-import { ref, onMounted } from 'vue';
+import type { CategorySlug } from "~/types/components";
+import { useIsMobile } from "~/composables/useIsMobile";
+import { ref, onMounted } from "vue";
 
 const { locale } = storeToRefs(useGlobalStore());
 const { selectedBlock } = storeToRefs(useBuildingBlockStore());
@@ -164,34 +163,30 @@ const loading = ref(true);
 const pageVisible = ref(false);
 
 onMounted(async () => {
-  await findBlock(Number(route.params.id));
-  loading.value = false;
-  setTimeout(() => {
-    pageVisible.value = true;
-  }, 50);
-
-  console.log(selectedBlock.value);
+  await findBlock(Number(route.params.id)).then(() => {
+    loading.value = false;
+    pageVisible.value = true
+  })
 });
 
 function getImage(category: CategorySlug) {
-  if (!category) return '';
-  return `/blocks/${mapCategory(category)}-${Math.floor(Math.random() * 3) + 1}.png`;
+  if (!category) return "";
+  return `/blocks/${category}-${Math.floor(Math.random() * 3) + 1}.png`;
 }
 
-const copyLinkIcon = ref('copy-link')
-const copyLinkText = ref('Copy link to this building block')
+const copyLinkIcon = ref("copy-link");
+const copyLinkText = ref("Copy link to this building block");
 
 function copyLinkToClipBoard() {
   navigator.clipboard.writeText(window.location.href);
-  copyLinkIcon.value = 'check'
-  copyLinkText.value =  'Copied!'
+  copyLinkIcon.value = "check";
+  copyLinkText.value = "Copied!";
 
-  setTimeout(() => { 
-    copyLinkIcon.value = 'copy-link' 
-    copyLinkText.value = 'Copy link to this building block'
-  }, 5000)
+  setTimeout(() => {
+    copyLinkIcon.value = "copy-link";
+    copyLinkText.value = "Copy link to this building block";
+  }, 5000);
 }
-
 
 const alterativesTitle = {
   en: "Alternative building blocks",
@@ -240,14 +235,14 @@ const externalLinksParagraph = {
 @use "/assets/scss/colors" as *;
 @use "/assets/scss/spacing" as *;
 @use "sass:map";
-@use 'sass:color';
+@use "sass:color";
 .main {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-
 
 .section-title {
   font-size: 2.2rem;
@@ -299,7 +294,7 @@ const externalLinksParagraph = {
   border-radius: 1rem;
   padding: 2rem;
   cursor: default;
-  border: 1px solid map.get($colors, 'gray-light-mode-200');
+  border: 1px solid map.get($colors, "gray-light-mode-200");
 
   button {
     display: flex;
@@ -312,10 +307,10 @@ const externalLinksParagraph = {
   }
 
   .icon-svg {
-  width: 1.5rem;
-  height: 1.5rem;
-  display: block;
-}
+    width: 1.5rem;
+    height: 1.5rem;
+    display: block;
+  }
 }
 
 .copy-link-title {
@@ -344,19 +339,16 @@ const externalLinksParagraph = {
   padding-top: 3rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
-
-
 
 .external-links {
   display: flex;
   flex-direction: column;
 
- 
   gap: 2rem;
   width: 20rem;
   cursor: pointer;
@@ -370,7 +362,7 @@ const externalLinksParagraph = {
   &-title {
     display: flex;
     align-items: start;
-    gap: 1rem;    
+    gap: 1rem;
   }
 
   &-list {
@@ -382,9 +374,8 @@ const externalLinksParagraph = {
       flex-direction: column;
       align-items: center;
     }
-  } 
+  }
 }
-
 
 .alternatives-section {
   display: flex;
@@ -397,7 +388,7 @@ const externalLinksParagraph = {
     font-weight: 400;
   }
 
-  &-list {  
+  &-list {
     margin-top: 2rem;
     display: flex;
     flex-wrap: wrap;
@@ -407,7 +398,6 @@ const externalLinksParagraph = {
       flex-direction: column;
       align-items: center;
     }
-
   }
 }
 
@@ -418,7 +408,7 @@ const externalLinksParagraph = {
 }
 
 .page-items {
-  display:flex;
+  display: flex;
   flex-direction: column;
   gap: 2rem;
   width: 50%;
@@ -428,7 +418,6 @@ const externalLinksParagraph = {
     align-items: center;
   }
 }
-
 
 .page-fade-in {
   opacity: 1;
@@ -449,39 +438,4 @@ const externalLinksParagraph = {
 .main--loading {
   pointer-events: none;
 }
-
-.page-loader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: white;
-  z-index: 1000;
-}
-.spinner {
-  width: 3rem;
-  height: 3rem;
-  border: 0.4rem solid #e0e0e0;
-  border-top: 0.4rem solid #7b5be6;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-.fade-loader-enter-active, .fade-loader-leave-active {
-  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.fade-loader-enter-from, .fade-loader-leave-to {
-  opacity: 0;
-}
-.fade-loader-enter-to, .fade-loader-leave-from {
-  opacity: 1;
-}
-
 </style>

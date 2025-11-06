@@ -3,51 +3,88 @@
     name="block-pop"
     tag="div"
     class="block-list"
-    :class="{ 'mobile': isMobile }"
+    :class="{ mobile: isMobile }"
   >
-    <CardMain
-      v-for="block in blocks"
-      :key="block.id"
-      :title="typeof block.title === 'string' ? block.title : ''"
-      :description="typeof block.description === 'string' ? block.description : ''"
-      :image="getImage(typeof block.category === 'string' ? block.category : '')"
-      :url="`/building-blocks/${block.id}`"
-      :category="typeof block.category === 'string' ? block.category : ''"
-      :color="categoryColors[typeof block.category === 'string' ? block.category : '']"
-    />
+    <template
+      v-for="{
+        title,
+        description,
+        category,
+        cost,
+        effort,
+        time,
+        involvement,
+        maintenance,
+        id,
+      } in blocks"
+      :key="id"
+    >
+      <CardMain
+        v-if="!$props.expanded"
+        v-bind="{
+          id,
+          title,
+          description,
+          category,
+        }"
+        :image="getImage(category)"
+        :url="`/building-blocks/${id}`"
+        :color="categoryColors[category]"
+      />
+
+      <CardBlockLarge
+        v-else
+        class="unified-card-spacing"
+        v-bind="{
+          id,
+          title,
+          description,
+          category,
+          effort,
+          cost,
+          involvement,
+          maintenance,
+          time,
+        }"
+        :image="getImage(category)"
+        :url="`/building-blocks/${id}`"
+        :color="categoryColors[category]"
+        locale="en"
+      />
+    </template>
   </transition-group>
 </template>
 
 <script setup lang="ts">
-import CardMain from '~/components/Card/Main.vue';
-import { categoryColors } from '~/utils/categoryColors';
-import type { Block } from '~/types/components';
+import CardMain from "~/components/Card/Main.vue";
+import { categoryColors } from "~/utils/categoryColors";
+import type { Block } from "~/types/components";
+import type { CategorySlug } from "~/types/shared";
 
-defineProps<{ blocks: Block[] }>();
+defineProps<{ blocks: Block[]; expanded?: boolean }>();
 
-// Maintain a queue of available image indices for each category
 const imageQueues: Record<string, number[]> = {};
 
 function getNextImageIndex(category: string, totalImages = 4): number {
   if (!imageQueues[category] || imageQueues[category].length === 0) {
-    // Initialize and shuffle the queue for this category
-    imageQueues[category] = Array.from({ length: totalImages }, (_, i) => i + 1)
-      .sort(() => Math.random() - 0.5);
+    imageQueues[category] = Array.from(
+      { length: totalImages },
+      (_, i) => i + 1,
+    ).sort(() => Math.random() - 0.5);
   }
-  // Pop the first index and push it to the end
+
   const idx = imageQueues[category].shift()!;
   imageQueues[category].push(idx);
   return idx;
 }
 
-function getImage(category: string) {
-  if (!category) return '';
+function getImage(category: CategorySlug) {
+  if (!category) return "";
   const index = getNextImageIndex(category);
   return `/blocks/${category}-${index}.png`;
 }
 
 const { isMobile } = useIsMobile();
-
 </script>
 
 <style scoped>
@@ -84,4 +121,4 @@ const { isMobile } = useIsMobile();
   opacity: 0;
   transform: scale(0.85) translateY(-40px) rotate(3deg);
 }
-</style> 
+</style>

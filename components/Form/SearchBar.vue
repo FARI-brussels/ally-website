@@ -7,7 +7,7 @@
       class="search-input"
       @keydown.enter="handleSubmit"
     >
-    <img src="/assets/icons/search.svg" alt="search" class="search-icon" >
+    <img src="/assets/icons/search.svg" alt="search" class="search-icon">
   </div>
 </template>
 
@@ -33,14 +33,16 @@ const handleSubmit = () => model.value && emit("submit", model.value);
 }
 .search-input {
   flex: 1;
-  padding: 8px 8px 8px 2.5rem; 
+  padding: 8px 8px 8px 2.5rem;
   border-radius: 0.5rem;
   border: 1px solid colors.$border-color;
   height: 3rem;
   width: 100%;
   box-sizing: border-box;
   box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
-  transition: box-shadow 0.2s, border-color 0.2s;
+  transition:
+    box-shadow 0.2s,
+    border-color 0.2s;
 }
 .search-input:focus {
   outline: none;

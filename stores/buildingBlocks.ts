@@ -18,7 +18,12 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
   async function getBlocks() {
     const data = (await client.request(
       readItems("ally_building_block", {
-        fields: ["*.*"],
+      fields: [
+            "*",
+            "translations.*",
+            "category.*",  // Get all category fields
+            "category.translations.*"  // IMPORTANT: Get category translations
+          ],
         filter: {
           status: {
             _eq: "published",
@@ -35,6 +40,8 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
         })
         .map(parseBlock),
     );
+
+
   }
 
   async function findBlock(id: number) {
@@ -59,7 +66,9 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
     try {
       const data = await client.request(
         readItem("ally_building_block", id, {
-          fields: ["*.*"],
+          fields: [
+            "*.*"
+          ],
           filter: {
             status: {
               _eq: "published",
@@ -96,7 +105,14 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
 
         alternatives = await client.request(
           readItems("ally_building_block", {
-            fields: ["*.*"],
+            fields: [
+              "*",
+              "external_links.ally_external_link_slug",
+              "alternative_building_blocks.related_ally_building_block_id",
+              "translations.*",
+              "category.*",  // Get all category fields
+              "category.translations.*"  // IMPORTANT: Get category translations
+            ],
             filter: {
               id: {
                 _in: ids,
@@ -111,12 +127,16 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
         delete alternative_building_blocks?.alternative_building_blocks;
       }
 
-      selectedBlock.value = await parseBlock({
+      const parsedBlock = await parseBlock({
         ...data,
         alternative_building_blocks,
         alternatives,
         external_links,
       });
+
+      selectedBlock.value = parsedBlock;
+
+      return parsedBlock;
     } catch (error) {
       console.error(
         `Failed to fetch block with id ${id}:`,
@@ -126,74 +146,6 @@ export const useBuildingBlockStore = defineStore("buildingBlocks", () => {
       return null;
     }
   }
-
-  // async function getBlock(id: number) {
-  //   let external_links: DirectusExternalLink[] = [];
-  //   const alternative_building_blocks: DirectusBuildingBlock[] = [];
-
-  //   let alternatives;
-
-  //   const data = (await client.request(
-  //     readItem("ally_building_block", id, {
-  //       fields: ["*.*"],
-  //       filter: {
-  //         status: {
-  //           _eq: 'published'
-  //         }
-  //       }
-  //     }),
-  //   )) as DirectusBuildingBlock;
-
-  //   if (data.external_links && data.external_links.length) {
-  //     const slugs = data.external_links.map(
-  //       ({ ally_external_link_slug }) => ally_external_link_slug,
-  //     );
-
-  //     external_links = await client.request(
-  //       readItems("ally_external_link", {
-  //         fields: ["*.*"],
-  //         filter: {
-  //           slug: {
-  //             _in: slugs,
-  //           },
-  //         },
-  //       }),
-  //     );
-  //   }
-
-  //   if (
-  //     data.alternative_building_blocks &&
-  //     data.alternative_building_blocks.length
-  //   ) {
-  //     const ids = data.alternative_building_blocks.map(
-  //       ({ related_ally_building_block_id }) => related_ally_building_block_id,
-  //     );
-
-  //     alternatives = (await client.request(
-  //       readItems("ally_building_block", {
-  //         fields: ["*.*"],
-  //         filter: {
-  //           id: {
-  //             _in: ids,
-  //           },
-  //           status: {
-  //             _eq: 'published'
-  //           }
-  //         },
-  //       }),
-  //     )) as DirectusBuildingBlock[];
-
-  //     delete alternative_building_blocks?.alternative_building_blocks;
-  //   }
-
-  //   selectedBlock.value = await parseBlock({
-  //     ...data,
-  //     alternative_building_blocks,
-  //     alternatives,
-  //     external_links,
-  //   });
-
-  // }
 
   return {
     blocks,
@@ -216,7 +168,7 @@ async function parseBlock(buildingBlock: DirectusBuildingBlock) {
     maintenance,
     category,
     translations,
-
+    ranking,
     alternatives = [],
     external_links,
   } = buildingBlock;
@@ -230,8 +182,12 @@ async function parseBlock(buildingBlock: DirectusBuildingBlock) {
     how_to_execute: {},
     kpis: {},
   };
-
-  const blockCategory = await findBuildingBlockCategory(category?.slug);
+  const blockCategory = category.translations?.[0]?.title 
+  ? {
+    ...category,
+    slug: mapCategory(category.slug),
+  } 
+  : await findBuildingBlockCategory(category?.slug);
 
   translations.forEach(
     ({
@@ -257,6 +213,7 @@ async function parseBlock(buildingBlock: DirectusBuildingBlock) {
     involvement: parseInvolvementContent(involvement?.blocks[0]?.data),
     time,
     maintenance,
+    ranking,
     category: blockCategory,
     alternative_building_blocks: await Promise.all(
       alternatives.map(parseBlock),

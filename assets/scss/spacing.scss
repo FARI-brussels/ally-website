@@ -6,49 +6,46 @@ $mobile-padding: 1.75rem;
 // Ally Spacing Scale (descriptive names for use cases)
 $spacings: (
   // Section and layout
-  'section-padding': 4rem,
-  'section-padding-lg': 6rem,
-  'section-padding-md': 3rem,
-  'section-padding-sm': 1.5rem,
+  "section-padding": 4rem,
+  "section-padding-lg": 6rem,
+  "section-padding-md": 3rem,
+  "section-padding-sm": 1.5rem,
 
   // Card and container
-  'card-padding': 2rem,
-  'card-padding-sm': 1.25rem,
-  'card-gap': 2rem,
-  'card-gap-sm': 1rem,
+  "card-padding": 2rem,
+  "card-padding-sm": 1.25rem,
+  "card-gap": 2rem,
+  "card-gap-sm": 1rem,
 
   // Gaps and margins
-  'gap-lg': 3rem,
-  'gap-md': 2rem,
-  'gap-sm': 1rem,
-  'gap-xs': 0.5rem,
+  "gap-lg": 3rem,
+  "gap-md": 2rem,
+  "gap-sm": 1rem,
+  "gap-xs": 0.5rem,
 
   // Utility
-  'space-0-25': 0.25rem,
-  'space-0-5': 0.5rem,
-  'space-0-75': 0.75rem,
-  'space-1': 1rem,
-  'space-1-25': 1.25rem,
-  'space-1-5': 1.5rem,
-  'space-2': 2rem,
-  'space-2-5': 2.5rem,
-  'space-3': 3rem,
-  'space-4': 4rem,
+  "space-0-25": 0.25rem,
+  "space-0-5": 0.5rem,
+  "space-0-75": 0.75rem,
+  "space-1": 1rem,
+  "space-1-25": 1.25rem,
+  "space-1-5": 1.5rem,
+  "space-2": 2rem,
+  "space-2-5": 2.5rem,
+  "space-3": 3rem,
+  "space-4": 4rem
 );
 
 // Border radius scale (descriptive names for use cases)
 $radius: (
-  'radius-lg': 1.25rem,
-  'radius-md': 1rem,
-  'radius-sm': 0.5rem,
-  'radius-xs': 0.315rem,
-  'radius-pill': 9999px,
-  'radius-circle': 50%,
-  'radius-section': 0.8rem,
-  'radius-card': 1rem,
-  'radius-chip': 1.25rem,
-  'radius-icon': 0.5rem,
+  "radius-lg": 1.25rem,
+  "radius-md": 1rem,
+  "radius-sm": 0.5rem,
+  "radius-xs": 0.315rem,
+  "radius-pill": 9999px,
+  "radius-circle": 50%,
+  "radius-section": 0.8rem,
+  "radius-card": 1rem,
+  "radius-chip": 1.25rem,
+  "radius-icon": 0.5rem,
 );
-
-
-

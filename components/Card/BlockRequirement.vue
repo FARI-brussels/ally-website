@@ -19,11 +19,15 @@
       </span>
       {{ effort }}
     </div>
-    
+
     <div class="item involvement-item">
       <div class="involvement-label">{{ involvementLabel }}</div>
       <span class="chip-list">
-        <span v-for="chip in involvementChips" :key="chip" class="chip bg-color-gray-light-mode-50 border-color-gray-light-mode-500 color-gray-light-mode-500">
+        <span
+          v-for="chip in involvementChips"
+          :key="chip"
+          class="chip bg-color-gray-light-mode-50 border-color-gray-light-mode-500 color-gray-light-mode-500"
+        >
           {{ chip }}
         </span>
       </span>
@@ -33,8 +37,8 @@
 
 <script setup lang="ts">
 import type { RequirementCardProps } from "~/types/components/Card";
-import type { Locale, LocaleMap, LevelMap } from '~/types/Locale';
-import { computed } from 'vue';
+import type { Locale, LocaleMap, LevelMap } from "~/types/shared";
+import { computed } from "vue";
 
 const props = defineProps<RequirementCardProps>();
 
@@ -104,29 +108,37 @@ const involvementLabelMap: LocaleMap = {
   nl: "Wie is betrokken:",
 };
 
-
-
 const title = computed(() => getLocaleString(localeTitle, props.locale));
-const time = computed(() => getLevelLocaleString(localeTime, props.time, props.locale));
-const effort = computed(() => getLevelLocaleString(localeEffort, props.effort, props.locale));
-const cost = computed(() => getLevelLocaleString(localeCost, props.cost, props.locale));
-const involvementLabel = computed(() => getLocaleString(involvementLabelMap, props.locale));
+const time = computed(() =>
+  getLevelLocaleString(localeTime, props.time, props.locale),
+);
+const effort = computed(() =>
+  getLevelLocaleString(localeEffort, props.effort, props.locale),
+);
+const cost = computed(() =>
+  getLevelLocaleString(localeCost, props.cost, props.locale),
+);
+const involvementLabel = computed(() =>
+  getLocaleString(involvementLabelMap, props.locale),
+);
 const involvementChips = computed(() =>
   props.involvement
-    .split('\n')
-    .map(s => s.trim())
-    .filter(Boolean)
+    .split("\n")
+    .map((s) => s.trim())
+    .filter(Boolean),
 );
 
-
 function getLocaleString(map: LocaleMap, locale: Locale): string {
-  return map[locale] ?? '';
+  return map[locale] ?? "";
 }
 
-function getLevelLocaleString(map: LevelMap, level: string, locale: Locale): string {
-  return map[level]?.[locale] ?? '';
+function getLevelLocaleString(
+  map: LevelMap,
+  level: string,
+  locale: Locale,
+): string {
+  return map[level]?.[locale] ?? "";
 }
-
 </script>
 
 <style scoped lang="scss">
@@ -144,7 +156,7 @@ function getLevelLocaleString(map: LevelMap, level: string, locale: Locale): str
   border-radius: 1rem;
   padding: 2rem;
   cursor: default;
-  border: 1px solid map.get(colors.$colors, 'gray-light-mode-200');
+  border: 1px solid map.get(colors.$colors, "gray-light-mode-200");
 }
 
 .title {
@@ -184,8 +196,8 @@ function getLevelLocaleString(map: LevelMap, level: string, locale: Locale): str
 .chip {
   display: inline-flex;
   align-items: center;
-  border: 1px solid map.get(colors.$colors, 'gray-light-mode-300');
-  color: map.get(colors.$colors, 'gray-light-mode-500');
+  border: 1px solid map.get(colors.$colors, "gray-light-mode-300");
+  color: map.get(colors.$colors, "gray-light-mode-500");
   border-radius: 1rem;
   padding: 0.25rem 0.75rem;
   font-size: 0.95rem;
@@ -203,6 +215,6 @@ function getLevelLocaleString(map: LevelMap, level: string, locale: Locale): str
   font-size: 1rem;
   font-weight: $text-medium;
   margin-bottom: 0.5rem;
-  color: map.get(colors.$colors, 'gray-light-mode-500');
+  color: map.get(colors.$colors, "gray-light-mode-500");
 }
 </style>

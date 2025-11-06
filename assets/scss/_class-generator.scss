@@ -1,7 +1,7 @@
-@mixin class-generator($list, $attribute, $prefix: '-') {
+@mixin class-generator($list, $attribute, $prefix: "-") {
   @each $name, $value in $list {
     &#{$prefix}#{$name} {
       #{$attribute}: #{$value};
     }
   }
-} 
+}
