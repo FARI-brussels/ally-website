@@ -1,7 +1,7 @@
 import { createDirectus, rest, readItems, readItem } from "@directus/sdk";
 import type { DirectusCase, DirectusExternalLink } from "~/types/directus/Case";
-
-const client = createDirectus("https://fari-cms.directus.app").with(rest());
+const config = useRuntimeConfig();
+const client = createDirectus(config.public.directusUrl).with(rest());
 
 export const useCasesStore = defineStore("cases", () => {
   const error = ref(null);
@@ -27,6 +27,7 @@ export const useCasesStore = defineStore("cases", () => {
     cases.value = await Promise.all(
       data
         .map((item) => {
+          console.log({item})
           delete item?.alternative_cases;
           return item;
         })
@@ -126,7 +127,7 @@ async function parseCase(item) {
     title: {},
     description: {},
     content: {},
-    image,
+    image: image?.id ? getDirectusImageUrl(image.id) : null,
   };
 
   translations.forEach(({ title, description, content, languages_code }) => {
@@ -169,7 +170,7 @@ async function parseCase(item) {
 
     return block;
   });
-console.log(building_blocks_used)
+console.log({caseItem})
   return {
     id,
     alternative_cases: await Promise.all(alternative_cases.map(parseCase)),
@@ -205,3 +206,24 @@ function isValidCase(caseItem: unknown): caseItem is Case {
   return true;
 }
 
+
+
+function getDirectusImageUrl(imageId: string, options?: {
+  width?: number;
+  height?: number;
+  quality?: number;
+  format?: string;
+}): string {
+  if (!imageId) return '';
+  const config = useRuntimeConfig();
+  const baseUrl = config.public.directusUrl;
+  const params = new URLSearchParams();
+  
+  if (options?.width) params.append('width', options.width.toString());
+  if (options?.height) params.append('height', options.height.toString());
+  if (options?.quality) params.append('quality', options.quality.toString());
+  if (options?.format) params.append('format', options.format);
+  
+  const queryString = params.toString();
+  return `${baseUrl}/assets/${imageId}${queryString ? `?${queryString}` : ''}`;
+}
