@@ -120,6 +120,7 @@ function iconPath(name: string) {
 @use "sass:map";
 
 .ally-btn {
+  height: 3rem;
   width: fit-content;
   display: inline-flex;
   align-items: center;
