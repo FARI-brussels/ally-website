@@ -144,6 +144,8 @@ const blocksUsed = {
   display: flex;
   gap: 2rem;
   justify-content: space-between;
+  width: fit-content;
+  max-width: 100vw;
 }
 
 .page-items {

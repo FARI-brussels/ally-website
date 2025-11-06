@@ -94,4 +94,10 @@ div {
     background-color: #8e6dac;
   }
 }
+
+img {
+  max-width: 100%;
+  margin: 2rem 0;
+  border-radius: 1rem;
+}
 </style>

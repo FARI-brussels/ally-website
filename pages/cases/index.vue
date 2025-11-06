@@ -73,6 +73,7 @@
           v-for="block in filteredBlocks"
           :key="block.id"
           category="Case study"
+          :image="block.image"
           :title="block.title[locale]"
           :description="block.description[locale]"
           @click="navigateTo(`/cases/${block.id}`)"
