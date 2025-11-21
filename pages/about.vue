@@ -306,7 +306,7 @@ const logos = [
 
 .logos-container {
   height: 100%;
-  margin-top: 2rem;
+  margin: 2rem 0;
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;

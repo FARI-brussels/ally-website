@@ -337,6 +337,7 @@ const externalLinksParagraph = {
   margin-right: -50vw;
   padding: 0;
   padding-top: 3rem;
+  padding-bottom: 3rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
   display: flex;
