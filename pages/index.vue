@@ -89,11 +89,13 @@
         />
       </div>
       <div class="case-preview" :class="{ 'case-preview-mobile': isMobile }">
+      
         <CardMain
-          v-for="{ id, title, description } in cases.slice(0, 3)"
+          v-for="{ id, title, description, image } in cases.slice(0, 3)"
           :key="id"
           category="Case study"
           :title="title[locale]"
+          :image="image"
           :description="description[locale]"
           :url="`/cases/${id}`"
         />
@@ -121,6 +123,7 @@ const { pages } = storeToRefs(useStaticPageStore());
 const { cases } = storeToRefs(useCasesStore());
 const { blocks } = storeToRefs(useBuildingBlockStore());
 const { getBlocks } = useBuildingBlockStore();
+const { getCases } = useCasesStore();
 
 const { isMobile } = useIsMobile();
 
@@ -129,6 +132,7 @@ onMounted(async () => {
     getBuildingBlockCategories(),
     getBlocks(),
     getStaticPage("home"),
+    getCases()
   ]);
 });
 
