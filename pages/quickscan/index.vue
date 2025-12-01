@@ -53,7 +53,6 @@ import {
   impactField,
   aiImpactField,
   resourceField,
-  focusField,
 } from "~/quickscan/questions";
 
 import { calculateSuggestions } from "~/quickscan/logic";
@@ -72,7 +71,6 @@ const questions = [
   impactField,
   aiImpactField,
   resourceField,
-  focusField,
 ];
 
 onMounted(async () => 

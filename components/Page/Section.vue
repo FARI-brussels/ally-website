@@ -2,7 +2,7 @@
   <section :class="{ section: true, ['section--white']: onDark }">
     <h2 class="color-gray-light-mode-900">{{ props.title }}</h2>
     <!-- eslint-disable-next-line vue/no-v-html -->
-    <div v-if="props.description && props.html" v-html="safeHtml" />
+    <div v-if="props.description && props.html" class="markdown-content" v-html="safeHtml" />
     <div v-if="props.description && !props.html">
       <p>{{ props.description }}</p>
     </div>
@@ -25,9 +25,14 @@ renderer.link = ({ href, title, text }) => {
 };
 
 const safeHtml = computed(() => {
-  const rawHtml = marked(props.description, { renderer });
+  const rawHtml = marked(props.description, { 
+    renderer, 
+    breaks: true,
+    gfm: true
+  });
 
-  return sanitizeHtml(rawHtml as string); //should be fixed
+  const sanitized = sanitizeHtml(rawHtml as string);  
+  return sanitized;
 });
 
 function sanitizeHtml(unsafeHtml: string) {
@@ -66,14 +71,43 @@ h2 {
 div {
   font-size: 1.2rem;
 }
-</style>
 
-<style lang="scss">
-@use "/assets/scss/colors" as *;
-@use "/assets/scss/typography" as *;
-@use "sass:map";
+.markdown-content {
+  :deep(p) {
+    margin-bottom: 1em !important; // Make it obvious for testing
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  :deep(br) {
+    display: block;
+    content: "";
+    margin-top: 1em !important;
+  }
+  
+  ul, ol {
+    margin: 1em 0;
+    padding-left: 2em;
+  }
+  
+  li {
+    margin-bottom: 0.5em;
+  }
+  
+  blockquote {
+    margin: 1em 0;
+    padding-left: 1em;
+    border-left: 3px solid #ccc;
+  }
+  
+  h3, h4, h5, h6 {
+    margin: 1.5em 0 0.5em 0;
+  }
+}
 
-.fake-ally-btn {
+:deep(.fake-ally-btn) {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -82,7 +116,7 @@ div {
   border-radius: 0.5rem;
   padding: 0.75rem 1.5rem;
   background-color: #684688;
-  color: white;
+  color: white!important;
   cursor: pointer;
   transition:
     background-color 0.15s,
@@ -95,7 +129,7 @@ div {
   }
 }
 
-img {
+:deep(img) {
   max-width: 100%;
   margin: 2rem 0;
   border-radius: 1rem;

@@ -52,10 +52,7 @@ export function applyQ7Logic({
     if (q7Answer === "low" || q7Answer === "undecided") {
       for (const cat of needed) {
         const candidate = allBlocks
-          .filter((b) => b.category === cat && !selectedIds.has(b.id))
-          .sort(
-            (a, b) => a.resourceIntensityScore - b.resourceIntensityScore,
-          )[0];
+          .filter((b) => b.category === cat && !selectedIds.has(b.id))[0]
         if (candidate) {
           list.push(candidate);
           selectedIds.add(candidate.id);
@@ -65,7 +62,11 @@ export function applyQ7Logic({
       for (const cat of needed) {
         const candidate = allBlocks
           .filter((b) => b.category.slug === cat && !selectedIds.has(b.id))
-          .sort((a, b) => a.ranking - b.ranking)[0];
+          .sort((a, b) => {
+            if (a.ranking !== b.ranking) return a.ranking - b.ranking;
+            
+            return Math.random() - 0.5;
+          })[0];
 
         if (candidate) {
           list.push(candidate);
@@ -80,7 +81,8 @@ export function applyQ7Logic({
     const counts = countByCategory(list);
 
     if (q7Answer === "low" || q7Answer === "undecided") {
-      list.sort((a, b) => b.resourceIntensityScore - a.resourceIntensityScore);
+      list.sort((a, b) => a.ranking - b.ranking);
+
       let i = 0;
       while (list.length > target && i < list.length) {
         const b = list[i];

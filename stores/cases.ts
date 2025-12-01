@@ -101,7 +101,6 @@ export const useCasesStore = defineStore("cases", () => {
       )) as DirectusCase[];
 
     delete alternative_cases?.alternative_cases;
-
     selectedCase.value = await parseCase({
       ...data,
       alternative_cases,

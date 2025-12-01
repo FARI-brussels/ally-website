@@ -3,7 +3,7 @@ import {
   type BlockForMetadataInput,
 } from "~/quickscan/blockData";
 import type { Block } from "~/types/blocks/base";
-import { applyQ7Logic, applyQ8Logic, questionsToBlockIds } from "./logic/index";
+import { applyQ7Logic, questionsToBlockIds } from "./logic/index";
 
 export function calculateSuggestions({
   answers,
@@ -35,13 +35,7 @@ export function calculateSuggestions({
     allBlocks: blockMetaData,
   });
 
-  const q8result = applyQ8Logic({
-    q8Answer: answers["Q8"],
-    initialSuggestions: q7result,
-    allBlocks: blockMetaData,
-  });
-
-  const finalIDs = q8result.map(({ id }: { id: number }) => id);
+  const finalIDs = q7result.map(({ id }: { id: number }) => id);
 
   return finalIDs;
 }

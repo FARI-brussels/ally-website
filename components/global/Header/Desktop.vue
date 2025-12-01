@@ -6,12 +6,12 @@
       </NuxtLink>
 
       <NavbarDesktop class="navbar" :items="items" />
-      <!-- <AllyButton
+      <AllyButton
         variant="primary"
         prepend-icon="scan"
         label="do the quickscan"
         @click="$router.push('/quickscan')"
-      /> -->
+      />
     </div>
   </div>
 </template>
