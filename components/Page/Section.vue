@@ -74,7 +74,7 @@ div {
 
 .markdown-content {
   :deep(p) {
-    margin-bottom: 1em !important; // Make it obvious for testing
+    margin-bottom: 1.5em !important; // Make it obvious for testing
     
     &:last-child {
       margin-bottom: 0;

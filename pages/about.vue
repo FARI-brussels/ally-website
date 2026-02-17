@@ -246,6 +246,8 @@ const logos = [
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-size: 1.2rem;
+  
 
   gap: 1rem;
 }
@@ -264,6 +266,7 @@ const logos = [
   margin: 2rem 0;
   flex-wrap: wrap;
   justify-content: center;
+  font-size: 1.2rem;
 }
 
 .intro-section,
@@ -275,6 +278,7 @@ const logos = [
   align-items: center;
   gap: 1rem;
   text-align: center;
+  font-size: 1.2rem;
 }
 
 .about-container {
@@ -284,6 +288,7 @@ const logos = [
   flex-direction: column;
   padding: 2rem;
   height: 100%;
+  font-size: 1.2rem;
 }
 
 .icon-container {

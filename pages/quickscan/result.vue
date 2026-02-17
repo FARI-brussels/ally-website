@@ -140,8 +140,8 @@ const organizedBlocks = reactive({
 
 const heroProps = {
   media: "",
-  heading: "QuickScan Result",
-  title: "Your Personalised AI Strategy",
+  heading: "Quickscan Result",
+  title: "Your personalised AI strategy",
   description:
     "Thanks for completing the Quickscan. Based on your responses, we’ve selected the most relevant building blocks to help you embed responsible AI in your organisation.",
 };
